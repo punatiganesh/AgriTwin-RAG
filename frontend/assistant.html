@@ -1,0 +1,1158 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AgriTwin-RAG — Multilingual Agronomic RAG Assistant</title>
+    <!-- Font Awesome Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- Bootstrap 5 Grid & Utilities -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Master AgriTech Design System -->
+    <link rel="stylesheet" href="css/style.css" />
+    <style>
+      /* Voice Assistant Styles */
+      .rag-voice-btn {
+        padding: 0 16px;
+        height: 44px;
+        background: #f0fdf4;
+        border: 1.5px solid #86efac;
+        color: #16a34a;
+        border-radius: var(--radius-md);
+        font-weight: 600;
+        font-size: 0.875rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        white-space: nowrap;
+      }
+      .rag-voice-btn:hover {
+        background: #dcfce7;
+        border-color: #4ade80;
+        color: #15803d;
+        transform: translateY(-1px);
+      }
+      .rag-voice-btn.recording {
+        background: #ef4444 !important;
+        border-color: #dc2626 !important;
+        color: #ffffff !important;
+        animation: pulseMic 1.4s infinite ease-in-out;
+        box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.3);
+      }
+      @keyframes pulseMic {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.05);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+      .voice-status-bar {
+        padding: 8px 18px;
+        background: #f8fafc;
+        border-top: 1px solid var(--border-color);
+        display: flex;
+        align-items: center;
+        font-size: 0.82rem;
+        transition: all 0.2s ease;
+      }
+      .pulse-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #ef4444;
+        display: inline-block;
+        margin-right: 8px;
+        animation: pulseDot 1.2s infinite;
+      }
+      @keyframes pulseDot {
+        0% {
+          opacity: 1;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 0.3;
+          transform: scale(1.3);
+        }
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+      .btn-read-aloud {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 3px 10px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        border-radius: 20px;
+        background: #ffffff;
+        border: 1px solid #d1d5db;
+        color: #374151;
+        cursor: pointer;
+        transition: all 0.15s ease;
+      }
+      .btn-read-aloud:hover {
+        background: #f3f4f6;
+        border-color: #9ca3af;
+        color: #111827;
+      }
+      .btn-read-aloud.speaking {
+        background: #dbeafe !important;
+        border-color: #3b82f6 !important;
+        color: #1d4ed8 !important;
+        animation: speakPulse 1.5s infinite ease-in-out;
+      }
+      @keyframes speakPulse {
+        0% {
+          box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4);
+        }
+        70% {
+          box-shadow: 0 0 0 6px rgba(59, 130, 246, 0);
+        }
+        100% {
+          box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
+        }
+      }
+      .voice-toast {
+        background: #fffbeb;
+        border: 1px solid #fde68a;
+        color: #92400e;
+        padding: 8px 14px;
+        border-radius: var(--radius-md);
+        font-size: 0.82rem;
+        margin-bottom: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app-layout">
+      <!-- ==================== LEFT SIDEBAR ==================== -->
+      <aside class="app-sidebar" id="appSidebar">
+        <!-- Brand Header -->
+        <div class="sidebar-brand">
+          <a href="dashboard.html" class="brand-logo-wrap">
+            <div class="brand-icon">
+              <i class="fas fa-leaf"></i>
+            </div>
+            <div class="brand-text">
+              <div class="brand-title">
+                AgriTwin <span class="badge-rag">RAG</span>
+              </div>
+              <div class="brand-subtitle">Precision Digital Twin</div>
+            </div>
+          </a>
+          <button
+            class="sidebar-collapse-btn d-none d-lg-flex"
+            id="sidebarCollapseBtn"
+            title="Toggle Sidebar"
+          >
+            <i class="fas fa-chevron-left"></i>
+          </button>
+        </div>
+
+        <!-- Navigation Sections -->
+        <div class="sidebar-nav-container">
+          <div class="nav-section-label">OVERVIEW</div>
+          <ul class="sidebar-menu">
+            <li>
+              <a href="dashboard.html" class="nav-item">
+                <i class="fas fa-th-large nav-icon"></i>
+                <span class="nav-label">Dashboard</span>
+              </a>
+            </li>
+          </ul>
+
+          <div class="nav-section-label">FARM</div>
+          <ul class="sidebar-menu">
+            <li>
+              <a href="digital-twin.html" class="nav-item">
+                <i class="fas fa-cube nav-icon"></i>
+                <span class="nav-label">Digital Twin</span>
+              </a>
+            </li>
+            <li>
+              <a href="weather.html" class="nav-item">
+                <i class="fas fa-cloud-sun nav-icon"></i>
+                <span class="nav-label">Weather</span>
+              </a>
+            </li>
+            <li>
+              <a href="soil.html" class="nav-item">
+                <i class="fas fa-seedling nav-icon"></i>
+                <span class="nav-label">Soil Intelligence</span>
+              </a>
+            </li>
+            <li>
+              <a href="satellite.html" class="nav-item">
+                <i class="fas fa-satellite nav-icon"></i>
+                <span class="nav-label">Satellite & NDVI</span>
+              </a>
+            </li>
+            <li>
+              <a href="location.html" class="nav-item">
+                <i class="fas fa-map-marker-alt nav-icon"></i>
+                <span class="nav-label">Farm Location</span>
+              </a>
+            </li>
+          </ul>
+
+          <div class="nav-section-label">AI</div>
+          <ul class="sidebar-menu">
+            <li>
+              <a href="crop-disease.html" class="nav-item">
+                <i class="fas fa-virus nav-icon"></i>
+                <span class="nav-label">Crop Disease</span>
+              </a>
+            </li>
+            <li>
+              <a href="prediction.html" class="nav-item">
+                <i class="fas fa-shield-alt nav-icon"></i>
+                <span class="nav-label">Farm Risk</span>
+              </a>
+            </li>
+            <li>
+              <a href="assistant.html" class="nav-item active">
+                <i class="fas fa-robot nav-icon"></i>
+                <span class="nav-label">RAG Assistant</span>
+              </a>
+            </li>
+            <li>
+              <a href="recommendations.html" class="nav-item">
+                <i class="fas fa-clipboard-list nav-icon"></i>
+                <span class="nav-label">Recommendations</span>
+              </a>
+            </li>
+          </ul>
+
+          <div class="nav-section-label">REPORTS</div>
+          <ul class="sidebar-menu">
+            <li>
+              <a href="reports.html" class="nav-item">
+                <i class="fas fa-file-alt nav-icon"></i>
+                <span class="nav-label">Farm Report</span>
+              </a>
+            </li>
+          </ul>
+
+          <div class="nav-section-label">RESEARCH / TECHNICAL</div>
+          <ul class="sidebar-menu">
+            <li>
+              <a href="evaluation.html" class="nav-item">
+                <i class="fas fa-chart-line nav-icon"></i>
+                <span class="nav-label">Model Evaluation</span>
+              </a>
+            </li>
+            <li>
+              <a href="xai.html" class="nav-item">
+                <i class="fas fa-lightbulb nav-icon"></i>
+                <span class="nav-label">Explainable AI (XAI)</span>
+              </a>
+            </li>
+            <li>
+              <a href="settings.html" class="nav-item">
+                <i class="fas fa-cog nav-icon"></i>
+                <span class="nav-label">Settings & Provenance</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Sidebar User Footer -->
+        <div class="sidebar-footer">
+          <div class="user-profile-widget">
+            <div class="user-avatar-circle" id="userAvatar">F</div>
+            <div class="user-info">
+              <div class="user-name" id="userName">Farmer Profile</div>
+              <div class="user-meta" id="userMeta">AgriTwin User</div>
+            </div>
+            <a
+              href="settings.html"
+              class="user-action-btn"
+              title="Settings & Provenance"
+            >
+              <i class="fas fa-cog"></i>
+            </a>
+            <button
+              class="user-action-btn btn-logout"
+              id="logoutBtn"
+              title="Sign Out / Logout"
+              style="
+                background: none;
+                border: none;
+                color: #ef4444;
+                cursor: pointer;
+                padding: 6px;
+                margin-left: 4px;
+              "
+            >
+              <i class="fas fa-sign-out-alt"></i>
+            </button>
+          </div>
+        </div>
+      </aside>
+
+      <!-- ==================== MAIN CONTENT ==================== -->
+      <div class="app-main-wrapper">
+        <header class="app-topbar">
+          <div class="topbar-left">
+            <button
+              class="topbar-toggle-btn"
+              id="mobileMenuBtn"
+              aria-label="Toggle Sidebar"
+            >
+              <i class="fas fa-bars"></i>
+            </button>
+            <div class="page-title-wrap">
+              <h1 class="page-title">AgriTwin AI Assistant</h1>
+              <nav class="breadcrumb-trail">
+                <span>AI & Insights</span>
+                <i class="fas fa-chevron-right breadcrumb-sep"></i>
+                <span class="breadcrumb-active"
+                  >Multilingual RAG Assistant</span
+                >
+              </nav>
+            </div>
+          </div>
+
+          <div class="topbar-right">
+            <a href="location.html" class="location-pill" id="farmLocation">
+              <i class="fas fa-map-marker-alt text-success"></i>
+              <span id="topbarLocationText">Set Farm Location</span>
+            </a>
+            <button class="topbar-icon-btn" title="Notifications">
+              <i class="far fa-bell"></i>
+              <span class="notification-dot"></span>
+            </button>
+            <div class="topbar-user-dropdown-wrap" id="userMenuWrapper">
+              <button
+                class="topbar-user-btn"
+                id="userMenuBtn"
+                type="button"
+                aria-expanded="false"
+                aria-label="Farmer profile menu"
+              >
+                <div class="user-avatar-sm" id="topbarAvatar">F</div>
+                <div class="user-details d-none d-md-block text-start">
+                  <div class="user-fullname" id="topbarName">Farmer</div>
+                  <div class="user-role" id="topbarRole">AgriTwin Live</div>
+                </div>
+                <i class="fas fa-chevron-down dropdown-caret"></i>
+              </button>
+              <div class="user-dropdown-menu" id="userDropdownMenu">
+                <div class="dropdown-user-header">
+                  <div class="user-avatar-sm" id="dropdownAvatar">F</div>
+                  <div class="dropdown-user-info">
+                    <div class="dropdown-name" id="dropdownName">Farmer</div>
+                    <div class="dropdown-sub" id="dropdownSub">
+                      Authenticated Farmer
+                    </div>
+                  </div>
+                </div>
+                <div class="dropdown-divider"></div>
+                <a href="settings.html" class="dropdown-item">
+                  <i class="fas fa-user-cog"></i>
+                  <span>My Account & Settings</span>
+                </a>
+                <a href="location.html" class="dropdown-item">
+                  <i class="fas fa-map-marker-alt"></i>
+                  <span>Farm Coordinates</span>
+                </a>
+                <div class="dropdown-divider"></div>
+                <button
+                  type="button"
+                  class="dropdown-item text-danger btn-logout"
+                  id="topbarLogoutBtn"
+                >
+                  <i class="fas fa-sign-out-alt"></i>
+                  <span>Sign Out / Logout</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <main class="app-content">
+          <!-- Page Subtitle & Status -->
+          <div
+            class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2"
+          >
+            <div>
+              <p class="text-muted mb-0">
+                Context-grounded agricultural advisor powered by
+                <strong>ICAR Knowledge Base</strong>,
+                <strong>Sentence Transformers</strong>, and
+                <strong>Groq LLaMA-3.3</strong>.
+              </p>
+            </div>
+            <div class="d-flex align-items-center gap-2 flex-wrap">
+              <div class="input-group input-group-sm" style="width: auto">
+                <label
+                  class="input-group-text bg-light text-dark fw-bold"
+                  for="languageSelect"
+                >
+                  <i class="fas fa-language text-success me-1"></i> Language:
+                </label>
+                <select
+                  class="form-select form-select-sm fw-semibold"
+                  id="languageSelect"
+                  style="min-width: 155px"
+                >
+                  <option value="en" selected>English (EN)</option>
+                  <option value="te">తెలుగు (Telugu)</option>
+                  <option value="ta">தமிழ் (Tamil)</option>
+                  <option value="hi">हिन्दी (Hindi)</option>
+                </select>
+              </div>
+              <span
+                class="badge bg-success-subtle text-success border px-3 py-2"
+                id="farmContextStatusBadge"
+              >
+                <i class="fas fa-check-circle text-success me-1"></i> Live Farm
+                Context Connected
+              </span>
+            </div>
+          </div>
+
+          <!-- RAG Workspace -->
+          <div class="rag-chat-layout">
+            <!-- Full Width: Chat Conversation Workspace -->
+            <div class="rag-messages-deck">
+              <!-- Chat Feed -->
+              <div class="rag-chat-feed" id="chatMessages">
+                <!-- Suggested Questions Pill Cluster -->
+                <div class="text-center my-2" id="promptSuggestionsContainer">
+                  <span
+                    class="text-muted small d-block mb-2"
+                    id="suggestedQuestionsTitle"
+                    >Suggested agronomic questions:</span
+                  >
+                  <div
+                    class="d-flex flex-wrap justify-content-center gap-2"
+                    id="promptPillsList"
+                  >
+                    <!-- Dynamic prompt pills will be rendered based on language -->
+                  </div>
+                </div>
+
+                <!-- Initial AI Greeting Message -->
+                <div class="chat-bubble-ai" id="welcomeAiMsg">
+                  <div
+                    class="d-flex align-items-center justify-content-between mb-2"
+                  >
+                    <div
+                      class="badge bg-success text-white px-2 py-1 rounded small"
+                    >
+                      <i class="fas fa-robot me-1"></i> AgriTwin RAG Copilot
+                    </div>
+                    <span class="text-muted small">Live Copilot</span>
+                  </div>
+                  <p class="mb-2" id="welcomeTextP1">
+                    Hello! I am your
+                    <strong>AgriTwin Multilingual Voice & Text Copilot</strong>.
+                    I am continuously connected in the background to your live
+                    farm data (Weather, Soil, Satellite NDVI, Location, Crop
+                    Stage, and Disease Observations) and the verified ICAR
+                    agricultural knowledge base.
+                  </p>
+                  <p class="mb-2" id="welcomeTextP2">
+                    You can speak using the microphone button or type your
+                    question in English, Telugu (తెలుగు), Tamil (தமிழ்), or
+                    Hindi (हिन्दी).
+                  </p>
+                  <div
+                    class="d-flex align-items-center gap-2 mt-2 pt-1 border-top"
+                  >
+                    <button
+                      type="button"
+                      class="btn-read-aloud"
+                      id="welcomeSpeakBtn"
+                      title="Listen to greeting"
+                    >
+                      <i class="fas fa-volume-up text-success"></i>
+                      <span>Listen</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Voice Listening Live Status Bar -->
+              <div class="voice-status-bar d-none" id="voiceStatusBar">
+                <span class="pulse-dot"></span>
+                <span id="voiceStatusText" class="small fw-semibold text-danger"
+                  >Listening to your question... Speak into your
+                  microphone</span
+                >
+                <button
+                  type="button"
+                  class="btn btn-sm btn-outline-danger ms-auto rounded-pill py-0 px-3 fw-bold"
+                  id="stopListeningBtn"
+                >
+                  <i class="fas fa-stop me-1"></i> Stop
+                </button>
+              </div>
+
+              <!-- Chat Input Bar -->
+              <form class="rag-input-toolbar" id="chatForm">
+                <button
+                  type="button"
+                  class="rag-voice-btn"
+                  id="voiceMicBtn"
+                  title="Speak your question"
+                >
+                  <i class="fas fa-microphone" id="micIcon"></i>
+                  <span class="d-none d-sm-inline" id="micBtnLabel">Speak</span>
+                </button>
+                <input
+                  type="text"
+                  id="chatInput"
+                  class="rag-input-field"
+                  placeholder="Ask any agricultural question or click Speak..."
+                  autocomplete="off"
+                  required
+                />
+                <button type="submit" class="rag-send-btn" id="sendBtn">
+                  <span>Send</span>
+                  <i class="fas fa-paper-plane ms-1"></i>
+                </button>
+              </form>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/farmState.js"></script>
+    <script src="js/voiceService.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", async function () {
+        const chatForm = document.getElementById("chatForm");
+        const chatInput = document.getElementById("chatInput");
+        const chatMessages = document.getElementById("chatMessages");
+        const sendBtn = document.getElementById("sendBtn");
+        const languageSelect = document.getElementById("languageSelect");
+        const promptPillsList = document.getElementById("promptPillsList");
+        const voiceMicBtn = document.getElementById("voiceMicBtn");
+        const micIcon = document.getElementById("micIcon");
+        const micBtnLabel = document.getElementById("micBtnLabel");
+        const voiceStatusBar = document.getElementById("voiceStatusBar");
+        const voiceStatusText = document.getElementById("voiceStatusText");
+        const stopListeningBtn = document.getElementById("stopListeningBtn");
+        const welcomeSpeakBtn = document.getElementById("welcomeSpeakBtn");
+
+        let activeSpeakingButton = null;
+
+        // Multilingual Prompt Suggestions for all 4 key languages
+        const SUGGESTED_PROMPTS = {
+          en: [
+            {
+              icon: "🌱",
+              text: "What are the management practices for rice?",
+              prompt: "What are the management practices for rice?",
+            },
+            {
+              icon: "🌡️",
+              text: "What is my current weather?",
+              prompt: "What is my current weather?",
+            },
+            {
+              icon: "💧",
+              text: "Should I irrigate my rice field?",
+              prompt: "Should I irrigate my rice field?",
+            },
+            {
+              icon: "🛰️",
+              text: "What is my latest NDVI?",
+              prompt: "What is my latest NDVI?",
+            },
+            {
+              icon: "🌿",
+              text: "How is my crop health?",
+              prompt: "How is my crop health?",
+            },
+            {
+              icon: "🚜",
+              text: "What should I monitor today?",
+              prompt: "What should I monitor today?",
+            },
+            {
+              icon: "📊",
+              text: "Give me a complete assessment of my farm.",
+              prompt: "Give me a complete assessment of my farm.",
+            },
+            {
+              icon: "🌾",
+              text: "What fertilizer management should I follow?",
+              prompt: "What fertilizer management should I follow?",
+            },
+          ],
+          te: [
+            {
+              icon: "🌱",
+              text: "వరి పంట యాజమాన్య పద్ధతులు ఏమిటి?",
+              prompt: "వరి పంట యాజమాన్య పద్ధతులు ఏమిటి?",
+            },
+            {
+              icon: "🌡️",
+              text: "నా పొలంలో ప్రస్తుత వాతావరణం ఎలా ఉంది?",
+              prompt: "నా పొలంలో ప్రస్తుత వాతావరణం ఎలా ఉంది?",
+            },
+            {
+              icon: "💧",
+              text: "వరి పొలానికి ఇప్పుడు నీరు పెట్టాలా?",
+              prompt: "నా వరి పొలానికి ఇప్పుడు నీరు పెట్టాలా?",
+            },
+            {
+              icon: "🛰️",
+              text: "నా ప్రస్తుత NDVI ఎంత?",
+              prompt: "నా ప్రస్తుత NDVI ఎంత?",
+            },
+            {
+              icon: "🌿",
+              text: "నా పంట ఆరోగ్యం ఎలా ఉంది?",
+              prompt: "నా పంట ఆరోగ్యం ఎలా ఉంది?",
+            },
+            {
+              icon: "🚜",
+              text: "ఈ రోజు ఏమి పర్యవేక్షించాలి?",
+              prompt: "ఈ రోజు నేను ఏమి పర్యవేక్షించాలి?",
+            },
+            {
+              icon: "📊",
+              text: "నా పొలం పూర్తి వివరాలు ఇవ్వండి",
+              prompt: "నా పొలం పూర్తి వివరాలు ఇవ్వండి.",
+            },
+            {
+              icon: "🌾",
+              text: "ఎరువుల యాజమాన్యం ఎలా ఉండాలి?",
+              prompt: "వరి పంటకు ఎరువుల యాజమాన్యం ఎలా ఉండాలి?",
+            },
+          ],
+          ta: [
+            {
+              icon: "🌱",
+              text: "நெல் பயிர் மேலாண்மை முறைகள் என்ன?",
+              prompt: "நெல் பயிர் மேலாண்மை முறைகள் என்ன?",
+            },
+            {
+              icon: "🌡️",
+              text: "என் வயலில் இப்போது வானிலை எப்படி இருக்கிறது?",
+              prompt: "என் வயலில் இப்போது வானிலை எப்படி இருக்கிறது?",
+            },
+            {
+              icon: "💧",
+              text: "நெல் வயலுக்கு தண்ணீர் விட வேண்டுமா?",
+              prompt: "என் நெல் வயலுக்கு தண்ணீர் விட வேண்டுமா?",
+            },
+            {
+              icon: "🛰️",
+              text: "என் தற்போதைய NDVI என்ன?",
+              prompt: "என் தற்போதைய NDVI என்ன?",
+            },
+            {
+              icon: "🌿",
+              text: "பயிர் ஆரோக்கியம் எப்படி உள்ளது?",
+              prompt: "என் பயிர் ஆரோக்கியம் எப்படி உள்ளது?",
+            },
+            {
+              icon: "🚜",
+              text: "இன்று எதை கண்காணிக்க வேண்டும்?",
+              prompt: "இன்று நான் எதை கண்காணிக்க வேண்டும்?",
+            },
+            {
+              icon: "📊",
+              text: "பண்ணையின் முழு மதிப்பீடு தருக",
+              prompt: "என் பண்ணையின் முழு மதிப்பீடு தருக.",
+            },
+            {
+              icon: "🌾",
+              text: "உர மேலாண்மை எவ்வாறு செய்வது?",
+              prompt: "நெல் பயிருக்கு உர மேலாண்மை எவ்வாறு செய்வது?",
+            },
+          ],
+          hi: [
+            {
+              icon: "🌱",
+              text: "धान की फसल के प्रबंधन के उपाय क्या हैं?",
+              prompt: "धान की फसल के प्रबंधन के उपाय क्या हैं?",
+            },
+            {
+              icon: "🌡️",
+              text: "मेरे खेत का वर्तमान मौसम कैसा है?",
+              prompt: "मेरे खेत का वर्तमान मौसम कैसा है?",
+            },
+            {
+              icon: "💧",
+              text: "क्या मुझे धान के खेत में सिंचाई करनी चाहिए?",
+              prompt: "क्या मुझे अपने धान के खेत में सिंचाई करनी चाहिए?",
+            },
+            {
+              icon: "🛰️",
+              text: "मेरा नवीनतम NDVI कितना है?",
+              prompt: "मेरा नवीनतम NDVI कितना है?",
+            },
+            {
+              icon: "🌿",
+              text: "मेरी फसल का स्वास्थ्य कैसा है?",
+              prompt: "मेरी फसल का स्वास्थ्य कैसा है?",
+            },
+            {
+              icon: "🚜",
+              text: "आज मुझे क्या निगरानी करनी चाहिए?",
+              prompt: "आज मुझे क्या निगरानी करनी चाहिए?",
+            },
+            {
+              icon: "📊",
+              text: "मेरे खेत का पूरा आकलन दें",
+              prompt: "Give me a complete assessment of my farm.",
+            },
+            {
+              icon: "🌾",
+              text: "उर्वरक प्रबंधन कैसे करें?",
+              prompt: "धान की फसल में उर्वरक प्रबंधन कैसे करना चाहिए?",
+            },
+          ],
+        };
+
+        const WELCOME_MESSAGES = {
+          en: {
+            p1: "Hello! I am your <strong>AgriTwin Multilingual Voice & Text Copilot</strong>. I am continuously connected in the background to your live farm telemetry (Weather, Soil, Satellite NDVI, Location, Crop Stage, and Disease Observations) and the verified ICAR agricultural knowledge base.",
+            p2: "You can speak using the microphone button or type your question in English, Telugu (తెలుగు), Tamil (தமிழ்), or Hindi (हिन्दी).",
+            placeholder: "Ask any agricultural question or click Speak...",
+          },
+          te: {
+            p1: "నమస్కారం! నేను మీ <strong>అగ్రిట్విన్ బహుభాషా వాయిస్ & టెక్స్ట్ కోపైలట్</strong>. మీ పొలం ప్రత్యక్ష సమాచారం (వాతావరణం, నేల, ఉపగ్రహ NDVI, స్థానం, పంట దశ, మరియు వ్యాధి పరిశీలనలు) మరియు ICAR వ్యవసాయ విజ్ఞాన ఆధారాలతో నేను అనుసంధానించబడి ఉన్నాను.",
+            p2: "మీరు మైక్రోఫోన్ బటన్ నొక్కి మాట్లాడవచ్చు లేదా తెలుగు, ఇంగ్లీష్, తమిళం, లేదా హిందీలో మీ ప్రశ్నను టైప్ చేయవచ్చు.",
+            placeholder: "వ్యవసాయ ప్రశ్నను మాట్లాడండి లేదా టైప్ చేయండి...",
+          },
+          ta: {
+            p1: "வணக்கம்! நான் உங்கள் <strong>அக்ரிட்வின் பன்மொழி குரல் மற்றும் உரை உதவியாளர்</strong>. உங்கள் பண்ணை நேரடித் தரவு (வானிலை, மண், செயற்கைக்கோள் NDVI, இருப்பிடம், பயிர் நிலை மற்றும் நோய் கண்காணிப்பு) மற்றும் ICAR வேளாண்மை வழிகாட்டுதல்களுடன் இணைந்துள்ளேன்.",
+            p2: "நீங்கள் மைக்ரோஃபோன் பொத்தானை அழுத்தி பேசலாம் அல்லது தமிழ், ஆங்கிலம், தெலுங்கு, அல்லது இந்தியில் கேள்வி கேட்கலாம்.",
+            placeholder:
+              "விவசாய கேள்வியைப் பேசுங்கள் அல்லது தட்டச்சு செய்யுங்கள்...",
+          },
+          hi: {
+            p1: "नमस्ते! मैं आपका <strong>AgriTwin बहुभाषी वॉयस और टेक्स्ट असिस्टेंट</strong> हूँ। मैं आपके खेत के लाइव डेटा (मौसम, मिट्टी, सैटेलाइट NDVI, स्थान, फसल का चरण, और रोग अवलोकन) तथा प्रामाणिक ICAR कृषि ज्ञानकोश से सीधे जुड़ा हुआ हूँ।",
+            p2: "आप माइक बटन दबाकर बोल सकते हैं या हिन्दी, अंग्रेजी, तेलुगु अथवा तमिल में अपना प्रश्न टाइप कर सकते हैं।",
+            placeholder: "कृषि संबंधी कोई भी प्रश्न बोलें या टाइप करें...",
+          },
+        };
+
+        function updateWelcomeAndPrompts(lang) {
+          const prompts = SUGGESTED_PROMPTS[lang] || SUGGESTED_PROMPTS.en;
+          promptPillsList.innerHTML = "";
+          prompts.forEach((p) => {
+            const btn = document.createElement("button");
+            btn.type = "button";
+            btn.className =
+              "btn btn-sm btn-outline-success rounded-pill px-3 prompt-suggestion";
+            btn.innerHTML = `${p.icon} ${p.text}`;
+            btn.addEventListener("click", () => {
+              chatInput.value = p.prompt;
+              chatForm.dispatchEvent(new Event("submit"));
+            });
+            promptPillsList.appendChild(btn);
+          });
+
+          const welcome = WELCOME_MESSAGES[lang] || WELCOME_MESSAGES.en;
+          const welcomeP1 = document.getElementById("welcomeTextP1");
+          const welcomeP2 = document.getElementById("welcomeTextP2");
+          if (welcomeP1) welcomeP1.innerHTML = welcome.p1;
+          if (welcomeP2) welcomeP2.innerHTML = welcome.p2;
+          if (chatInput) chatInput.placeholder = welcome.placeholder;
+        }
+
+        renderPromptPills = updateWelcomeAndPrompts;
+        updateWelcomeAndPrompts(languageSelect.value);
+
+        languageSelect.addEventListener("change", (e) => {
+          const lang = e.target.value;
+          updateWelcomeAndPrompts(lang);
+          if (VoiceService.isSpeaking()) {
+            VoiceService.stopSpeaking();
+            resetSpeakingButtons();
+          }
+        });
+
+        // Welcome Speak Button
+        if (welcomeSpeakBtn) {
+          welcomeSpeakBtn.addEventListener("click", function () {
+            const lang = languageSelect.value || "en";
+            const welcome = WELCOME_MESSAGES[lang] || WELCOME_MESSAGES.en;
+            const textToSpeak = (welcome.p1 + " " + welcome.p2).replace(
+              /<[^>]*>?/gm,
+              "",
+            );
+            handleSpeechPlayback(welcomeSpeakBtn, textToSpeak, lang);
+          });
+        }
+
+        // ==================== Text-to-Speech (TTS) Handler ====================
+        function resetSpeakingButtons() {
+          document.querySelectorAll(".btn-read-aloud").forEach((btn) => {
+            btn.classList.remove("speaking");
+            btn.innerHTML =
+              '<i class="fas fa-volume-up text-success"></i> <span>Listen</span>';
+          });
+          activeSpeakingButton = null;
+        }
+
+        function handleSpeechPlayback(btn, text, lang) {
+          if (!VoiceService.isSpeechSynthesisSupported()) {
+            showToastMessage(
+              "Voice playback is unavailable on this browser/device.",
+            );
+            return;
+          }
+
+          if (btn.classList.contains("speaking")) {
+            VoiceService.stopSpeaking();
+            resetSpeakingButtons();
+            return;
+          }
+
+          resetSpeakingButtons();
+          btn.classList.add("speaking");
+          btn.innerHTML =
+            '<i class="fas fa-volume-mute text-danger"></i> <span>Stop Voice</span>';
+          activeSpeakingButton = btn;
+
+          VoiceService.speakText(text, lang, {
+            onStart: () => {
+              btn.classList.add("speaking");
+              btn.innerHTML =
+                '<i class="fas fa-volume-mute text-danger"></i> <span>Stop Voice</span>';
+            },
+            onEnd: () => {
+              resetSpeakingButtons();
+            },
+            onError: (err) => {
+              resetSpeakingButtons();
+              if (err && err.message) {
+                showToastMessage(err.message);
+              }
+            },
+          });
+        }
+
+        function showToastMessage(msg) {
+          const toast = document.createElement("div");
+          toast.className = "voice-toast";
+          toast.innerHTML = `<i class="fas fa-info-circle me-2"></i> ${msg}`;
+          chatMessages.appendChild(toast);
+          chatMessages.scrollTop = chatMessages.scrollHeight;
+          setTimeout(() => {
+            toast.remove();
+          }, 6000);
+        }
+
+        // ==================== Speech-to-Text (STT) Handler ====================
+        function setListeningState(isListening) {
+          if (isListening) {
+            voiceMicBtn.classList.add("recording");
+            micIcon.className = "fas fa-stop";
+            micBtnLabel.textContent = "Stop";
+            voiceStatusBar.classList.remove("d-none");
+            const langName =
+              languageSelect.options[languageSelect.selectedIndex].text;
+            voiceStatusText.textContent = `Listening in ${langName}... Speak your question clearly`;
+          } else {
+            voiceMicBtn.classList.remove("recording");
+            micIcon.className = "fas fa-microphone";
+            micBtnLabel.textContent = "Speak";
+            voiceStatusBar.classList.add("d-none");
+          }
+        }
+
+        function startVoiceRecording() {
+          if (!VoiceService.isSpeechRecognitionSupported()) {
+            showToastMessage(
+              "Speech recognition is not supported in this browser. Please use Google Chrome or Microsoft Edge.",
+            );
+            return;
+          }
+
+          // Stop TTS if speaking
+          if (VoiceService.isSpeaking()) {
+            VoiceService.stopSpeaking();
+            resetSpeakingButtons();
+          }
+
+          const currentLang = languageSelect.value || "en";
+          VoiceService.startListening({
+            language: currentLang,
+            onStart: () => {
+              setListeningState(true);
+            },
+            onResult: (res) => {
+              if (res.transcript) {
+                chatInput.value = res.transcript;
+              }
+              if (res.isFinal && res.finalTranscript) {
+                chatInput.value = res.finalTranscript;
+                setListeningState(false);
+                // Auto-submit recognized question
+                setTimeout(() => {
+                  if (chatInput.value.trim()) {
+                    chatForm.dispatchEvent(new Event("submit"));
+                  }
+                }, 300);
+              }
+            },
+            onError: (err) => {
+              setListeningState(false);
+              if (err && err.message) {
+                showToastMessage(err.message);
+              }
+            },
+            onEnd: () => {
+              setListeningState(false);
+            },
+          });
+        }
+
+        if (voiceMicBtn) {
+          voiceMicBtn.addEventListener("click", function () {
+            if (VoiceService.isListening()) {
+              VoiceService.stopListening();
+              setListeningState(false);
+            } else {
+              startVoiceRecording();
+            }
+          });
+        }
+
+        if (stopListeningBtn) {
+          stopListeningBtn.addEventListener("click", function () {
+            VoiceService.stopListening();
+            setListeningState(false);
+          });
+        }
+
+        if (window.FarmState) {
+          FarmState.syncLiveTelemetry().catch((error) =>
+            console.warn("Farm context sync error:", error),
+          );
+        }
+
+        // ==================== Chat Submit Handler ====================
+        if (chatForm) {
+          chatForm.addEventListener("submit", async function (e) {
+            e.preventDefault();
+            const query = chatInput.value.trim();
+            if (!query) return;
+            const lang = languageSelect.value || "en";
+
+            // Stop listening if active
+            if (VoiceService.isListening()) {
+              VoiceService.stopListening();
+              setListeningState(false);
+            }
+
+            // Stop TTS if active
+            if (VoiceService.isSpeaking()) {
+              VoiceService.stopSpeaking();
+              resetSpeakingButtons();
+            }
+
+            // Append User Message
+            const userMsg = document.createElement("div");
+            userMsg.className = "chat-bubble-user";
+            userMsg.innerHTML = `<div class="d-flex justify-content-between align-items-center mb-1"><span class="small opacity-75"><i class="fas fa-user me-1"></i> Farmer</span><span class="badge bg-light text-dark small">${lang.toUpperCase()}</span></div><div>${query}</div>`;
+            chatMessages.appendChild(userMsg);
+            chatInput.value = "";
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            // Append Thinking Indicator
+            const langLabels = {
+              en: "English",
+              te: "Telugu (తెలుగు)",
+              ta: "Tamil (தமிழ்)",
+              hi: "Hindi (हिन्दी)",
+            };
+            const thinkingMsg = document.createElement("div");
+            thinkingMsg.className = "chat-bubble-ai";
+            thinkingMsg.id = "thinkingIndicator";
+            thinkingMsg.innerHTML = `<i class="fas fa-spinner fa-spin text-success me-2"></i> Analyzing farm telemetry & ICAR agricultural evidence in ${langLabels[lang] || "English"}...`;
+            chatMessages.appendChild(thinkingMsg);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            const farmResult = await loadFarmContext();
+            if (!farmResult.success) {
+              thinkingMsg.remove();
+              const contextError = document.createElement("div");
+              contextError.className = "chat-bubble-ai";
+              contextError.textContent = farmResult.error;
+              chatMessages.appendChild(contextError);
+              chatMessages.scrollTop = chatMessages.scrollHeight;
+              return;
+            }
+
+            let activeFarmContext = window.FarmState
+              ? FarmState.get()
+              : farmResult.data;
+
+            try {
+              const data = await API.sendChatMessage(
+                query,
+                activeFarmContext,
+                lang,
+              );
+              thinkingMsg.remove();
+
+              if (!data || data.success === false) {
+                const errorText =
+                  data?.error ||
+                  "Unable to generate agricultural recommendation.";
+                const errorMsg = document.createElement("div");
+                errorMsg.className = "chat-bubble-ai";
+                errorMsg.innerHTML = `<span class="text-danger"><i class="fas fa-exclamation-triangle me-1"></i> ${errorText}</span>`;
+                chatMessages.appendChild(errorMsg);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+                return;
+              }
+
+              const aiMsg = document.createElement("div");
+              aiMsg.className = "chat-bubble-ai";
+
+              const rawAnswer = data.answer || "No response received.";
+              let formattedAnswer = rawAnswer.replace(/\n/g, "<br>");
+
+              // Active Data Source Badges
+              let sourceBadgesHtml = "";
+              const intents =
+                data.intents ||
+                (data.sources && data.sources.length > 0 ? ["RAG"] : []);
+              const badgeMap = {
+                WEATHER: `<span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle me-1" title="Real-time OpenWeather Telemetry"><i class="fas fa-cloud-sun me-1"></i> Weather</span>`,
+                SOIL: `<span class="badge bg-primary-subtle text-primary border border-primary-subtle me-1" title="ISRIC SoilGrids 2.0 Rhizosphere Profile"><i class="fas fa-seedling me-1"></i> Soil (ISRIC)</span>`,
+                SATELLITE: `<span class="badge bg-info-subtle text-info border border-info-subtle me-1" title="Sentinel-2 Level-2A Remote Sensing"><i class="fas fa-satellite me-1"></i> Sentinel-2</span>`,
+                LOCATION: `<span class="badge bg-secondary-subtle text-dark border border-secondary-subtle me-1" title="Selected Farm Coordinates"><i class="fas fa-map-marker-alt me-1"></i> GPS</span>`,
+                CROP: `<span class="badge bg-light text-success border me-1" title="Farmer Crop Profile"><i class="fas fa-leaf me-1"></i> Crop</span>`,
+                RAG: `<span class="badge bg-success-subtle text-success border border-success-subtle me-1" title="ICAR Scientific Agricultural Guidelines"><i class="fas fa-book-open me-1"></i> ICAR Knowledge</span>`,
+              };
+              sourceBadgesHtml = intents.map((i) => badgeMap[i] || "").join("");
+
+              // Provenance & Source Citations
+              let sourcesHtml = "";
+              if (data.sources && data.sources.length > 0) {
+                const seenSources = new Set();
+                const formattedSources = [];
+                data.sources.forEach((s) => {
+                  let srcName = "ICAR Crop Management PDF";
+                  let pg = "";
+                  if (typeof s === "object" && s !== null) {
+                    if (s.source) {
+                      srcName = s.source
+                        .replace(/\.pdf$/i, "")
+                        .replace(/_/g, " ")
+                        .toUpperCase();
+                      if (!srcName.includes("ICAR"))
+                        srcName = `ICAR ${srcName} PDF`;
+                    }
+                    pg = s.page ? ` — page ${s.page}` : "";
+                  } else {
+                    srcName = String(s);
+                  }
+                  const item = `• ${srcName}${pg}`;
+                  if (!seenSources.has(item)) {
+                    seenSources.add(item);
+                    formattedSources.push(item);
+                  }
+                });
+                sourcesHtml = `
+                  <div class="mt-3 pt-2 border-top small text-muted">
+                    <div class="fw-semibold text-dark mb-1"><i class="fas fa-book-open text-success me-1"></i> ICAR Knowledge Sources:</div>
+                    <ul class="list-unstyled mb-0 ps-2">
+                      ${formattedSources.map((item) => `<li class="mb-1">${item}</li>`).join("")}
+                    </ul>
+                  </div>
+                `;
+              }
+
+              aiMsg.innerHTML = `
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                  <div class="badge bg-success text-white px-2 py-1 rounded small">
+                    <i class="fas fa-robot me-1"></i> AgriTwin Copilot (${(data.language || lang).toUpperCase()})
+                  </div>
+                  <div class="d-flex align-items-center flex-wrap gap-1">${sourceBadgesHtml}</div>
+                </div>
+                <div class="lh-base text-dark">${formattedAnswer}</div>
+                ${sourcesHtml}
+                <div class="d-flex align-items-center gap-2 mt-3 pt-2 border-top">
+                  <button type="button" class="btn-read-aloud read-answer-btn" title="Read answer aloud">
+                    <i class="fas fa-volume-up text-success"></i> <span>Read Answer</span>
+                  </button>
+                </div>
+              `;
+
+              chatMessages.appendChild(aiMsg);
+              chatMessages.scrollTop = chatMessages.scrollHeight;
+
+              // Hook up Speak Answer Button
+              const readBtn = aiMsg.querySelector(".read-answer-btn");
+              if (readBtn) {
+                readBtn.addEventListener("click", function () {
+                  handleSpeechPlayback(
+                    readBtn,
+                    rawAnswer,
+                    data.language || lang,
+                  );
+                });
+              }
+
+              // Automatically speak answer if question was asked via microphone
+              if (resumedFromVoice) {
+                resumedFromVoice = false;
+                if (readBtn) {
+                  handleSpeechPlayback(
+                    readBtn,
+                    rawAnswer,
+                    data.language || lang,
+                  );
+                }
+              }
+            } catch (err) {
+              thinkingMsg.remove();
+              const errorMsg = document.createElement("div");
+              errorMsg.className = "chat-bubble-ai";
+              errorMsg.innerHTML = `<span class="text-danger"><i class="fas fa-exclamation-triangle me-1"></i> Unable to reach RAG server. Please ensure the backend is running.</span>`;
+              chatMessages.appendChild(errorMsg);
+              chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+          });
+        }
+
+        let resumedFromVoice = false;
+
+        // Auto-populate and trigger query from URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const initialQuery = urlParams.get("query");
+        if (initialQuery && chatInput && sendBtn) {
+          chatInput.value = initialQuery;
+          setTimeout(() => {
+            sendBtn.click();
+          }, 350);
+        }
+      });
+    </script>
+  </body>
+</html>

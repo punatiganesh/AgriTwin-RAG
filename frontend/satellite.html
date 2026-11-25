@@ -1,0 +1,932 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AgriTwin-RAG — Satellite Remote Sensing & NDVI</title>
+    <!-- Font Awesome Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- Bootstrap 5 Grid & Utilities -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Master AgriTech Design System -->
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="app-layout">
+      <!-- ==================== LEFT SIDEBAR ==================== -->
+      <aside class="app-sidebar" id="appSidebar">
+        <!-- Brand Header -->
+        <div class="sidebar-brand">
+          <a href="dashboard.html" class="brand-logo-wrap">
+            <div class="brand-icon">
+              <i class="fas fa-leaf"></i>
+            </div>
+            <div class="brand-text">
+              <div class="brand-title">
+                AgriTwin <span class="badge-rag">RAG</span>
+              </div>
+              <div class="brand-subtitle">Precision Digital Twin</div>
+            </div>
+          </a>
+          <button
+            class="sidebar-collapse-btn d-none d-lg-flex"
+            id="sidebarCollapseBtn"
+            title="Toggle Sidebar"
+          >
+            <i class="fas fa-chevron-left"></i>
+          </button>
+        </div>
+
+        <!-- Navigation Sections -->
+        <div class="sidebar-nav-container">
+          <div class="nav-section-label">OVERVIEW</div>
+          <ul class="sidebar-menu">
+            <li>
+              <a href="dashboard.html" class="nav-item">
+                <i class="fas fa-th-large nav-icon"></i>
+                <span class="nav-label">Dashboard</span>
+              </a>
+            </li>
+          </ul>
+
+          <div class="nav-section-label">FARM</div>
+          <ul class="sidebar-menu">
+            <li>
+              <a href="digital-twin.html" class="nav-item">
+                <i class="fas fa-cube nav-icon"></i>
+                <span class="nav-label">Digital Twin</span>
+              </a>
+            </li>
+            <li>
+              <a href="weather.html" class="nav-item">
+                <i class="fas fa-cloud-sun nav-icon"></i>
+                <span class="nav-label">Weather</span>
+              </a>
+            </li>
+            <li>
+              <a href="soil.html" class="nav-item">
+                <i class="fas fa-seedling nav-icon"></i>
+                <span class="nav-label">Soil Intelligence</span>
+              </a>
+            </li>
+            <li>
+              <a href="satellite.html" class="nav-item active">
+                <i class="fas fa-satellite nav-icon"></i>
+                <span class="nav-label">Satellite & NDVI</span>
+              </a>
+            </li>
+            <li>
+              <a href="location.html" class="nav-item">
+                <i class="fas fa-map-marker-alt nav-icon"></i>
+                <span class="nav-label">Farm Location</span>
+              </a>
+            </li>
+          </ul>
+
+          <div class="nav-section-label">AI</div>
+          <ul class="sidebar-menu">
+            <li>
+              <a href="crop-disease.html" class="nav-item">
+                <i class="fas fa-virus nav-icon"></i>
+                <span class="nav-label">Crop Disease</span>
+              </a>
+            </li>
+            <li>
+              <a href="prediction.html" class="nav-item">
+                <i class="fas fa-shield-alt nav-icon"></i>
+                <span class="nav-label">Farm Risk</span>
+              </a>
+            </li>
+            <li>
+              <a href="assistant.html" class="nav-item">
+                <i class="fas fa-robot nav-icon"></i>
+                <span class="nav-label">RAG Assistant</span>
+              </a>
+            </li>
+            <li>
+              <a href="recommendations.html" class="nav-item">
+                <i class="fas fa-clipboard-list nav-icon"></i>
+                <span class="nav-label">Recommendations</span>
+              </a>
+            </li>
+          </ul>
+
+          <div class="nav-section-label">REPORTS</div>
+          <ul class="sidebar-menu">
+            <li>
+              <a href="reports.html" class="nav-item">
+                <i class="fas fa-file-alt nav-icon"></i>
+                <span class="nav-label">Farm Report</span>
+              </a>
+            </li>
+          </ul>
+
+          <div class="nav-section-label">RESEARCH / TECHNICAL</div>
+          <ul class="sidebar-menu">
+            <li>
+              <a href="evaluation.html" class="nav-item">
+                <i class="fas fa-chart-line nav-icon"></i>
+                <span class="nav-label">Model Evaluation</span>
+              </a>
+            </li>
+            <li>
+              <a href="xai.html" class="nav-item">
+                <i class="fas fa-lightbulb nav-icon"></i>
+                <span class="nav-label">Explainable AI (XAI)</span>
+              </a>
+            </li>
+            <li>
+              <a href="settings.html" class="nav-item">
+                <i class="fas fa-cog nav-icon"></i>
+                <span class="nav-label">Settings & Provenance</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Sidebar User Footer -->
+        <div class="sidebar-footer">
+          <div class="user-profile-widget">
+            <div class="user-avatar-circle" id="userAvatar">F</div>
+            <div class="user-info">
+              <div class="user-name" id="userName">Farmer Profile</div>
+              <div class="user-meta" id="userMeta">AgriTwin User</div>
+            </div>
+            <a
+              href="settings.html"
+              class="user-action-btn"
+              title="Settings & Provenance"
+            >
+              <i class="fas fa-cog"></i>
+            </a>
+            <button
+              class="user-action-btn btn-logout"
+              id="logoutBtn"
+              title="Sign Out / Logout"
+              style="
+                background: none;
+                border: none;
+                color: #ef4444;
+                cursor: pointer;
+                padding: 6px;
+                margin-left: 4px;
+              "
+            >
+              <i class="fas fa-sign-out-alt"></i>
+            </button>
+          </div>
+        </div>
+      </aside>
+
+      <!-- ==================== MAIN CONTENT ==================== -->
+      <div class="app-main-wrapper">
+        <header class="app-topbar">
+          <div class="topbar-left">
+            <button
+              class="topbar-toggle-btn"
+              id="mobileMenuBtn"
+              aria-label="Toggle Sidebar"
+            >
+              <i class="fas fa-bars"></i>
+            </button>
+            <div class="page-title-wrap">
+              <h1 class="page-title">Satellite Intelligence</h1>
+              <nav class="breadcrumb-trail">
+                <span>Farm Intelligence</span>
+                <i class="fas fa-chevron-right breadcrumb-sep"></i>
+                <span class="breadcrumb-active">Satellite & NDVI</span>
+              </nav>
+            </div>
+          </div>
+
+          <div class="topbar-right">
+            <a href="location.html" class="location-pill" id="farmLocation">
+              <i class="fas fa-map-marker-alt text-success"></i>
+              <span id="topbarLocationText">Set Farm Location</span>
+            </a>
+            <button class="topbar-icon-btn" title="Notifications">
+              <i class="far fa-bell"></i>
+              <span class="notification-dot"></span>
+            </button>
+            <div class="topbar-user-dropdown-wrap" id="userMenuWrapper">
+              <button
+                class="topbar-user-btn"
+                id="userMenuBtn"
+                type="button"
+                aria-expanded="false"
+                aria-label="Farmer profile menu"
+              >
+                <div class="user-avatar-sm" id="topbarAvatar">F</div>
+                <div class="user-details d-none d-md-block text-start">
+                  <div class="user-fullname" id="topbarName">Farmer</div>
+                  <div class="user-role" id="topbarRole">AgriTwin Live</div>
+                </div>
+                <i class="fas fa-chevron-down dropdown-caret"></i>
+              </button>
+              <div class="user-dropdown-menu" id="userDropdownMenu">
+                <div class="dropdown-user-header">
+                  <div class="user-avatar-sm" id="dropdownAvatar">F</div>
+                  <div class="dropdown-user-info">
+                    <div class="dropdown-name" id="dropdownName">Farmer</div>
+                    <div class="dropdown-sub" id="dropdownSub">
+                      Authenticated Farmer
+                    </div>
+                  </div>
+                </div>
+                <div class="dropdown-divider"></div>
+                <a href="settings.html" class="dropdown-item">
+                  <i class="fas fa-user-cog"></i>
+                  <span>My Account & Settings</span>
+                </a>
+                <a href="location.html" class="dropdown-item">
+                  <i class="fas fa-map-marker-alt"></i>
+                  <span>Farm Coordinates</span>
+                </a>
+                <div class="dropdown-divider"></div>
+                <button
+                  type="button"
+                  class="dropdown-item text-danger btn-logout"
+                  id="topbarLogoutBtn"
+                >
+                  <i class="fas fa-sign-out-alt"></i>
+                  <span>Sign Out / Logout</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <main class="app-content">
+          <!-- Page Header -->
+          <div
+            class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2"
+          >
+            <div>
+              <h2 class="fw-bold text-dark mb-1">
+                SATELLITE INTELLIGENCE & NDVI MONITORING
+              </h2>
+              <p class="text-muted mb-0">
+                Multispectral Sentinel-2 Level-2A remote sensing,
+                bottom-of-atmosphere surface reflectance, and vegetative vigor
+                analysis.
+              </p>
+            </div>
+            <span class="badge bg-success-subtle text-success px-3 py-2 border"
+              ><i class="fas fa-satellite me-1"></i> Sentinel-2 Level-2A
+              Multispectral</span
+            >
+          </div>
+
+          <!-- Alert / Error Container -->
+          <div
+            id="satelliteAlert"
+            class="alert alert-warning d-flex align-items-center justify-content-between mb-4 d-none"
+          >
+            <div class="d-flex align-items-center">
+              <i class="fas fa-exclamation-triangle me-2 fs-5"></i>
+              <span id="satelliteAlertMsg"
+                >Loading satellite observation...</span
+              >
+            </div>
+            <div class="d-flex gap-2">
+              <a
+                href="location.html"
+                id="satelliteSetLocBtn"
+                class="btn btn-sm btn-outline-primary d-none"
+              >
+                <i class="fas fa-map-marker-alt me-1"></i> Set Farm Location
+              </a>
+              <button
+                id="retrySatelliteBtn"
+                class="btn btn-sm btn-outline-dark"
+              >
+                <i class="fas fa-sync-alt me-1"></i> Retry
+              </button>
+            </div>
+          </div>
+
+          <!-- 4 Remote Sensing Metric Cards (Farmer Overview) -->
+          <div
+            class="metrics-row-5 mb-4"
+            style="grid-template-columns: repeat(4, 1fr)"
+          >
+            <div class="metric-card">
+              <div class="metric-card-top">
+                <span class="metric-name">Latest Available NDVI</span>
+                <div class="metric-icon-wrap icon-wrap-emerald">
+                  <i class="fas fa-leaf"></i>
+                </div>
+              </div>
+              <div class="metric-value-row">
+                <span class="metric-big-num text-success" id="ndviValue"
+                  >--</span
+                >
+              </div>
+              <div
+                class="metric-status-sub text-success fw-semibold"
+                id="ndviStatus"
+              >
+                Loading observation...
+              </div>
+            </div>
+
+            <div class="metric-card">
+              <div class="metric-card-top">
+                <span class="metric-name">Acquisition Date</span>
+                <div class="metric-icon-wrap icon-wrap-orange">
+                  <i class="fas fa-calendar-alt"></i>
+                </div>
+              </div>
+              <div class="metric-value-row">
+                <span
+                  class="metric-big-num"
+                  style="font-size: 1.15rem"
+                  id="observationDate"
+                  >--</span
+                >
+              </div>
+              <div class="metric-status-sub text-muted" id="cloudCoverSub">
+                Sentinel-2 Pass
+              </div>
+            </div>
+
+            <div class="metric-card">
+              <div class="metric-card-top">
+                <span class="metric-name">Cloud Percentage</span>
+                <div class="metric-icon-wrap icon-wrap-sky">
+                  <i class="fas fa-cloud"></i>
+                </div>
+              </div>
+              <div class="metric-value-row">
+                <span class="metric-big-num" id="cloudPercentValue">--</span>
+                <span class="metric-unit">%</span>
+              </div>
+              <div
+                class="metric-status-sub text-muted fw-semibold"
+                id="cloudQualitySub"
+              >
+                Observation Quality
+              </div>
+            </div>
+
+            <div class="metric-card">
+              <div class="metric-card-top">
+                <span class="metric-name">Spatial Resolution</span>
+                <div class="metric-icon-wrap icon-wrap-teal">
+                  <i class="fas fa-satellite"></i>
+                </div>
+              </div>
+              <div class="metric-value-row">
+                <span class="metric-big-num text-primary">10 m</span>
+              </div>
+              <div class="metric-status-sub text-muted fw-semibold">
+                Sentinel-2 MSI Level-2A
+              </div>
+            </div>
+          </div>
+
+          <!-- Main Satellite Viewport & Reflectance Details -->
+          <section class="app-panel mb-4">
+            <div class="panel-header-row">
+              <div class="panel-title">
+                <i class="fas fa-satellite-dish text-success"></i> Latest
+                Available Satellite Multispectral Footprint
+              </div>
+              <div class="d-flex align-items-center gap-2 flex-wrap">
+                <label for="cloudFilterSelect" class="small text-muted mb-0 fw-semibold">Cloud Filter:</label>
+                <select id="cloudFilterSelect" class="form-select form-select-sm" style="width: auto; min-width: 140px;">
+                  <option value="15">15% (Strict)</option>
+                  <option value="30" selected>30% (Recommended)</option>
+                  <option value="50">50% (Expanded)</option>
+                  <option value="75">75% (Monsoon/High Cloud)</option>
+                </select>
+                <span
+                  class="badge bg-light text-dark border"
+                  id="spatialAggregationBadge"
+                  >Aggregation: Spatial Median</span
+                >
+              </div>
+            </div>
+
+            <div class="row g-3 my-1">
+              <!-- Left: Real Sentinel-2 Satellite True Color Viewport -->
+              <div class="col-lg-6">
+                <div class="position-relative rounded overflow-hidden border bg-dark text-center shadow-sm" style="min-height: 320px; max-height: 400px; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; background: #0f172a;">
+                  <img
+                    id="satelliteImageEl"
+                    src=""
+                    alt="Sentinel-2 Satellite Observation"
+                    class="w-100 h-100"
+                    style="object-fit: cover; display: none; min-height: 320px; max-height: 400px;"
+                  />
+                  <div id="satelliteImageLoading" class="text-center p-4">
+                    <i class="fas fa-satellite fa-spin text-success mb-2" style="font-size: 2.8rem; --fa-animation-duration: 4s;"></i>
+                    <h6 class="text-white mt-2 mb-1">Sampling Sentinel-2 Satellite Tile</h6>
+                    <p class="text-secondary small mb-0">Retrieving Level-2A Bottom-Of-Atmosphere Multispectral Imagery...</p>
+                  </div>
+                  <div id="satelliteImageFallback" class="text-center p-4 d-none">
+                    <i class="fas fa-satellite-dish text-muted mb-2" style="font-size: 2.8rem; opacity: 0.6;"></i>
+                    <h6 class="text-light mt-2 mb-1">Satellite Image Rendering Pending</h6>
+                    <p class="text-muted small mb-0">Multispectral band reflectance active. Preview image loading from STAC archive.</p>
+                  </div>
+
+                  <!-- Overlay Footprint Badge & Full Res Link -->
+                  <div class="position-absolute top-0 start-0 p-2">
+                    <span class="badge bg-dark text-white border border-success-subtle px-2 py-1" id="satelliteSourceBadge">
+                      <i class="fas fa-satellite me-1 text-success"></i> Sentinel-2 Level-2A • 10m/px
+                    </span>
+                  </div>
+                  <div class="position-absolute top-0 end-0 p-2">
+                    <span class="badge bg-success text-white px-2 py-1" id="cloudCoverBadge">
+                      Cloud Cover: --%
+                    </span>
+                  </div>
+                  <div class="position-absolute bottom-0 start-0 end-0 p-2 d-flex justify-content-between align-items-center" style="background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 70%, transparent 100%); backdrop-filter: blur(2px);">
+                    <span class="text-light small" id="satelliteImageDateBadge">
+                      <i class="fas fa-calendar-alt text-success me-1"></i> Pass: --
+                    </span>
+                    <a id="satelliteImageFullBtn" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-light py-0 px-2 d-none" style="font-size: 0.75rem;">
+                      <i class="fas fa-external-link-alt me-1"></i> Full Resolution
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Right: Reflectance, Health Interpretation & Spectrogram -->
+              <div class="col-lg-6">
+                <div class="card h-100 p-3 bg-light border shadow-sm d-flex flex-column justify-content-between">
+                  <div>
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                      <div>
+                        <h5 class="fw-bold text-dark mb-0" id="farmBoundaryTitle">
+                          FARM OBSERVATION FOOTPRINT
+                        </h5>
+                        <p class="text-muted small mb-0" id="farmCoordinatesText">
+                          <i class="fas fa-map-marker-alt me-1 text-success"></i> Coordinates: --, --
+                        </p>
+                      </div>
+                      <span class="badge bg-success-subtle text-success border border-success-subtle px-2 py-1" id="passWindowBadge">
+                        Recent Window
+                      </span>
+                    </div>
+
+                    <div class="p-3 bg-white rounded border my-3">
+                      <div class="d-flex justify-content-between align-items-center mb-1">
+                        <span class="text-secondary small fw-semibold">Vegetative Canopy Status:</span>
+                        <span class="badge bg-success text-white px-2 py-1" id="vigorStatusBadge">Good Signal</span>
+                      </div>
+                      <div class="h3 fw-bold text-success mb-1" id="panelNdviValue">--</div>
+                      <div class="text-muted small" id="panelInterpretation">
+                        Vegetation vigor indicator based on bottom-of-atmosphere surface reflectance.
+                      </div>
+                    </div>
+
+                    <div class="row g-2 mb-3">
+                      <div class="col-6">
+                        <div class="p-2 bg-white rounded border text-center">
+                          <div class="text-muted small fw-semibold">RED (Band 4: 665nm)</div>
+                          <div class="h5 fw-bold text-danger mb-0" id="panelRedRefl">--</div>
+                          <div class="text-muted" style="font-size: 0.72rem;">Chlorophyll Absorption</div>
+                        </div>
+                      </div>
+                      <div class="col-6">
+                        <div class="p-2 bg-white rounded border text-center">
+                          <div class="text-muted small fw-semibold">NIR (Band 8: 842nm)</div>
+                          <div class="h5 fw-bold text-primary mb-0" id="panelNirRefl">--</div>
+                          <div class="text-muted" style="font-size: 0.72rem;">Mesophyll Scattering</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- NDVI Spectrogram & Vegetation Scale -->
+                  <div>
+                    <div class="d-flex justify-content-between text-muted small mb-1">
+                      <span>-1.0 (Water/Shadow)</span>
+                      <span class="fw-bold text-dark" id="spectrogramNdviText">Farm Median NDVI: --</span>
+                      <span>+1.0 (Dense Healthy)</span>
+                    </div>
+                    <div
+                      class="ndvi-spectrogram-bar position-relative mb-2"
+                      style="
+                        height: 14px;
+                        border-radius: 7px;
+                        background: linear-gradient(
+                          to right,
+                          #2b83ba 0%,
+                          #ffffbf 35%,
+                          #abdda4 55%,
+                          #2d6a4f 75%,
+                          #1a9641 100%
+                        );
+                        box-shadow: inset 0 1px 3px rgba(0,0,0,0.25);
+                      "
+                    >
+                      <div
+                        id="ndviMarker"
+                        style="
+                          position: absolute;
+                          top: -4px;
+                          width: 5px;
+                          height: 22px;
+                          background: #ffffff;
+                          border: 1.5px solid #0f172a;
+                          border-radius: 2px;
+                          box-shadow: 0 1px 4px rgba(0,0,0,0.5);
+                          transition: left 0.6s ease;
+                          left: 50%;
+                        "
+                      ></div>
+                    </div>
+
+                    <!-- Health Status Color Legend -->
+                    <div class="d-flex justify-content-between text-muted pt-1 border-top" style="font-size: 0.68rem;">
+                      <span><i class="fas fa-square me-1" style="color: #2b83ba;"></i>&lt;0 Non-veg</span>
+                      <span><i class="fas fa-square me-1" style="color: #ffffbf; border: 1px solid #ccc;"></i>0-0.2 Sparse</span>
+                      <span><i class="fas fa-square me-1" style="color: #abdda4;"></i>0.2-0.4 Moderate</span>
+                      <span><i class="fas fa-square me-1" style="color: #2d6a4f;"></i>0.4-0.6 Good</span>
+                      <span><i class="fas fa-square me-1" style="color: #1a9641;"></i>&gt;0.6 High Vigor</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Scientific Context & Technical Methodology -->
+          <section class="app-panel mb-4">
+            <div class="panel-header-row">
+              <div class="panel-title">
+                <i class="fas fa-info-circle text-primary"></i> Scientific
+                Interpretation & Methodology
+              </div>
+              <span class="badge bg-light text-dark border"
+                >Level-2A Bottom-of-Atmosphere (BOA)</span
+              >
+            </div>
+
+            <div class="p-3 bg-light rounded border">
+              <p class="text-secondary small mb-2">
+                <strong>Scientific Description:</strong> NDVI (Normalized
+                Difference Vegetation Index) is calculated from red (B04: 665
+                nm) and near-infrared (B08: 842 nm) satellite reflectance. It
+                provides an indicator of vegetation presence and vigor. NDVI is
+                derived from satellite observations and should be interpreted
+                together with crop type, growth stage, weather, and field
+                conditions.
+              </p>
+              <p class="text-danger-emphasis small mb-2">
+                <i class="fas fa-shield-alt me-1"></i>
+                <strong>Important:</strong> NDVI is satellite-derived and is not
+                a direct measurement of crop health.
+              </p>
+              <div class="row g-2 pt-2 border-top text-muted small">
+                <div class="col-md-4">
+                  <i class="fas fa-calculator text-success me-1"></i>
+                  <strong>Formula:</strong>
+                  <code>NDVI = (B08 - B04) / (B08 + B04)</code>
+                </div>
+                <div class="col-md-4">
+                  <i class="fas fa-layer-group text-success me-1"></i>
+                  <strong>Spatial Sampling:</strong> 9-point median spatial
+                  buffer
+                </div>
+                <div class="col-md-4">
+                  <i class="fas fa-satellite text-success me-1"></i>
+                  <strong>Sensor:</strong> Sentinel-2 MultiSpectral Instrument
+                  (MSI)
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- NDVI Historical Trend Section -->
+          <section class="app-panel">
+            <div class="panel-header-row">
+              <div class="panel-title">
+                <i class="fas fa-chart-line text-success"></i> Sentinel-2 NDVI
+                Temporal Progression
+              </div>
+              <span class="badge bg-light text-dark border"
+                >Time-Series Analytics</span
+              >
+            </div>
+
+            <div
+              class="chart-viewport d-flex flex-column align-items-center justify-content-center py-5 text-center bg-light rounded border"
+            >
+              <i
+                class="fas fa-satellite text-muted mb-3"
+                style="font-size: 2.5rem; opacity: 0.6"
+              ></i>
+              <h6 class="fw-bold text-secondary mb-1">
+                Historical NDVI data not configured yet.
+              </h6>
+              <p class="text-muted small mb-0" style="max-width: 500px">
+                Single-observation real-time acquisition is currently active
+                with real Sentinel-2 Level-2A imagery. Multi-temporal historical
+                time-series analytics will be integrated in subsequent releases.
+              </p>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/farmState.js"></script>
+    <script src="js/api.js"></script>
+    <script>
+      async function loadRealSatelliteData() {
+        const alertBox = document.getElementById("satelliteAlert");
+        const alertMsg = document.getElementById("satelliteAlertMsg");
+        const setLocBtn = document.getElementById("satelliteSetLocBtn");
+        const ndviValEl = document.getElementById("ndviValue");
+        const ndviStatusEl = document.getElementById("ndviStatus");
+        const redBandEl = document.getElementById("redBandValue");
+        const nirBandEl = document.getElementById("nirBandValue");
+        const obsDateEl = document.getElementById("observationDate");
+        const cloudSubEl = document.getElementById("cloudCoverSub");
+        const cloudBadgeEl = document.getElementById("cloudCoverBadge");
+        const farmTitleEl = document.getElementById("farmBoundaryTitle");
+        const farmCoordsEl = document.getElementById("farmCoordinatesText");
+        const spectrogramText = document.getElementById("spectrogramNdviText");
+        const ndviMarker = document.getElementById("ndviMarker");
+
+        // Panel elements
+        const panelNdviVal = document.getElementById("panelNdviValue");
+        const panelRedRefl = document.getElementById("panelRedRefl");
+        const panelNirRefl = document.getElementById("panelNirRefl");
+        const vigorStatusBadge = document.getElementById("vigorStatusBadge");
+        const panelInterpretation = document.getElementById("panelInterpretation");
+        const passWindowBadge = document.getElementById("passWindowBadge");
+
+        // Satellite Image Elements
+        const satImgEl = document.getElementById("satelliteImageEl");
+        const satImgLoading = document.getElementById("satelliteImageLoading");
+        const satImgFallback = document.getElementById("satelliteImageFallback");
+        const satImgDateBadge = document.getElementById("satelliteImageDateBadge");
+        const satImgFullBtn = document.getElementById("satelliteImageFullBtn");
+        const cloudFilterSelect = document.getElementById("cloudFilterSelect");
+
+        if (satImgLoading) satImgLoading.style.display = "block";
+        if (satImgEl) satImgEl.style.display = "none";
+        if (satImgFallback) satImgFallback.classList.add("d-none");
+
+        const farmResult = await loadFarmContext();
+        if (!farmResult.success) {
+          if (alertBox) {
+            alertBox.classList.remove("d-none", "alert-danger");
+            alertBox.classList.add("alert-warning");
+            alertMsg.textContent = farmResult.error;
+            if (setLocBtn) setLocBtn.classList.remove("d-none");
+          }
+          if (satImgLoading) satImgLoading.style.display = "none";
+          if (satImgFallback) satImgFallback.classList.remove("d-none");
+          return;
+        }
+
+        const farmLocation = farmResult.data.location;
+        const farmName =
+          farmLocation.locality ||
+          farmLocation.city ||
+          farmLocation.place_name ||
+          "Srivilliputhur";
+        const topbarLoc = document.getElementById("topbarLocationText");
+        if (topbarLoc) topbarLoc.textContent = farmName;
+        if (setLocBtn) setLocBtn.classList.add("d-none");
+
+        const selectedCloud = cloudFilterSelect ? parseFloat(cloudFilterSelect.value) : 30.0;
+
+        try {
+          const data = await getLatestNDVIData(selectedCloud);
+
+          if (!data || data.success === false) {
+            if (alertBox) {
+              alertBox.classList.remove("d-none", "alert-warning");
+              alertBox.classList.add("alert-danger");
+              alertMsg.textContent =
+                data?.error || "Satellite data temporarily unavailable.";
+            }
+            if (satImgLoading) satImgLoading.style.display = "none";
+            if (satImgFallback) satImgFallback.classList.remove("d-none");
+            return;
+          }
+
+          if (alertBox) alertBox.classList.add("d-none");
+
+          // 1. NDVI Value & Status
+          const ndvi = typeof data.ndvi === "number" ? data.ndvi : null;
+          if (ndviValEl)
+            ndviValEl.textContent = ndvi !== null ? ndvi.toFixed(4) : "--";
+          if (panelNdviVal)
+            panelNdviVal.textContent = ndvi !== null ? ndvi.toFixed(4) : "--";
+
+          if (ndviStatusEl) {
+            ndviStatusEl.textContent =
+              data.vegetation_condition || "Active Vegetation Signal";
+            if (ndvi !== null) {
+              if (ndvi >= 0.4) {
+                ndviStatusEl.className = "metric-status-sub text-success fw-semibold";
+              } else if (ndvi >= 0.2) {
+                ndviStatusEl.className = "metric-status-sub text-primary fw-semibold";
+              } else {
+                ndviStatusEl.className = "metric-status-sub text-warning fw-semibold";
+              }
+            }
+          }
+
+          if (vigorStatusBadge) {
+            if (ndvi !== null) {
+              if (ndvi >= 0.6) {
+                vigorStatusBadge.textContent = "High Vigor (Dense Canopy)";
+                vigorStatusBadge.className = "badge bg-success text-white px-2 py-1";
+              } else if (ndvi >= 0.4) {
+                vigorStatusBadge.textContent = "Good Vigor (Active Canopy)";
+                vigorStatusBadge.className = "badge bg-success text-white px-2 py-1";
+              } else if (ndvi >= 0.2) {
+                vigorStatusBadge.textContent = "Moderate Vigor (Developing)";
+                vigorStatusBadge.className = "badge bg-primary text-white px-2 py-1";
+              } else if (ndvi >= 0.0) {
+                vigorStatusBadge.textContent = "Low Vigor (Bare Soil / Sparse)";
+                vigorStatusBadge.className = "badge bg-warning text-dark px-2 py-1";
+              } else {
+                vigorStatusBadge.textContent = "Non-Vegetated / Water";
+                vigorStatusBadge.className = "badge bg-secondary text-white px-2 py-1";
+              }
+            }
+          }
+
+          if (panelInterpretation) {
+            panelInterpretation.textContent =
+              data.interpretation ||
+              "Vegetation vigor indicator based on bottom-of-atmosphere surface reflectance.";
+          }
+
+          // 2. Reflectance Bands
+          const redVal =
+            typeof data.red_reflectance === "number"
+              ? data.red_reflectance
+              : null;
+          const nirVal =
+            typeof data.nir_reflectance === "number"
+              ? data.nir_reflectance
+              : null;
+          if (redBandEl)
+            redBandEl.textContent = redVal !== null ? redVal.toFixed(4) : "--";
+          if (nirBandEl)
+            nirBandEl.textContent = nirVal !== null ? nirVal.toFixed(4) : "--";
+          if (panelRedRefl)
+            panelRedRefl.textContent = redVal !== null ? redVal.toFixed(4) : "--";
+          if (panelNirRefl)
+            panelNirRefl.textContent = nirVal !== null ? nirVal.toFixed(4) : "--";
+
+          // 3. Observation Date & Cloud Cover
+          const acqDate = data.acquisition_date || "Recent";
+          if (obsDateEl) obsDateEl.textContent = acqDate;
+          if (cloudSubEl) cloudSubEl.textContent = `Sentinel-2 Pass: ${acqDate}`;
+          if (satImgDateBadge) satImgDateBadge.innerHTML = `<i class="fas fa-calendar-alt text-success me-1"></i> Pass: ${acqDate}`;
+
+          const cloudVal =
+            typeof data.cloud_percentage === "number"
+              ? data.cloud_percentage
+              : null;
+          const cloudPercentEl = document.getElementById("cloudPercentValue");
+          if (cloudPercentEl)
+            cloudPercentEl.textContent =
+              cloudVal !== null ? cloudVal.toFixed(1) : "--";
+
+          if (cloudBadgeEl) {
+            cloudBadgeEl.textContent =
+              cloudVal !== null
+                ? `Cloud Cover: ${cloudVal.toFixed(1)}%`
+                : "Cloud Cover: --";
+            if (cloudVal !== null && cloudVal <= 25) {
+              cloudBadgeEl.className = "badge bg-success text-white px-2 py-1";
+            } else if (cloudVal !== null && cloudVal <= 50) {
+              cloudBadgeEl.className = "badge bg-primary text-white px-2 py-1";
+            } else {
+              cloudBadgeEl.className = "badge bg-warning text-dark px-2 py-1";
+            }
+          }
+
+          if (passWindowBadge) {
+            const daysWindow = data.search_window_days || 120;
+            passWindowBadge.textContent = `Pass: ${acqDate} (${daysWindow}d window)`;
+          }
+
+          // 4. Coordinates & Footprint text
+          if (farmTitleEl)
+            farmTitleEl.textContent = `${farmName.toUpperCase()} • SENTINEL-2 FOOTPRINT`;
+          if (farmCoordsEl) {
+            farmCoordsEl.innerHTML = `<i class="fas fa-map-marker-alt me-1 text-success"></i> Coordinates: ${data.latitude}°, ${data.longitude}°`;
+          }
+
+          // 5. Spectrogram Bar & Marker
+          if (spectrogramText && ndvi !== null) {
+            spectrogramText.textContent = `Farm Median NDVI: ${ndvi.toFixed(4)}`;
+          }
+          if (ndviMarker && ndvi !== null) {
+            // Map NDVI from [-1, 1] to [0%, 100%]
+            const pct = Math.max(0, Math.min(100, ((ndvi + 1.0) / 2.0) * 100));
+            ndviMarker.style.left = `calc(${pct}% - 2px)`;
+          }
+
+          // 6. Real Satellite Image Rendering
+          const imgUrl = data.image_url || data.preview_url || data.thumbnail_url;
+          if (satImgEl && imgUrl) {
+            satImgEl.onload = () => {
+              if (satImgLoading) satImgLoading.style.display = "none";
+              satImgEl.style.display = "block";
+              if (satImgFallback) satImgFallback.classList.add("d-none");
+            };
+            satImgEl.onerror = () => {
+              if (satImgLoading) satImgLoading.style.display = "none";
+              satImgEl.style.display = "none";
+              if (satImgFallback) satImgFallback.classList.remove("d-none");
+            };
+            satImgEl.src = imgUrl;
+
+            if (satImgFullBtn && (data.preview_url || data.thumbnail_url || data.image_url)) {
+              satImgFullBtn.href = data.preview_url || data.thumbnail_url || data.image_url;
+              satImgFullBtn.classList.remove("d-none");
+            }
+          } else {
+            if (satImgLoading) satImgLoading.style.display = "none";
+            if (satImgFallback) satImgFallback.classList.remove("d-none");
+          }
+        } catch (err) {
+          console.error("Error loading satellite data:", err);
+          if (alertBox) {
+            alertBox.classList.remove("d-none", "alert-warning");
+            alertBox.classList.add("alert-danger");
+            alertMsg.textContent =
+              "Unable to connect to satellite remote sensing service. Please retry in a few moments.";
+          }
+          if (satImgLoading) satImgLoading.style.display = "none";
+          if (satImgFallback) satImgFallback.classList.remove("d-none");
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        loadRealSatelliteData();
+
+        // Reactively update satellite NDVI when farm coordinates change
+        window.addEventListener("agritwin:locationChanged", () => {
+          loadRealSatelliteData();
+        });
+        window.addEventListener("farmLocationChanged", () => {
+          loadRealSatelliteData();
+        });
+
+        const cloudFilterSelect = document.getElementById("cloudFilterSelect");
+        if (cloudFilterSelect) {
+          cloudFilterSelect.addEventListener("change", () => {
+            loadRealSatelliteData();
+          });
+        }
+
+        const setLocBtn = document.getElementById("satelliteSetLocBtn");
+        if (setLocBtn) {
+          setLocBtn.addEventListener("click", async (event) => {
+            event.preventDefault();
+            const farm = await loadFarmContext(true);
+            if (!farm.success) {
+              if (alertBox) alertBox.classList.remove("d-none");
+              if (alertMsg) alertMsg.textContent = farm.error;
+              return;
+            }
+            await loadRealSatelliteData();
+          });
+        }
+
+        const retryBtn = document.getElementById("retrySatelliteBtn");
+        if (retryBtn) {
+          retryBtn.addEventListener("click", () => {
+            retryBtn.innerHTML =
+              '<i class="fas fa-spinner fa-spin me-1"></i> Retrying...';
+            loadRealSatelliteData().finally(() => {
+              retryBtn.innerHTML = '<i class="fas fa-sync-alt me-1"></i> Retry';
+            });
+          });
+        }
+
+        const mobileMenuBtn = document.getElementById("mobileMenuBtn");
+        const appSidebar = document.getElementById("appSidebar");
+        if (mobileMenuBtn && appSidebar) {
+          mobileMenuBtn.addEventListener("click", () => {
+            appSidebar.classList.toggle("sidebar-open");
+          });
+        }
+      });
+    </script>
+  </body>
+</html>

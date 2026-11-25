@@ -1,0 +1,431 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AgriTwin-RAG — Priority Recommendations & Farmer Feedback</title>
+    <!-- Font Awesome Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- Bootstrap 5 Grid & Utilities -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Master AgriTech Design System -->
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="app-layout">
+            <!-- ==================== LEFT SIDEBAR ==================== -->
+      <aside class="app-sidebar" id="appSidebar">
+        <!-- Brand Header -->
+        <div class="sidebar-brand">
+          <a href="dashboard.html" class="brand-logo-wrap">
+            <div class="brand-icon">
+              <i class="fas fa-leaf"></i>
+            </div>
+            <div class="brand-text">
+              <div class="brand-title">
+                AgriTwin <span class="badge-rag">RAG</span>
+              </div>
+              <div class="brand-subtitle">Precision Digital Twin</div>
+            </div>
+          </a>
+          <button
+            class="sidebar-collapse-btn d-none d-lg-flex"
+            id="sidebarCollapseBtn"
+            title="Toggle Sidebar"
+          >
+            <i class="fas fa-chevron-left"></i>
+          </button>
+        </div>
+
+        <!-- Navigation Sections -->
+        <div class="sidebar-nav-container">
+          <div class="nav-section-label">OVERVIEW</div>
+          <ul class="sidebar-menu">
+            <li>
+              <a href="dashboard.html" class="nav-item">
+                <i class="fas fa-th-large nav-icon"></i>
+                <span class="nav-label">Dashboard</span>
+              </a>
+            </li>
+          </ul>
+
+          <div class="nav-section-label">FARM</div>
+          <ul class="sidebar-menu">
+            <li>
+              <a href="digital-twin.html" class="nav-item">
+                <i class="fas fa-cube nav-icon"></i>
+                <span class="nav-label">Digital Twin</span>
+              </a>
+            </li>
+            <li>
+              <a href="weather.html" class="nav-item">
+                <i class="fas fa-cloud-sun nav-icon"></i>
+                <span class="nav-label">Weather</span>
+              </a>
+            </li>
+            <li>
+              <a href="soil.html" class="nav-item">
+                <i class="fas fa-seedling nav-icon"></i>
+                <span class="nav-label">Soil Intelligence</span>
+              </a>
+            </li>
+            <li>
+              <a href="satellite.html" class="nav-item">
+                <i class="fas fa-satellite nav-icon"></i>
+                <span class="nav-label">Satellite & NDVI</span>
+              </a>
+            </li>
+            <li>
+              <a href="location.html" class="nav-item">
+                <i class="fas fa-map-marker-alt nav-icon"></i>
+                <span class="nav-label">Farm Location</span>
+              </a>
+            </li>
+          </ul>
+
+          <div class="nav-section-label">AI</div>
+          <ul class="sidebar-menu">
+            <li>
+              <a href="crop-disease.html" class="nav-item">
+                <i class="fas fa-virus nav-icon"></i>
+                <span class="nav-label">Crop Disease</span>
+              </a>
+            </li>
+            <li>
+              <a href="prediction.html" class="nav-item">
+                <i class="fas fa-shield-alt nav-icon"></i>
+                <span class="nav-label">Farm Risk</span>
+              </a>
+            </li>
+            <li>
+              <a href="assistant.html" class="nav-item">
+                <i class="fas fa-robot nav-icon"></i>
+                <span class="nav-label">RAG Assistant</span>
+              </a>
+            </li>
+            <li>
+              <a href="recommendations.html" class="nav-item active">
+                <i class="fas fa-clipboard-list nav-icon"></i>
+                <span class="nav-label">Recommendations</span>
+              </a>
+            </li>
+          </ul>
+
+          <div class="nav-section-label">REPORTS</div>
+          <ul class="sidebar-menu">
+            <li>
+              <a href="reports.html" class="nav-item">
+                <i class="fas fa-file-alt nav-icon"></i>
+                <span class="nav-label">Farm Report</span>
+              </a>
+            </li>
+          </ul>
+
+          <div class="nav-section-label">RESEARCH / TECHNICAL</div>
+          <ul class="sidebar-menu">
+            <li>
+              <a href="evaluation.html" class="nav-item">
+                <i class="fas fa-chart-line nav-icon"></i>
+                <span class="nav-label">Model Evaluation</span>
+              </a>
+            </li>
+            <li>
+              <a href="xai.html" class="nav-item">
+                <i class="fas fa-lightbulb nav-icon"></i>
+                <span class="nav-label">Explainable AI (XAI)</span>
+              </a>
+            </li>
+            <li>
+              <a href="settings.html" class="nav-item">
+                <i class="fas fa-cog nav-icon"></i>
+                <span class="nav-label">Settings & Provenance</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Sidebar User Footer -->
+        <div class="sidebar-footer">
+          <div class="user-profile-widget">
+            <div class="user-avatar-circle" id="userAvatar">F</div>
+            <div class="user-info">
+              <div class="user-name" id="userName">Farmer Profile</div>
+              <div class="user-meta" id="userMeta">AgriTwin User</div>
+            </div>
+            <a
+              href="settings.html"
+              class="user-action-btn"
+              title="Settings & Provenance"
+            >
+              <i class="fas fa-cog"></i>
+            </a>
+            <button class="user-action-btn btn-logout" id="logoutBtn" title="Sign Out / Logout" style="background:none;border:none;color:#ef4444;cursor:pointer;padding:6px;margin-left:4px;">
+              <i class="fas fa-sign-out-alt"></i>
+            </button>
+          </div>
+        </div>
+      </aside>
+
+      <!-- ==================== MAIN CONTENT ==================== -->
+      <div class="app-main-wrapper">
+        <header class="app-topbar">
+          <div class="topbar-left">
+            <button
+              class="topbar-toggle-btn"
+              id="mobileMenuBtn"
+              aria-label="Toggle Sidebar"
+            >
+              <i class="fas fa-bars"></i>
+            </button>
+            <div class="page-title-wrap">
+              <h1 class="page-title">Agronomic Recommendations</h1>
+              <nav class="breadcrumb-trail">
+                <span>AI & Insights</span>
+                <i class="fas fa-chevron-right breadcrumb-sep"></i>
+                <span class="breadcrumb-active">Recommendations</span>
+              </nav>
+            </div>
+          </div>
+
+          <div class="topbar-right">
+            <a href="location.html" class="location-pill" id="farmLocation">
+              <i class="fas fa-map-marker-alt text-success"></i>
+              <span id="topbarLocationText">Set Farm Location</span>
+            </a>
+            <button class="topbar-icon-btn" title="Notifications">
+              <i class="far fa-bell"></i>
+              <span class="notification-dot"></span>
+            </button>
+            <div class="topbar-user-dropdown-wrap" id="userMenuWrapper">
+              <button
+                class="topbar-user-btn"
+                id="userMenuBtn"
+                type="button"
+                aria-expanded="false"
+                aria-label="Farmer profile menu"
+              >
+                <div class="user-avatar-sm" id="topbarAvatar">F</div>
+                <div class="user-details d-none d-md-block text-start">
+                  <div class="user-fullname" id="topbarName">Farmer</div>
+                  <div class="user-role" id="topbarRole">AgriTwin Live</div>
+                </div>
+                <i class="fas fa-chevron-down dropdown-caret"></i>
+              </button>
+              <div class="user-dropdown-menu" id="userDropdownMenu">
+                <div class="dropdown-user-header">
+                  <div class="user-avatar-sm" id="dropdownAvatar">F</div>
+                  <div class="dropdown-user-info">
+                    <div class="dropdown-name" id="dropdownName">Farmer</div>
+                    <div class="dropdown-sub" id="dropdownSub">Authenticated Farmer</div>
+                  </div>
+                </div>
+                <div class="dropdown-divider"></div>
+                <a href="settings.html" class="dropdown-item">
+                  <i class="fas fa-user-cog"></i>
+                  <span>My Account & Settings</span>
+                </a>
+                <a href="location.html" class="dropdown-item">
+                  <i class="fas fa-map-marker-alt"></i>
+                  <span>Farm Coordinates</span>
+                </a>
+                <div class="dropdown-divider"></div>
+                <button type="button" class="dropdown-item text-danger btn-logout" id="topbarLogoutBtn">
+                  <i class="fas fa-sign-out-alt"></i>
+                  <span>Sign Out / Logout</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <main class="app-content">
+          <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+            <div>
+              <h2 class="fw-bold text-dark mb-1">DYNAMIC AGRONOMIC ACTION PLAN</h2>
+              <p class="text-muted mb-0">Context-aware advisories synthesized dynamically from ICAR research documents, OpenWeather climate, and SoilGrids data.</p>
+            </div>
+            <button class="btn btn-success btn-sm fw-bold" id="refreshRecsBtn">
+              <i class="fas fa-sync-alt me-1"></i> Regenerate Advisories
+            </button>
+          </div>
+
+          <!-- Advisory Container -->
+          <div id="recsContainer">
+            <div class="text-center py-5">
+              <div class="spinner-border text-success" role="status"></div>
+              <p class="text-muted mt-2">Retrieving ICAR evidence and synthesizing farm advisories...</p>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/farmState.js"></script>
+    <script src="js/api.js"></script>
+    <script>
+      const selectedDecisions = {};
+
+      function setFeedbackDecision(cardId, decision, btnEl) {
+        selectedDecisions[cardId] = decision;
+        const group = document.getElementById(`feedbackBtnGroup${cardId}`);
+        if (group) {
+          group.querySelectorAll("button").forEach(b => b.classList.remove("active", "btn-success", "btn-warning", "btn-secondary"));
+          if (decision === "Accept") btnEl.classList.add("active", "btn-success");
+          else if (decision === "Modify") btnEl.classList.add("active", "btn-warning");
+          else if (decision === "Ignore") btnEl.classList.add("active", "btn-secondary");
+        }
+      }
+
+      async function submitFarmerFeedback(cardId, recTitle) {
+        const textInput = document.getElementById(`feedbackText${cardId}`);
+        const successMsg = document.getElementById(`feedbackSuccess${cardId}`);
+        const feedbackText = textInput ? textInput.value.trim() : "";
+        const decision = selectedDecisions[cardId] || "Accept";
+
+        const res = await API.submitFeedback(decision, feedbackText, recTitle);
+        if (res && res.success && successMsg) {
+          successMsg.classList.remove("d-none");
+          setTimeout(() => { successMsg.classList.add("d-none"); }, 4000);
+        }
+      }
+
+      function renderRecommendationCards(data) {
+        const container = document.getElementById("recsContainer");
+        if (!container) return;
+
+        if (!data || !data.cards || data.cards.length === 0) {
+          container.innerHTML = `
+            <div class="app-panel border-start border-success border-4 mb-4">
+              <h5 class="fw-bold text-dark mb-2">Today's Agronomic Advisory</h5>
+              <p class="text-secondary mb-0">${data && data.advisory ? data.advisory.replace(/\n/g, '<br>') : 'Available evidence is insufficient to provide a specific recommendation.'}</p>
+            </div>
+          `;
+          return;
+        }
+
+        let html = "";
+        data.cards.forEach((card, idx) => {
+          const cardId = card.id || (idx + 1);
+          selectedDecisions[cardId] = "Accept";
+          const borderClass = card.priority_class === "danger" ? "border-danger" : (card.priority_class === "warning" ? "border-warning" : "border-success");
+          const badgeClass = card.priority_class === "danger" ? "bg-danger text-white" : (card.priority_class === "warning" ? "bg-warning text-dark" : "bg-success text-white");
+
+          html += `
+            <div class="app-panel border-start ${borderClass} border-4 mb-4">
+              <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-2">
+                <div>
+                  <span class="badge ${badgeClass} px-2 py-1 small me-2">${card.priority}</span>
+                  <span class="text-muted small"><i class="fas fa-tag me-1"></i> ${card.category}</span>
+                </div>
+                <span class="badge bg-success-subtle text-success border"><i class="fas fa-check-circle me-1"></i> ICAR Grounded</span>
+              </div>
+
+              <h5 class="fw-bold text-dark mt-2 mb-2">${card.title}</h5>
+              
+              <div class="row g-2 mb-3">
+                <div class="col-md-6">
+                  <div class="p-2 bg-light rounded border small">
+                    <strong><i class="fas fa-eye text-primary me-1"></i> Current Observation:</strong>
+                    <div class="text-secondary mt-1">${card.observation}</div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="p-2 bg-light rounded border small">
+                    <strong><i class="fas fa-exclamation-circle text-warning me-1"></i> Why It Matters:</strong>
+                    <div class="text-secondary mt-1">${card.why_it_matters}</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="p-3 bg-light-subtle rounded-3 border mb-3">
+                <strong class="text-dark"><i class="fas fa-arrow-circle-right text-success me-1"></i> Recommended Action:</strong>
+                <p class="text-secondary small mb-0 mt-1">${card.recommended_action}</p>
+              </div>
+
+              <div class="p-3 bg-light rounded-3 border small mb-3">
+                <strong><i class="fas fa-book-open text-success me-1"></i> ICAR Evidence:</strong>
+                <div class="text-muted mt-1">"${card.evidence.text}" <span class="fw-semibold text-dark">— Source: ${card.evidence.source}, Page ${card.evidence.page}</span></div>
+              </div>
+
+              <!-- Human-in-the-Loop Feedback Component -->
+              <div class="p-3 bg-white rounded border mt-3">
+                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-2">
+                  <span class="fw-bold text-dark small"><i class="fas fa-user-check text-success me-1"></i> Farmer Decision (Human-in-the-Loop):</span>
+                  <div class="btn-group btn-group-sm" role="group" id="feedbackBtnGroup${cardId}">
+                    <button type="button" class="btn btn-success active" onclick="setFeedbackDecision(${cardId}, 'Accept', this)"><i class="fas fa-check me-1"></i> Accept</button>
+                    <button type="button" class="btn btn-outline-warning" onclick="setFeedbackDecision(${cardId}, 'Modify', this)"><i class="fas fa-edit me-1"></i> Modify</button>
+                    <button type="button" class="btn btn-outline-secondary" onclick="setFeedbackDecision(${cardId}, 'Ignore', this)"><i class="fas fa-times me-1"></i> Ignore</button>
+                  </div>
+                </div>
+                <div class="d-flex gap-2">
+                  <input type="text" class="form-control form-control-sm" id="feedbackText${cardId}" placeholder="Optional farmer feedback notes (e.g. Will irrigate tomorrow morning)...">
+                  <button class="btn btn-sm btn-primary" onclick="submitFarmerFeedback(${cardId}, '${card.title.replace(/'/g, "\\'")}')"><i class="fas fa-paper-plane me-1"></i> Log Decision</button>
+                </div>
+                <div class="small text-success mt-1 d-none" id="feedbackSuccess${cardId}"><i class="fas fa-check-circle me-1"></i> Decision logged to research audit record.</div>
+              </div>
+            </div>
+          `;
+        });
+
+        if (data.advisory) {
+          html += `
+            <div class="app-panel border-start border-primary border-4 mb-4">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="badge bg-primary text-white px-2 py-1">SYNTHESIZED AI ADVISORY</span>
+                <span class="text-muted small">Generated via Groq LLaMA-3.3 + ICAR RAG</span>
+              </div>
+              <div class="lh-base text-dark small">${data.advisory.replace(/\n/g, "<br>")}</div>
+            </div>
+          `;
+        }
+
+        container.innerHTML = html;
+      }
+
+      async function loadRecommendations() {
+        const refreshBtn = document.getElementById("refreshRecsBtn");
+        if (refreshBtn) {
+          refreshBtn.disabled = true;
+          refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i> Synthesizing Advisories...';
+        }
+        try {
+          const res = await API.getRecommendations();
+          renderRecommendationCards(res);
+        } catch (err) {
+          console.error("Recs load error:", err);
+        } finally {
+          if (refreshBtn) {
+            refreshBtn.disabled = false;
+            refreshBtn.innerHTML = '<i class="fas fa-sync-alt me-1"></i> Regenerate Advisories';
+          }
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        loadRecommendations();
+
+        const refreshBtn = document.getElementById("refreshRecsBtn");
+        if (refreshBtn) {
+          refreshBtn.addEventListener("click", loadRecommendations);
+        }
+
+        const mobileMenuBtn = document.getElementById("mobileMenuBtn");
+        const appSidebar = document.getElementById("appSidebar");
+        if (mobileMenuBtn && appSidebar) {
+          mobileMenuBtn.addEventListener("click", () => {
+            appSidebar.classList.toggle("sidebar-open");
+          });
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,653 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AgriTwin-RAG — Biophysical Digital Farm Twin & What-If Simulation</title>
+    <!-- Font Awesome Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- Bootstrap 5 Grid & Utilities -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Master AgriTech Design System -->
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="app-layout">
+            <!-- ==================== LEFT SIDEBAR ==================== -->
+      <aside class="app-sidebar" id="appSidebar">
+        <!-- Brand Header -->
+        <div class="sidebar-brand">
+          <a href="dashboard.html" class="brand-logo-wrap">
+            <div class="brand-icon">
+              <i class="fas fa-leaf"></i>
+            </div>
+            <div class="brand-text">
+              <div class="brand-title">
+                AgriTwin <span class="badge-rag">RAG</span>
+              </div>
+              <div class="brand-subtitle">Precision Digital Twin</div>
+            </div>
+          </a>
+          <button
+            class="sidebar-collapse-btn d-none d-lg-flex"
+            id="sidebarCollapseBtn"
+            title="Toggle Sidebar"
+          >
+            <i class="fas fa-chevron-left"></i>
+          </button>
+        </div>
+
+        <!-- Navigation Sections -->
+        <div class="sidebar-nav-container">
+          <div class="nav-section-label">OVERVIEW</div>
+          <ul class="sidebar-menu">
+            <li>
+              <a href="dashboard.html" class="nav-item">
+                <i class="fas fa-th-large nav-icon"></i>
+                <span class="nav-label">Dashboard</span>
+              </a>
+            </li>
+          </ul>
+
+          <div class="nav-section-label">FARM</div>
+          <ul class="sidebar-menu">
+            <li>
+              <a href="digital-twin.html" class="nav-item active">
+                <i class="fas fa-cube nav-icon"></i>
+                <span class="nav-label">Digital Twin</span>
+              </a>
+            </li>
+            <li>
+              <a href="weather.html" class="nav-item">
+                <i class="fas fa-cloud-sun nav-icon"></i>
+                <span class="nav-label">Weather</span>
+              </a>
+            </li>
+            <li>
+              <a href="soil.html" class="nav-item">
+                <i class="fas fa-seedling nav-icon"></i>
+                <span class="nav-label">Soil Intelligence</span>
+              </a>
+            </li>
+            <li>
+              <a href="satellite.html" class="nav-item">
+                <i class="fas fa-satellite nav-icon"></i>
+                <span class="nav-label">Satellite & NDVI</span>
+              </a>
+            </li>
+            <li>
+              <a href="location.html" class="nav-item">
+                <i class="fas fa-map-marker-alt nav-icon"></i>
+                <span class="nav-label">Farm Location</span>
+              </a>
+            </li>
+          </ul>
+
+          <div class="nav-section-label">AI</div>
+          <ul class="sidebar-menu">
+            <li>
+              <a href="crop-disease.html" class="nav-item">
+                <i class="fas fa-virus nav-icon"></i>
+                <span class="nav-label">Crop Disease</span>
+              </a>
+            </li>
+            <li>
+              <a href="prediction.html" class="nav-item">
+                <i class="fas fa-shield-alt nav-icon"></i>
+                <span class="nav-label">Farm Risk</span>
+              </a>
+            </li>
+            <li>
+              <a href="assistant.html" class="nav-item">
+                <i class="fas fa-robot nav-icon"></i>
+                <span class="nav-label">RAG Assistant</span>
+              </a>
+            </li>
+            <li>
+              <a href="recommendations.html" class="nav-item">
+                <i class="fas fa-clipboard-list nav-icon"></i>
+                <span class="nav-label">Recommendations</span>
+              </a>
+            </li>
+          </ul>
+
+          <div class="nav-section-label">REPORTS</div>
+          <ul class="sidebar-menu">
+            <li>
+              <a href="reports.html" class="nav-item">
+                <i class="fas fa-file-alt nav-icon"></i>
+                <span class="nav-label">Farm Report</span>
+              </a>
+            </li>
+          </ul>
+
+          <div class="nav-section-label">RESEARCH / TECHNICAL</div>
+          <ul class="sidebar-menu">
+            <li>
+              <a href="evaluation.html" class="nav-item">
+                <i class="fas fa-chart-line nav-icon"></i>
+                <span class="nav-label">Model Evaluation</span>
+              </a>
+            </li>
+            <li>
+              <a href="xai.html" class="nav-item">
+                <i class="fas fa-lightbulb nav-icon"></i>
+                <span class="nav-label">Explainable AI (XAI)</span>
+              </a>
+            </li>
+            <li>
+              <a href="settings.html" class="nav-item">
+                <i class="fas fa-cog nav-icon"></i>
+                <span class="nav-label">Settings & Provenance</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Sidebar User Footer -->
+        <div class="sidebar-footer">
+          <div class="user-profile-widget">
+            <div class="user-avatar-circle" id="userAvatar">F</div>
+            <div class="user-info">
+              <div class="user-name" id="userName">Farmer Profile</div>
+              <div class="user-meta" id="userMeta">AgriTwin User</div>
+            </div>
+            <a
+              href="settings.html"
+              class="user-action-btn"
+              title="Settings & Provenance"
+            >
+              <i class="fas fa-cog"></i>
+            </a>
+            <button class="user-action-btn btn-logout" id="logoutBtn" title="Sign Out / Logout" style="background:none;border:none;color:#ef4444;cursor:pointer;padding:6px;margin-left:4px;">
+              <i class="fas fa-sign-out-alt"></i>
+            </button>
+          </div>
+        </div>
+      </aside>
+
+      <!-- ==================== MAIN CONTENT ==================== -->
+      <div class="app-main-wrapper">
+        <header class="app-topbar">
+          <div class="topbar-left">
+            <button
+              class="topbar-toggle-btn"
+              id="mobileMenuBtn"
+              aria-label="Toggle Sidebar"
+            >
+              <i class="fas fa-bars"></i>
+            </button>
+            <div class="page-title-wrap">
+              <h1 class="page-title">Digital Farm Twin</h1>
+              <nav class="breadcrumb-trail">
+                <span>Farm Intelligence</span>
+                <i class="fas fa-chevron-right breadcrumb-sep"></i>
+                <span class="breadcrumb-active">Digital Twin</span>
+              </nav>
+            </div>
+          </div>
+
+          <div class="topbar-right">
+            <a href="location.html" class="location-pill" id="farmLocation">
+              <i class="fas fa-map-marker-alt text-success"></i>
+              <span id="topbarLocationText">Set Farm Location</span>
+            </a>
+            <button class="topbar-icon-btn" title="Notifications">
+              <i class="far fa-bell"></i>
+              <span class="notification-dot"></span>
+            </button>
+            <div class="topbar-user-dropdown-wrap" id="userMenuWrapper">
+              <button
+                class="topbar-user-btn"
+                id="userMenuBtn"
+                type="button"
+                aria-expanded="false"
+                aria-label="Farmer profile menu"
+              >
+                <div class="user-avatar-sm" id="topbarAvatar">F</div>
+                <div class="user-details d-none d-md-block text-start">
+                  <div class="user-fullname" id="topbarName">Farmer</div>
+                  <div class="user-role" id="topbarRole">AgriTwin Live</div>
+                </div>
+                <i class="fas fa-chevron-down dropdown-caret"></i>
+              </button>
+              <div class="user-dropdown-menu" id="userDropdownMenu">
+                <div class="dropdown-user-header">
+                  <div class="user-avatar-sm" id="dropdownAvatar">F</div>
+                  <div class="dropdown-user-info">
+                    <div class="dropdown-name" id="dropdownName">Farmer</div>
+                    <div class="dropdown-sub" id="dropdownSub">Authenticated Farmer</div>
+                  </div>
+                </div>
+                <div class="dropdown-divider"></div>
+                <a href="settings.html" class="dropdown-item">
+                  <i class="fas fa-user-cog"></i>
+                  <span>My Account & Settings</span>
+                </a>
+                <a href="location.html" class="dropdown-item">
+                  <i class="fas fa-map-marker-alt"></i>
+                  <span>Farm Coordinates</span>
+                </a>
+                <div class="dropdown-divider"></div>
+                <button type="button" class="dropdown-item text-danger btn-logout" id="topbarLogoutBtn">
+                  <i class="fas fa-sign-out-alt"></i>
+                  <span>Sign Out / Logout</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <main class="app-content">
+          <!-- Hero Section -->
+          <section class="hero-welcome-card mb-4">
+            <div class="hero-left-content">
+              <div class="d-flex align-items-center gap-2 mb-1">
+                <span class="badge bg-success text-white px-2 py-1 small">
+                  <i class="fas fa-circle me-1" style="font-size: 8px"></i>
+                  DIGITAL TWIN ONLINE
+                </span>
+                <span class="text-white-50 small">Telemetry Sync Active</span>
+              </div>
+              <h2 class="hero-heading" id="twinHeroTitle">FARM-001 • Biophysical Digital Twin</h2>
+              <p class="hero-subtitle mb-0">
+                Centralized representation integrating OpenWeather climate telemetry, ISRIC SoilGrids rhizosphere profile, Sentinel-2 spectral NDVI, and crop phenology into a unified farm state.
+              </p>
+            </div>
+            <div class="hero-right-action">
+              <button
+                class="hero-btn-primary"
+                id="twinSyncBtn"
+              >
+                <i class="fas fa-sync-alt"></i> Sync Live Telemetry
+              </button>
+            </div>
+          </section>
+
+          <!-- 5 Core Connected Biophysical Nodes -->
+          <div class="metrics-row-5 mb-4">
+            <!-- Weather Node -->
+            <div class="metric-card">
+              <div class="metric-card-top">
+                <span class="metric-name">Microclimate Node</span>
+                <div class="metric-icon-wrap icon-wrap-sky">
+                  <i class="fas fa-cloud-sun"></i>
+                </div>
+              </div>
+              <div class="metric-value-row">
+                <span class="metric-big-num" id="twinTemp">--</span>
+                <span class="metric-unit">°C</span>
+              </div>
+              <div class="metric-status-sub" id="twinWeatherSub">RH: -- • Wind: --</div>
+              <div class="metric-trend-row mt-2 pt-2 border-top">
+                <span class="badge bg-light text-dark border small"><i class="fas fa-satellite-dish me-1 text-primary"></i>Source: OpenWeather</span>
+              </div>
+            </div>
+
+            <!-- Soil Node -->
+            <div class="metric-card">
+              <div class="metric-card-top">
+                <span class="metric-name">Rhizosphere Soil Node</span>
+                <div class="metric-icon-wrap icon-wrap-teal">
+                  <i class="fas fa-seedling"></i>
+                </div>
+              </div>
+              <div class="metric-value-row">
+                <span class="metric-big-num" id="twinSoilMoist">--</span>
+                <span class="metric-unit">%</span>
+              </div>
+              <div class="metric-status-sub" id="twinSoilSub">pH: -- • Texture: --</div>
+              <div class="metric-trend-row mt-2 pt-2 border-top">
+                <span class="badge bg-light text-dark border small"><i class="fas fa-mountain me-1 text-success"></i>Source: ISRIC SoilGrids 2.0</span>
+              </div>
+            </div>
+
+            <!-- Satellite Node -->
+            <div class="metric-card">
+              <div class="metric-card-top">
+                <span class="metric-name">Multispectral Canopy Node</span>
+                <div class="metric-icon-wrap icon-wrap-emerald">
+                  <i class="fas fa-satellite"></i>
+                </div>
+              </div>
+              <div class="metric-value-row">
+                <span class="metric-big-num" id="twinNdvi">--</span>
+                <span class="metric-unit">NDVI</span>
+              </div>
+              <div class="metric-status-sub" id="twinNdviSub">Vigor: Calculating...</div>
+              <div class="metric-trend-row mt-2 pt-2 border-top">
+                <span class="badge bg-light text-dark border small"><i class="fas fa-satellite me-1 text-info"></i>Source: Sentinel-2 Level-2A</span>
+              </div>
+            </div>
+
+            <!-- Crop Phenology Node -->
+            <div class="metric-card">
+              <div class="metric-card-top">
+                <span class="metric-name">Crop Phenology Node</span>
+                <div class="metric-icon-wrap icon-wrap-orange">
+                  <i class="fas fa-dna"></i>
+                </div>
+              </div>
+              <div class="metric-value-row">
+                <span class="metric-big-num fs-4" id="twinCropStage">Flowering</span>
+              </div>
+              <div class="metric-status-sub text-truncate" id="twinCropSub">Rice (MTU-1010) • 5.0 Acres</div>
+              <div class="metric-trend-row mt-2 pt-2 border-top">
+                <span class="badge bg-light text-dark border small"><i class="fas fa-user-edit me-1 text-warning"></i>Source: Farmer Profile</span>
+              </div>
+            </div>
+
+            <!-- Disease Observation Node -->
+            <div class="metric-card">
+              <div class="metric-card-top">
+                <span class="metric-name">Disease Observation Node</span>
+                <div class="metric-icon-wrap icon-wrap-rose">
+                  <i class="fas fa-virus"></i>
+                </div>
+              </div>
+              <div class="metric-value-row">
+                <span class="metric-big-num fs-4 text-truncate" id="twinDiseaseObsTitle">No Disease</span>
+              </div>
+              <div class="metric-status-sub text-truncate" id="twinDiseaseObsSub">Model Confidence: --</div>
+              <div class="metric-trend-row mt-2 pt-2 border-top">
+                <span class="badge bg-light text-dark border small"><i class="fas fa-microscope me-1 text-danger"></i>Source: Image Model Observation</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- WHAT-IF DIGITAL TWIN SIMULATION SUITE -->
+          <section class="app-panel mb-4">
+            <div class="panel-header-row">
+              <div class="panel-title">
+                <i class="fas fa-vial text-success"></i> What-If Digital Twin Scenario Simulation
+              </div>
+              <span class="badge bg-warning text-dark border"><i class="fas fa-flask me-1"></i> SIMULATION ENGINE</span>
+            </div>
+
+            <p class="text-muted small mb-3">
+              Explore hypothetical climate and management stress scenarios on your digital twin. The system models biophysical state transitions and queries ICAR knowledge chunks to analyze physiological crop impacts.
+            </p>
+
+            <div class="row g-4">
+              <!-- Left: Scenario Selector & Parameters -->
+              <div class="col-lg-5">
+                <div class="p-3 bg-light rounded-3 border h-100">
+                  <h6 class="fw-bold text-dark mb-3">Select or Configure Simulation</h6>
+
+                  <div class="mb-3">
+                    <label class="form-label small fw-bold text-dark">Pre-Configured Agricultural Scenarios:</label>
+                    <select class="form-select form-select-sm" id="simScenarioSelect">
+                      <option value="no_irrigation_3_days" selected>Scenario 1: No Irrigation for 3 Days (-8.5% Moisture)</option>
+                      <option value="heatwave_plus_3c">Scenario 2: Heatwave Episode (+3.0°C Heat Stress)</option>
+                      <option value="heavy_rainfall_25mm">Scenario 3: Heavy Rain (+25mm Precipitation)</option>
+                      <option value="custom">Scenario 4: Custom Interactive Sliders</option>
+                    </select>
+                  </div>
+
+                  <div id="customSliders" class="d-none">
+                    <div class="mb-3">
+                      <div class="d-flex justify-content-between small fw-bold mb-1">
+                        <span>Soil Moisture Delta (%):</span>
+                        <span class="text-primary" id="moistSliderVal">0%</span>
+                      </div>
+                      <input type="range" class="form-range" id="moistSlider" min="-25" max="25" value="0">
+                    </div>
+
+                    <div class="mb-3">
+                      <div class="d-flex justify-content-between small fw-bold mb-1">
+                        <span>Temperature Delta (°C):</span>
+                        <span class="text-danger" id="tempSliderVal">0°C</span>
+                      </div>
+                      <input type="range" class="form-range" id="tempSlider" min="-10" max="10" value="0">
+                    </div>
+                  </div>
+
+                  <button class="btn btn-success w-100 fw-bold mt-2" id="runSimulationBtn">
+                    <i class="fas fa-play me-1"></i> Run What-If Scenario Analysis
+                  </button>
+                </div>
+              </div>
+
+              <!-- Right: Simulation Output & RAG Analysis -->
+              <div class="col-lg-7">
+                <div class="p-3 bg-white rounded-3 border h-100 shadow-sm" id="simResultsContainer">
+                  <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="badge bg-warning text-dark px-2 py-1"><i class="fas fa-exclamation-triangle me-1"></i> SIMULATION RESULT</span>
+                    <span class="text-muted small" id="simScenarioBadge">Scenario 1: No Irrigation for 3 Days</span>
+                  </div>
+
+                  <!-- Comparison Table -->
+                  <div class="table-responsive mb-3">
+                    <table class="table table-sm table-bordered text-center align-middle small mb-0">
+                      <thead class="table-light">
+                        <tr>
+                          <th>Parameter</th>
+                          <th>Current State</th>
+                          <th>Simulated State</th>
+                          <th>Delta</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td class="text-start"><strong>Rhizosphere Moisture</strong></td>
+                          <td id="simBaseMoist">28.0%</td>
+                          <td class="text-danger fw-bold" id="simTargetMoist">19.5%</td>
+                          <td class="text-danger" id="simDeltaMoist">-8.5%</td>
+                        </tr>
+                        <tr>
+                          <td class="text-start"><strong>Microclimate Temperature</strong></td>
+                          <td id="simBaseTemp">32.8°C</td>
+                          <td class="text-danger fw-bold" id="simTargetTemp">34.3°C</td>
+                          <td class="text-danger" id="simDeltaTemp">+1.5°C</td>
+                        </tr>
+                        <tr>
+                          <td class="text-start"><strong>Canopy NDVI Signal</strong></td>
+                          <td id="simBaseNdvi">0.42</td>
+                          <td class="text-warning fw-bold" id="simTargetNdvi">0.36</td>
+                          <td class="text-warning" id="simDeltaNdvi">-0.06</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <!-- AI Agronomic Assessment -->
+                  <div class="p-3 bg-light rounded-3 border">
+                    <div class="fw-bold text-dark small mb-1">
+                      <i class="fas fa-brain text-success me-1"></i> ICAR RAG Agronomic Impact Analysis:
+                    </div>
+                    <div class="small text-secondary lh-base" id="simAnalysisText">
+                      Click "Run What-If Scenario Analysis" to evaluate the biophysical implications on your digital twin.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/farmState.js"></script>
+    <script src="js/api.js"></script>
+    <script>
+      function renderTwinUI(state) {
+        if (!state) return;
+
+        // Topbar
+        const locName = state.location.place_name || (state.location.latitude ? `Farm (${state.location.latitude.toFixed(4)}, ${state.location.longitude.toFixed(4)})` : "Set Farm Location");
+        const topbarLoc = document.getElementById("topbarLocationText");
+        if (topbarLoc) topbarLoc.textContent = locName;
+
+        // Hero
+        const heroTitle = document.getElementById("twinHeroTitle");
+        if (heroTitle) {
+          heroTitle.textContent = `${state.farm_id || "FARM-001"} • ${state.crop.name || "Rice"} Biophysical Digital Twin`;
+        }
+
+        // 1. Weather Node
+        const twinTemp = document.getElementById("twinTemp");
+        if (twinTemp) twinTemp.textContent = state.weather.temperature !== null ? Number(state.weather.temperature).toFixed(1) : "--";
+        const twinWeatherSub = document.getElementById("twinWeatherSub");
+        if (twinWeatherSub) {
+          twinWeatherSub.textContent = `RH: ${state.weather.humidity !== null ? state.weather.humidity + "%" : "--"} • Wind: ${state.weather.wind_speed !== null ? state.weather.wind_speed + " m/s" : "--"}`;
+        }
+
+        // 2. Soil Node
+        const twinSoilMoist = document.getElementById("twinSoilMoist");
+        if (twinSoilMoist) twinSoilMoist.textContent = state.soil.moisture !== null ? Number(state.soil.moisture).toFixed(0) : "--";
+        const twinSoilSub = document.getElementById("twinSoilSub");
+        if (twinSoilSub) {
+          twinSoilSub.textContent = `pH: ${state.soil.ph !== null ? Number(state.soil.ph).toFixed(1) : "--"} • ${state.soil.soil_type || "Clay Loam"}`;
+        }
+
+        // 3. Satellite Node
+        const twinNdvi = document.getElementById("twinNdvi");
+        if (twinNdvi) twinNdvi.textContent = state.satellite.ndvi !== null ? Number(state.satellite.ndvi).toFixed(2) : "--";
+        const twinNdviSub = document.getElementById("twinNdviSub");
+        if (twinNdviSub) {
+          twinNdviSub.textContent = state.satellite.vegetation_status || "Moderate vegetation vigor";
+        }
+
+        // 4. Crop Node
+        const twinCropStage = document.getElementById("twinCropStage");
+        if (twinCropStage) twinCropStage.textContent = state.crop.growth_stage || "Flowering";
+        const twinCropSub = document.getElementById("twinCropSub");
+        if (twinCropSub) {
+          twinCropSub.textContent = `${state.crop.name || "Rice"} (${state.crop.variety || "MTU-1010"}) • ${state.crop.area_acres || 5.0} Acres`;
+        }
+
+        // 5. Disease Observation Node
+        const twinDiseaseObsTitle = document.getElementById("twinDiseaseObsTitle");
+        const twinDiseaseObsSub = document.getElementById("twinDiseaseObsSub");
+        const diseaseObs = state.disease_observation;
+        if (diseaseObs && diseaseObs.disease) {
+          if (twinDiseaseObsTitle) {
+            twinDiseaseObsTitle.textContent = diseaseObs.is_healthy ? "Healthy Crop Leaf" : `Rice ${diseaseObs.disease}`;
+            twinDiseaseObsTitle.className = diseaseObs.is_healthy ? "metric-big-num fs-4 text-truncate text-success" : "metric-big-num fs-4 text-truncate text-danger";
+          }
+          if (twinDiseaseObsSub) {
+            twinDiseaseObsSub.textContent = `Model Conf: ${diseaseObs.confidence_percentage || (diseaseObs.confidence ? (diseaseObs.confidence * 100).toFixed(1) : "--")}%`;
+          }
+        } else {
+          if (twinDiseaseObsTitle) {
+            twinDiseaseObsTitle.textContent = "No Observation";
+            twinDiseaseObsTitle.className = "metric-big-num fs-4 text-truncate text-muted";
+          }
+          if (twinDiseaseObsSub) {
+            twinDiseaseObsSub.textContent = "No recent leaf scan";
+          }
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        // Initial render & subscription
+        if (typeof FarmState !== "undefined") {
+          FarmState.subscribe(renderTwinUI);
+          renderTwinUI(FarmState.get());
+        }
+
+        // Sync button
+        const syncBtn = document.getElementById("twinSyncBtn");
+        if (syncBtn && typeof FarmState !== "undefined") {
+          syncBtn.addEventListener("click", async () => {
+            syncBtn.disabled = true;
+            syncBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i> Syncing...';
+            await FarmState.syncLiveTelemetry();
+            syncBtn.disabled = false;
+            syncBtn.innerHTML = '<i class="fas fa-check me-1"></i> Synced Live';
+            setTimeout(() => { syncBtn.innerHTML = '<i class="fas fa-sync-alt me-1"></i> Sync Live Telemetry'; }, 2000);
+          });
+        }
+
+        // What-If Simulation Controls
+        const scenarioSelect = document.getElementById("simScenarioSelect");
+        const customSliders = document.getElementById("customSliders");
+        const moistSlider = document.getElementById("moistSlider");
+        const tempSlider = document.getElementById("tempSlider");
+        const moistSliderVal = document.getElementById("moistSliderVal");
+        const tempSliderVal = document.getElementById("tempSliderVal");
+        const runSimBtn = document.getElementById("runSimulationBtn");
+
+        if (scenarioSelect) {
+          scenarioSelect.addEventListener("change", () => {
+            if (scenarioSelect.value === "custom") {
+              customSliders.classList.remove("d-none");
+            } else {
+              customSliders.classList.add("d-none");
+            }
+          });
+        }
+
+        if (moistSlider && moistSliderVal) {
+          moistSlider.addEventListener("input", () => {
+            moistSliderVal.textContent = `${moistSlider.value > 0 ? "+" : ""}${moistSlider.value}%`;
+          });
+        }
+
+        if (tempSlider && tempSliderVal) {
+          tempSlider.addEventListener("input", () => {
+            tempSliderVal.textContent = `${tempSlider.value > 0 ? "+" : ""}${tempSlider.value}°C`;
+          });
+        }
+
+        if (runSimBtn) {
+          runSimBtn.addEventListener("click", async () => {
+            runSimBtn.disabled = true;
+            runSimBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i> Simulating Biophysical State...';
+
+            const scenario = scenarioSelect.value;
+            const mDelta = parseFloat(moistSlider.value) || 0;
+            const tDelta = parseFloat(tempSlider.value) || 0;
+
+            try {
+              const res = await API.runSimulation(scenario, mDelta, tDelta);
+              if (res && res.success) {
+                document.getElementById("simScenarioBadge").textContent = res.scenario_description;
+                document.getElementById("simBaseMoist").textContent = `${res.baseline_state.moisture}%`;
+                document.getElementById("simTargetMoist").textContent = `${res.simulated_state.moisture}%`;
+                const mDiff = (res.simulated_state.moisture - res.baseline_state.moisture).toFixed(1);
+                document.getElementById("simDeltaMoist").textContent = `${mDiff > 0 ? "+" : ""}${mDiff}%`;
+
+                document.getElementById("simBaseTemp").textContent = `${res.baseline_state.temperature}°C`;
+                document.getElementById("simTargetTemp").textContent = `${res.simulated_state.temperature}°C`;
+                const tDiff = (res.simulated_state.temperature - res.baseline_state.temperature).toFixed(1);
+                document.getElementById("simDeltaTemp").textContent = `${tDiff > 0 ? "+" : ""}${tDiff}°C`;
+
+                document.getElementById("simBaseNdvi").textContent = `${res.baseline_state.ndvi}`;
+                document.getElementById("simTargetNdvi").textContent = `${res.simulated_state.ndvi}`;
+                const nDiff = (res.simulated_state.ndvi - res.baseline_state.ndvi).toFixed(2);
+                document.getElementById("simDeltaNdvi").textContent = `${nDiff > 0 ? "+" : ""}${nDiff}`;
+
+                let formattedAnalysis = res.analysis.replace(/\n/g, "<br>");
+                document.getElementById("simAnalysisText").innerHTML = formattedAnalysis;
+              }
+            } catch (err) {
+              console.error("Simulation run error:", err);
+            } finally {
+              runSimBtn.disabled = false;
+              runSimBtn.innerHTML = '<i class="fas fa-play me-1"></i> Run What-If Scenario Analysis';
+            }
+          });
+        }
+
+        // Mobile drawer toggle
+        const mobileMenuBtn = document.getElementById("mobileMenuBtn");
+        const appSidebar = document.getElementById("appSidebar");
+        if (mobileMenuBtn && appSidebar) {
+          mobileMenuBtn.addEventListener("click", () => {
+            appSidebar.classList.toggle("sidebar-open");
+          });
+        }
+      });
+    </script>
+  </body>
+</html>

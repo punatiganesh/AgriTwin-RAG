@@ -1,0 +1,697 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AgriTwin-RAG — Rice Crop Disease Diagnostic Center</title>
+    <!-- Font Awesome 6 Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- Bootstrap 5 Grid & Utilities -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Master AgriTech Design System -->
+    <link rel="stylesheet" href="css/style.css" />
+    <style>
+      .upload-dropzone {
+        border: 2px dashed rgba(46, 125, 50, 0.4);
+        background: rgba(46, 125, 50, 0.03);
+        border-radius: 16px;
+        padding: 2.5rem 1.5rem;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.25s ease;
+        position: relative;
+      }
+      .upload-dropzone:hover,
+      .upload-dropzone.dragover {
+        border-color: #2e7d32;
+        background: rgba(46, 125, 50, 0.08);
+        transform: translateY(-2px);
+      }
+      .upload-icon-circle {
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        background: rgba(46, 125, 50, 0.12);
+        color: #2e7d32;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.8rem;
+        margin: 0 auto 1rem auto;
+      }
+      .preview-image-box {
+        max-height: 280px;
+        border-radius: 12px;
+        overflow: hidden;
+        background: #0f172a;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+      }
+      .preview-image-box img {
+        max-height: 280px;
+        width: auto;
+        max-width: 100%;
+        object-fit: contain;
+      }
+      .prob-bar-container {
+        height: 10px;
+        background: rgba(0, 0, 0, 0.06);
+        border-radius: 6px;
+        overflow: hidden;
+      }
+      .prob-bar-fill {
+        height: 100%;
+        border-radius: 6px;
+        transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .gradcam-card {
+        background: #ffffff;
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        border-radius: 16px;
+        overflow: hidden;
+      }
+      .gradcam-view-box {
+        height: 240px;
+        background: #1e293b;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+      }
+      .gradcam-view-box img {
+        max-height: 100%;
+        width: 100%;
+        object-fit: contain;
+      }
+      .provenance-tag {
+        font-size: 0.76rem;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+        text-transform: uppercase;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app-layout">
+      <!-- ==================== LEFT SIDEBAR ==================== -->
+      <aside class="app-sidebar" id="appSidebar">
+        <!-- Brand Header -->
+        <div class="sidebar-brand">
+          <a href="dashboard.html" class="brand-logo-wrap">
+            <div class="brand-icon">
+              <i class="fas fa-leaf"></i>
+            </div>
+            <div class="brand-text">
+              <div class="brand-title">
+                AgriTwin <span class="badge-rag">RAG</span>
+              </div>
+              <div class="brand-subtitle">Precision Digital Twin</div>
+            </div>
+          </a>
+          <button
+            class="sidebar-collapse-btn d-none d-lg-flex"
+            id="sidebarCollapseBtn"
+            title="Toggle Sidebar"
+          >
+            <i class="fas fa-chevron-left"></i>
+          </button>
+        </div>
+
+        <!-- Navigation Sections -->
+        <div class="sidebar-nav-container">
+          <div class="nav-section-label">OVERVIEW</div>
+          <ul class="sidebar-menu">
+            <li>
+              <a href="dashboard.html" class="nav-item">
+                <i class="fas fa-th-large nav-icon"></i>
+                <span class="nav-label">Dashboard</span>
+              </a>
+            </li>
+          </ul>
+
+          <div class="nav-section-label">FARM INTELLIGENCE</div>
+          <ul class="sidebar-menu">
+            <li>
+              <a href="digital-twin.html" class="nav-item">
+                <i class="fas fa-cube nav-icon"></i>
+                <span class="nav-label">Digital Twin</span>
+              </a>
+            </li>
+            <li>
+              <a href="weather.html" class="nav-item">
+                <i class="fas fa-cloud-sun nav-icon"></i>
+                <span class="nav-label">Weather</span>
+              </a>
+            </li>
+            <li>
+              <a href="soil.html" class="nav-item">
+                <i class="fas fa-seedling nav-icon"></i>
+                <span class="nav-label">Soil Intelligence</span>
+              </a>
+            </li>
+            <li>
+              <a href="satellite.html" class="nav-item">
+                <i class="fas fa-satellite nav-icon"></i>
+                <span class="nav-label">Satellite & NDVI</span>
+              </a>
+            </li>
+            <li>
+              <a href="location.html" class="nav-item">
+                <i class="fas fa-map-marker-alt nav-icon"></i>
+                <span class="nav-label">Farm Location</span>
+              </a>
+            </li>
+          </ul>
+
+          <div class="nav-section-label">AI & INSIGHTS</div>
+          <ul class="sidebar-menu">
+            <li>
+              <a href="crop-disease.html" class="nav-item active">
+                <i class="fas fa-virus nav-icon"></i>
+                <span class="nav-label">Crop Disease</span>
+              </a>
+            </li>
+            <li>
+              <a href="prediction.html" class="nav-item">
+                <i class="fas fa-brain nav-icon"></i>
+                <span class="nav-label">AI Prediction</span>
+              </a>
+            </li>
+            <li>
+              <a href="xai.html" class="nav-item">
+                <i class="fas fa-lightbulb nav-icon"></i>
+                <span class="nav-label">Explainable AI</span>
+              </a>
+            </li>
+            <li>
+              <a href="assistant.html" class="nav-item">
+                <i class="fas fa-robot nav-icon"></i>
+                <span class="nav-label">RAG Assistant</span>
+              </a>
+            </li>
+            <li>
+              <a href="recommendations.html" class="nav-item">
+                <i class="fas fa-clipboard-list nav-icon"></i>
+                <span class="nav-label">Recommendations</span>
+              </a>
+            </li>
+            <li>
+              <a href="reports.html" class="nav-item">
+                <i class="fas fa-file-alt nav-icon"></i>
+                <span class="nav-label">Reports</span>
+              </a>
+            </li>
+            <li>
+              <a href="evaluation.html" class="nav-item">
+                <i class="fas fa-chart-line nav-icon"></i>
+                <span class="nav-label">Research Evaluation</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="sidebar-footer">
+          <div class="user-profile-widget">
+            <div class="user-avatar-circle">R</div>
+            <div class="user-info">
+              <div class="user-name" id="sidebarFarmerName">Rajesh Kumar</div>
+              <div class="user-meta" id="sidebarFarmMeta">FARM-001 • Rice Paddy</div>
+            </div>
+            <a
+              href="settings.html"
+              class="user-action-btn"
+              title="Settings & Sign Out"
+            >
+              <i class="fas fa-sign-out-alt"></i>
+            </a>
+          </div>
+        </div>
+      </aside>
+
+      <!-- ==================== MAIN CONTENT ==================== -->
+      <div class="app-main-wrapper">
+        <header class="app-topbar">
+          <div class="topbar-left">
+            <button
+              class="topbar-toggle-btn"
+              id="mobileMenuBtn"
+              aria-label="Toggle Sidebar"
+            >
+              <i class="fas fa-bars"></i>
+            </button>
+            <div class="page-title-wrap">
+              <h1 class="page-title">Crop Disease Diagnosis</h1>
+              <nav class="breadcrumb-trail">
+                <span>AI & Insights</span>
+                <i class="fas fa-chevron-right breadcrumb-sep"></i>
+                <span class="breadcrumb-active">Crop Disease</span>
+              </nav>
+            </div>
+          </div>
+
+          <div class="topbar-right">
+            <a href="location.html" class="location-pill" id="farmLocation">
+              <i class="fas fa-map-marker-alt text-success"></i>
+              <span id="topbarLocationText">Loading Location...</span>
+            </a>
+            <button class="topbar-icon-btn" title="Notifications">
+              <i class="far fa-bell"></i>
+              <span class="notification-dot"></span>
+            </button>
+            <a
+              href="settings.html"
+              class="topbar-user-dropdown"
+              id="userProfile"
+            >
+              <div class="user-avatar-sm">R</div>
+              <div class="user-details d-none d-md-block">
+                <div class="user-fullname" id="topbarName">Rajesh Kumar</div>
+                <div class="user-role">AgriTwin Live</div>
+              </div>
+            </a>
+          </div>
+        </header>
+
+        <main class="app-content">
+          <!-- 1. HERO SECTION -->
+          <section class="hero-welcome-card mb-4">
+            <div class="hero-left-content">
+              <div class="d-flex align-items-center gap-2 mb-1">
+                <span class="badge bg-success-subtle text-success border border-success-subtle px-2 py-1 small fw-bold">
+                  <i class="fas fa-microscope me-1"></i> Rice Pathology Engine
+                </span>
+                <span class="text-white-50 small" id="modelStatusPill">
+                  ⏳ Initializing Disease Model...
+                </span>
+              </div>
+              <h2 class="hero-heading">Rice Leaf Disease Diagnostic Center</h2>
+              <p class="hero-subtitle mb-0">
+                End-to-end computer vision classification, Grad-CAM attention visualization, live FarmContext telemetry, and ICAR RAG agricultural knowledge synthesis.
+              </p>
+            </div>
+            <div class="hero-right-action d-flex flex-column gap-2">
+              <button
+                class="btn btn-sm btn-outline-light rounded-pill px-3 py-2 fw-semibold"
+                id="checkModelStatusBtn"
+              >
+                <i class="fas fa-server me-1"></i> Model Diagnostics
+              </button>
+            </div>
+          </section>
+
+          <!-- 2. DIAGNOSTIC WORKFLOW PIPELINE BAR -->
+          <div class="card p-3 mb-4 shadow-sm border-0">
+            <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 small text-muted">
+              <div class="d-flex align-items-center gap-2">
+                <span class="badge bg-success rounded-circle p-1"><i class="fas fa-check text-white"></i></span>
+                <span class="fw-semibold text-dark">1. Leaf Image</span>
+              </div>
+              <i class="fas fa-arrow-right text-muted d-none d-md-inline"></i>
+              <div class="d-flex align-items-center gap-2">
+                <span class="badge bg-success rounded-circle p-1"><i class="fas fa-check text-white"></i></span>
+                <span class="fw-semibold text-dark">2. Preprocessing</span>
+              </div>
+              <i class="fas fa-arrow-right text-muted d-none d-md-inline"></i>
+              <div class="d-flex align-items-center gap-2">
+                <span class="badge bg-success rounded-circle p-1"><i class="fas fa-check text-white"></i></span>
+                <span class="fw-semibold text-dark">3. Neural Prediction</span>
+              </div>
+              <i class="fas fa-arrow-right text-muted d-none d-md-inline"></i>
+              <div class="d-flex align-items-center gap-2">
+                <span class="badge bg-success rounded-circle p-1"><i class="fas fa-check text-white"></i></span>
+                <span class="fw-semibold text-dark">4. ICAR RAG Knowledge</span>
+              </div>
+              <i class="fas fa-arrow-right text-muted d-none d-md-inline"></i>
+              <div class="d-flex align-items-center gap-2">
+                <span class="badge bg-success rounded-circle p-1"><i class="fas fa-check text-white"></i></span>
+                <span class="fw-semibold text-dark">5. Farm Advisory</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. MAIN INTERACTION GRID: UPLOAD PANEL & PREDICTION PANEL -->
+          <div class="row g-4 mb-4">
+            <!-- Left Column: Image Upload & Preview -->
+            <div class="col-lg-5">
+              <div class="card h-100 shadow-sm border-0">
+                <div class="card-header bg-white border-bottom py-3">
+                  <div class="d-flex align-items-center justify-content-between">
+                    <h5 class="card-title mb-0 fw-bold">
+                      <i class="fas fa-cloud-upload-alt text-success me-2"></i>Leaf Image Upload
+                    </h5>
+                    <span class="badge bg-light text-dark border">Target: Rice</span>
+                  </div>
+                </div>
+                <div class="card-body p-4 d-flex flex-column">
+                  <!-- File Input Hidden -->
+                  <input
+                    type="file"
+                    id="leafFileInput"
+                    accept=".jpg,.jpeg,.png,image/jpeg,image/png"
+                    class="d-none"
+                  />
+
+                  <!-- Dropzone Area -->
+                  <div
+                    class="upload-dropzone mb-3"
+                    id="dropzoneArea"
+                  >
+                    <div class="upload-icon-circle">
+                      <i class="fas fa-camera"></i>
+                    </div>
+                    <h6 class="fw-bold text-dark mb-1">
+                      Upload a clear image of the crop leaf
+                    </h6>
+                    <p class="text-muted small mb-3">
+                      Drag and drop image here, or click to browse (JPG, JPEG, PNG • Max 12MB)
+                    </p>
+                    <button
+                      type="button"
+                      class="btn btn-outline-success rounded-pill px-4 fw-semibold"
+                      id="chooseImageBtn"
+                    >
+                      <i class="fas fa-folder-open me-2"></i>Choose Image
+                    </button>
+                  </div>
+
+                  <!-- Image Preview Box (Initially Hidden) -->
+                  <div
+                    id="previewContainer"
+                    class="d-none mb-3"
+                  >
+                    <div class="preview-image-box mb-2">
+                      <img id="leafImagePreview" src="" alt="Selected Rice Leaf Preview" />
+                    </div>
+                    <!-- Metadata Info Bar -->
+                    <div class="bg-light p-2 rounded-3 border d-flex justify-content-between align-items-center small">
+                      <div>
+                        <i class="fas fa-file-image text-success me-1"></i>
+                        <span id="previewFileName" class="fw-semibold text-truncate d-inline-block" style="max-width: 160px;">leaf.jpg</span>
+                      </div>
+                      <div class="text-muted">
+                        <span id="previewDimensions">-- x --</span> • <span id="previewFileSize">-- KB</span>
+                      </div>
+                      <button
+                        type="button"
+                        class="btn btn-sm btn-link text-danger p-0 ms-2"
+                        id="removeImageBtn"
+                        title="Remove Image"
+                      >
+                        <i class="fas fa-times-circle"></i>
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Action Button -->
+                  <div class="mt-auto pt-2">
+                    <button
+                      type="button"
+                      class="btn btn-success w-100 py-2 fw-bold rounded-pill shadow-sm"
+                      id="analyzeDiseaseBtn"
+                      disabled
+                    >
+                      <i class="fas fa-search-plus me-2"></i>Analyze Disease
+                    </button>
+                  </div>
+
+                  <!-- Error Banner -->
+                  <div
+                    id="uploadErrorBanner"
+                    class="alert alert-danger mt-3 mb-0 d-none small py-2 px-3 rounded-3"
+                  >
+                    <i class="fas fa-exclamation-triangle me-1"></i>
+                    <span id="uploadErrorText">Error message</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Column: Prediction Results & Top Probabilities -->
+            <div class="col-lg-7">
+              <div class="card h-100 shadow-sm border-0" id="resultsCard">
+                <div class="card-header bg-white border-bottom py-3">
+                  <div class="d-flex align-items-center justify-content-between">
+                    <h5 class="card-title mb-0 fw-bold">
+                      <i class="fas fa-poll-h text-primary me-2"></i>Model Classification Result
+                    </h5>
+                    <span class="badge bg-secondary-subtle text-dark border" id="predictionStatusBadge">
+                      Awaiting Image
+                    </span>
+                  </div>
+                </div>
+                <div class="card-body p-4">
+                  <!-- Empty State Placeholder -->
+                  <div id="resultsPlaceholder" class="text-center py-5 text-muted">
+                    <div class="mb-3">
+                      <i class="fas fa-leaf text-success-emphasis" style="font-size: 3.5rem; opacity: 0.35;"></i>
+                    </div>
+                    <h6 class="fw-bold text-dark">No Image Analyzed Yet</h6>
+                    <p class="small mb-0" style="max-width: 360px; margin: 0 auto;">
+                      Select a clear rice leaf photo and click <strong>Analyze Disease</strong> to run the neural classification network and retrieve grounded ICAR guidelines.
+                    </p>
+                  </div>
+
+                  <!-- Loading Spinner State -->
+                  <div id="resultsLoading" class="text-center py-5 d-none">
+                    <div class="spinner-border text-success mb-3" style="width: 3rem; height: 3rem;" role="status">
+                      <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <h6 class="fw-bold text-dark">Analyzing crop image...</h6>
+                    <p class="text-muted small mb-0">Running neural forward pass and retrieving ICAR RAG knowledge base.</p>
+                  </div>
+
+                  <!-- Loaded Prediction Content -->
+                  <div id="resultsContent" class="d-none">
+                    <!-- Primary Result Card -->
+                    <div class="p-3 rounded-4 mb-3 border" id="primaryResultBox" style="background: rgba(46, 125, 50, 0.05); border-color: rgba(46, 125, 50, 0.2);">
+                      <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+                        <div>
+                          <div class="small text-muted text-uppercase fw-semibold mb-1">
+                            <i class="fas fa-seedling text-success me-1"></i> Target Crop: <strong class="text-dark">Rice</strong>
+                          </div>
+                          <h3 class="fw-bold mb-1" id="detectedDiseaseTitle" style="color: #1b5e20;">
+                            --
+                          </h3>
+                          <div class="small text-muted" id="predictionTimeSub">
+                            Analysis completed in -- ms
+                          </div>
+                        </div>
+                        <div class="text-end">
+                          <div class="small text-muted fw-semibold">Model Confidence</div>
+                          <div class="display-6 fw-bold text-success" id="confidenceValue">
+                            --%
+                          </div>
+                          <span class="badge bg-success-subtle text-success border border-success-subtle px-2 py-1 small">
+                            <i class="fas fa-check-circle me-1"></i>Model Prediction
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Low Confidence Warning Banner -->
+                    <div id="lowConfidenceAlert" class="alert alert-warning d-none py-2 px-3 rounded-3 small mb-3">
+                      <i class="fas fa-exclamation-triangle me-2"></i>
+                      <strong>Low-confidence prediction (<span id="lowConfidenceThresholdText">60%</span>).</strong>
+                      Capture a clearer leaf image with good lighting or consult an agricultural extension officer.
+                    </div>
+
+                    <!-- Healthy Crop Banner -->
+                    <div id="healthyCropAlert" class="alert alert-success d-none py-2 px-3 rounded-3 small mb-3">
+                      <i class="fas fa-check-circle me-2"></i>
+                      <strong>🌿 Crop appears healthy according to the image model.</strong>
+                      Continue regular monitoring and routine nutrient management.
+                    </div>
+
+                    <!-- Top Predictions Breakdown -->
+                    <div class="mb-3">
+                      <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="fw-bold small text-dark"><i class="fas fa-chart-bar me-1 text-primary"></i>Top Predictions (Model Probabilities)</span>
+                        <small class="text-muted" style="font-size: 0.72rem;">Deterministic Softmax Output</small>
+                      </div>
+                      <div id="topPredictionsContainer" class="d-flex flex-column gap-2">
+                        <!-- Populated dynamically -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4. EXPLAINABLE AI (GRAD-CAM) SECTION -->
+          <div class="card shadow-sm border-0 mb-4 d-none" id="xaiSection">
+            <div class="card-header bg-white border-bottom py-3">
+              <div class="d-flex align-items-center justify-content-between">
+                <div>
+                  <h5 class="card-title mb-0 fw-bold">
+                    <i class="fas fa-lightbulb text-warning me-2"></i>Why did the model make this prediction?
+                  </h5>
+                  <div class="text-muted small">Grad-CAM Visual Attention Heatmap on Convolutional Feature Maps</div>
+                </div>
+                <span class="badge bg-light text-dark border">
+                  <i class="fas fa-eye me-1 text-primary"></i>Model Attention Visualization
+                </span>
+              </div>
+            </div>
+            <div class="card-body p-4">
+              <div class="row g-4 align-items-center">
+                <div class="col-md-6">
+                  <div class="gradcam-card shadow-sm">
+                    <div class="p-2 bg-light border-bottom text-center small fw-semibold text-dark">
+                      Original Leaf Image
+                    </div>
+                    <div class="gradcam-view-box">
+                      <img id="gradcamOriginalImg" src="" alt="Original Uploaded Leaf" />
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="gradcam-card shadow-sm">
+                    <div class="p-2 bg-light border-bottom text-center small fw-semibold text-dark">
+                      Model Attention Visualization (Grad-CAM Overlay)
+                    </div>
+                    <div class="gradcam-view-box">
+                      <img id="gradcamOverlayImg" src="" alt="Grad-CAM Attention Map" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="alert alert-secondary mt-3 mb-0 py-2 px-3 small rounded-3 border-0 bg-light text-muted">
+                <i class="fas fa-info-circle me-1 text-primary"></i>
+                <strong>Note on Attention Visualization:</strong> The highlighted warm regions (red/yellow) indicate leaf areas that contributed most heavily to the neural network's activation score. This visualization illustrates model attention and does not constitute biological certainty.
+              </div>
+            </div>
+          </div>
+
+          <!-- 5. FARM CONTEXT INTEGRATION SNAPSHOT -->
+          <div class="card shadow-sm border-0 mb-4 d-none" id="farmContextSection">
+            <div class="card-header bg-white border-bottom py-3">
+              <div class="d-flex align-items-center justify-content-between">
+                <h5 class="card-title mb-0 fw-bold">
+                  <i class="fas fa-broadcast-tower text-success me-2"></i>Active Farm Context Telemetry
+                </h5>
+                <span class="badge bg-success-subtle text-success border border-success-subtle">
+                  Centralized FarmContext
+                </span>
+              </div>
+            </div>
+            <div class="card-body p-4">
+              <div class="row g-3" id="farmContextPillsGrid">
+                <!-- Dynamically populated from active FarmContext -->
+              </div>
+              <div class="alert alert-info mt-3 mb-0 py-2 px-3 small rounded-3 border-0">
+                <i class="fas fa-shield-alt me-1"></i>
+                <strong>Agronomic Context Notice:</strong> These environmental conditions may be relevant to disease development, but the image model alone cannot establish causation.
+              </div>
+            </div>
+          </div>
+
+          <!-- 6. AGRICULTURAL EVIDENCE (ICAR RAG) & RECOMMENDATIONS -->
+          <div class="row g-4 mb-4 d-none" id="advisorySection">
+            <!-- Left Column: ICAR Agricultural Evidence -->
+            <div class="col-lg-5">
+              <div class="card h-100 shadow-sm border-0">
+                <div class="card-header bg-white border-bottom py-3">
+                  <div class="d-flex align-items-center justify-content-between">
+                    <h5 class="card-title mb-0 fw-bold">
+                      <i class="fas fa-book-open text-success me-2"></i>📚 Agricultural Evidence
+                    </h5>
+                    <span class="badge bg-success text-white">ChromaDB RAG</span>
+                  </div>
+                </div>
+                <div class="card-body p-4 d-flex flex-column">
+                  <div class="mb-3">
+                    <div class="text-muted small fw-semibold text-uppercase">Detected Condition</div>
+                    <div class="h5 fw-bold text-dark" id="evidenceDiseaseName">--</div>
+                  </div>
+
+                  <div class="mb-3">
+                    <div class="text-muted small fw-semibold text-uppercase mb-2">Verified ICAR Knowledge Sources</div>
+                    <div id="ragSourcesContainer" class="d-flex flex-column gap-2">
+                      <!-- Populated dynamically -->
+                    </div>
+                  </div>
+
+                  <div class="mt-auto pt-3 border-top">
+                    <a
+                      href="assistant.html"
+                      class="btn btn-outline-success w-100 rounded-pill fw-bold"
+                      id="askAgriTwinBtn"
+                    >
+                      <i class="fas fa-robot me-2"></i>[ Ask AgriTwin ]
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Column: Farmer Recommendations (ICAR Grounded) -->
+            <div class="col-lg-7">
+              <div class="card h-100 shadow-sm border-0">
+                <div class="card-header bg-white border-bottom py-3">
+                  <div class="d-flex align-items-center justify-content-between">
+                    <h5 class="card-title mb-0 fw-bold">
+                      <i class="fas fa-clipboard-check text-primary me-2"></i>Farmer-Friendly Recommendations
+                    </h5>
+                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle">
+                      Groq Synthesis
+                    </span>
+                  </div>
+                </div>
+                <div class="card-body p-4">
+                  <div id="recommendationsLoading" class="text-center py-4 d-none">
+                    <div class="spinner-border spinner-border-sm text-primary me-2"></div>
+                    <span class="text-muted small">Synthesizing ICAR scientific advisory...</span>
+                  </div>
+                  <div id="recommendationsContent" class="lh-base">
+                    <!-- Populated dynamically with formatted markdown -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 7. DATA PROVENANCE FOOTER -->
+          <div class="card shadow-sm border-0 p-3 bg-light">
+            <div class="row g-2 text-center text-md-start align-items-center">
+              <div class="col-md-3">
+                <div class="small text-muted provenance-tag">Image Source</div>
+                <div class="small fw-bold text-dark"><i class="fas fa-camera text-success me-1"></i> Farmer Uploaded</div>
+              </div>
+              <div class="col-md-3">
+                <div class="small text-muted provenance-tag">Prediction Engine</div>
+                <div class="small fw-bold text-dark"><i class="fas fa-brain text-primary me-1"></i> MobileNetV2 (PyTorch)</div>
+              </div>
+              <div class="col-md-3">
+                <div class="small text-muted provenance-tag">Agricultural Knowledge</div>
+                <div class="small fw-bold text-dark"><i class="fas fa-book-open text-info me-1"></i> ICAR + ChromaDB RAG</div>
+              </div>
+              <div class="col-md-3">
+                <div class="small text-muted provenance-tag">AI Interpretation</div>
+                <div class="small fw-bold text-dark"><i class="fas fa-robot text-warning-emphasis me-1"></i> Groq LLaMA-3.3</div>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <!-- Bootstrap & Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <!-- AgriTwin Core Architecture Scripts -->
+    <script src="js/farmState.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/crop-disease.js"></script>
+  </body>
+</html>

@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Set Up Your Farm | AgriTwin-RAG</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <style>
+      body {
+        min-height: 100vh;
+        background: linear-gradient(135deg, #0b1f13 0%, #133a24 50%, #0d2818 100%);
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        color: #e2e8f0;
+        padding: 32px 16px;
+      }
+      .setup-container {
+        max-width: 760px;
+        margin: 0 auto;
+      }
+      .setup-card {
+        background: rgba(18, 38, 28, 0.88);
+        backdrop-filter: blur(16px);
+        border: 1px solid rgba(52, 211, 153, 0.25);
+        border-radius: 20px;
+        padding: 36px 32px;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(16, 185, 129, 0.12);
+      }
+      .brand-header {
+        text-align: center;
+        margin-bottom: 28px;
+      }
+      .brand-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(16, 185, 129, 0.15);
+        border: 1px solid rgba(52, 211, 153, 0.3);
+        color: #34d399;
+        padding: 6px 14px;
+        border-radius: 9999px;
+        font-size: 0.82rem;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        margin-bottom: 12px;
+      }
+      .setup-title {
+        font-size: 1.75rem;
+        font-weight: 800;
+        color: #ffffff;
+        letter-spacing: -0.5px;
+        margin-bottom: 6px;
+      }
+      .setup-sub {
+        font-size: 0.9rem;
+        color: #94a3b8;
+      }
+      .section-divider {
+        font-size: 0.85rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: #34d399;
+        margin: 24px 0 14px 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .section-divider::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: rgba(52, 211, 153, 0.2);
+      }
+      .form-label {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: #cbd5e1;
+        margin-bottom: 6px;
+      }
+      .form-control, .form-select {
+        background: rgba(11, 28, 20, 0.7);
+        border: 1px solid rgba(52, 211, 153, 0.25);
+        color: #ffffff;
+        border-radius: 12px;
+        padding: 11px 16px;
+        font-size: 0.95rem;
+        transition: all 0.2s ease;
+      }
+      .form-select option {
+        background: #133a24;
+        color: #ffffff;
+      }
+      .form-control:focus, .form-select:focus {
+        background: rgba(11, 28, 20, 0.95);
+        border-color: #10b981;
+        color: #ffffff;
+        box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.2);
+      }
+      .btn-submit {
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        color: #ffffff;
+        font-weight: 700;
+        border-radius: 12px;
+        padding: 14px;
+        font-size: 1.05rem;
+        border: none;
+        box-shadow: 0 4px 15px rgba(16, 185, 129, 0.35);
+        transition: all 0.2s ease;
+        width: 100%;
+        margin-top: 16px;
+      }
+      .btn-submit:hover {
+        background: linear-gradient(135deg, #059669 0%, #047857 100%);
+        box-shadow: 0 6px 20px rgba(16, 185, 129, 0.45);
+        transform: translateY(-1px);
+        color: #ffffff;
+      }
+      .search-results-box {
+        position: absolute;
+        width: 100%;
+        max-height: 200px;
+        overflow-y: auto;
+        background: #0f2d1c;
+        border: 1px solid rgba(52, 211, 153, 0.3);
+        border-radius: 10px;
+        z-index: 100;
+        margin-top: 4px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+      }
+      .search-item {
+        padding: 10px 14px;
+        cursor: pointer;
+        border-bottom: 1px solid rgba(255,255,255,0.05);
+        font-size: 0.85rem;
+        color: #cbd5e1;
+      }
+      .search-item:hover {
+        background: rgba(16, 185, 129, 0.2);
+        color: #ffffff;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="setup-container">
+      <div class="setup-card">
+        <div class="brand-header">
+          <div class="brand-badge">
+            <i class="fas fa-map-marked-alt"></i> Farm Profile Configuration
+          </div>
+          <h1 class="setup-title">🌾 Set Up Your Farm</h1>
+          <p class="setup-sub">
+            Configure your farm location and crop parameters for localized weather, soil mapping, and Sentinel-2 NDVI.
+          </p>
+        </div>
+
+        <div id="alertBox" class="alert d-none" role="alert"></div>
+
+        <form id="farmSetupForm" novalidate>
+          <!-- 1. Farm Identity & Location -->
+          <div class="section-divider">
+            <i class="fas fa-map-marker-alt"></i> 1. Farm Identity & GPS Coordinates
+          </div>
+
+          <div class="row g-3 mb-3">
+            <div class="col-12 col-md-6">
+              <label class="form-label" for="farmName">
+                Farm Name <span class="text-danger">*</span>
+              </label>
+              <input
+                type="text"
+                class="form-control"
+                id="farmName"
+                placeholder="e.g. Sri Lakshmi Agro Farm"
+                required
+              />
+            </div>
+            <div class="col-12 col-md-6 position-relative">
+              <label class="form-label" for="searchLocation">
+                Search Town / Village / Mandal
+              </label>
+              <div class="input-group">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="searchLocation"
+                  placeholder="Type to search location in India"
+                />
+                <button type="button" class="btn btn-outline-success" id="btnSearchLoc">
+                  <i class="fas fa-search"></i>
+                </button>
+              </div>
+              <div id="searchResults" class="search-results-box d-none"></div>
+            </div>
+          </div>
+
+          <div class="row g-3 mb-3">
+            <div class="col-12 col-md-6">
+              <label class="form-label" for="latitude">
+                Latitude (&deg;N) <span class="text-danger">*</span>
+              </label>
+              <input
+                type="number"
+                step="any"
+                class="form-control"
+                id="latitude"
+                placeholder="e.g. 9.571529"
+                required
+              />
+            </div>
+            <div class="col-12 col-md-6">
+              <label class="form-label" for="longitude">
+                Longitude (&deg;E) <span class="text-danger">*</span>
+              </label>
+              <input
+                type="number"
+                step="any"
+                class="form-control"
+                id="longitude"
+                placeholder="e.g. 77.675734"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label" for="placeName">
+              Farm Place Name / Address
+            </label>
+            <input
+              type="text"
+              class="form-control"
+              id="placeName"
+              placeholder="e.g. Srivilliputhur, Virudhunagar District, Tamil Nadu, India"
+            />
+          </div>
+
+          <!-- 2. Crop Details -->
+          <div class="section-divider">
+            <i class="fas fa-seedling"></i> 2. Crop & Agronomic Information
+          </div>
+
+          <div class="row g-3 mb-3">
+            <div class="col-12 col-md-4">
+              <label class="form-label" for="crop">
+                Primary Crop <span class="text-danger">*</span>
+              </label>
+              <select class="form-select" id="crop" required>
+                <option value="Rice (Paddy)" selected>Rice (Paddy)</option>
+                <option value="Wheat">Wheat</option>
+                <option value="Cotton">Cotton</option>
+                <option value="Maize">Maize (Corn)</option>
+                <option value="Tomato">Tomato</option>
+                <option value="Potato">Potato</option>
+                <option value="Sugarcane">Sugarcane</option>
+                <option value="Soybean">Soybean</option>
+                <option value="Mustard">Mustard</option>
+                <option value="Groundnut">Groundnut (Peanut)</option>
+                <option value="Chilli">Chilli / Pepper</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div class="col-12 col-md-4">
+              <label class="form-label" for="cropVariety">
+                Crop Variety / Hybrid
+              </label>
+              <input
+                type="text"
+                class="form-control"
+                id="cropVariety"
+                placeholder="e.g. IR64, MTU-1010, HD-2967"
+              />
+            </div>
+            <div class="col-12 col-md-4">
+              <label class="form-label" for="growthStage">
+                Current Growth Stage
+              </label>
+              <select class="form-select" id="growthStage">
+                <option value="Sowing / Germination">Sowing / Germination</option>
+                <option value="Vegetative Stage">Vegetative Stage</option>
+                <option value="Tillering Stage">Tillering Stage</option>
+                <option value="Flowering Stage" selected>Flowering Stage</option>
+                <option value="Grain Filling Stage">Grain Filling Stage</option>
+                <option value="Maturity / Pre-Harvest">Maturity / Pre-Harvest</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row g-3 mb-4">
+            <div class="col-12 col-md-4">
+              <label class="form-label" for="farmArea">
+                Farm Area (Acres) <span class="text-danger">*</span>
+              </label>
+              <input
+                type="number"
+                step="0.1"
+                min="0.1"
+                class="form-control"
+                id="farmArea"
+                value="5.0"
+                required
+              />
+            </div>
+            <div class="col-12 col-md-4">
+              <label class="form-label" for="irrigationMethod">
+                Irrigation Method
+              </label>
+              <select class="form-select" id="irrigationMethod">
+                <option value="Alternate Wetting and Drying (AWD)" selected>Alternate Wetting & Drying (AWD)</option>
+                <option value="Drip Irrigation">Drip Irrigation</option>
+                <option value="Flood / Furrow Irrigation">Flood / Furrow Irrigation</option>
+                <option value="Sprinkler Irrigation">Sprinkler Irrigation</option>
+                <option value="Rainfed (No Irrigation)">Rainfed (No Irrigation)</option>
+              </select>
+            </div>
+            <div class="col-12 col-md-4">
+              <label class="form-label" for="soilType">
+                Soil Texture / Type
+              </label>
+              <select class="form-select" id="soilType">
+                <option value="Clay Loam" selected>Clay Loam</option>
+                <option value="Sandy Loam">Sandy Loam</option>
+                <option value="Black Cotton Soil">Black Cotton Soil (Vertisol)</option>
+                <option value="Alluvial Soil">Alluvial Soil</option>
+                <option value="Red Sandy Soil">Red Sandy Soil</option>
+                <option value="Clay">Clay</option>
+              </select>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-submit" id="saveFarmBtn">
+            <span id="btnText"><i class="fas fa-check-circle me-2"></i>Save Farm & Launch Dashboard</span>
+            <span id="btnSpinner" class="spinner-border spinner-border-sm d-none" role="status"></span>
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      const alertBox = document.getElementById("alertBox");
+      const farmSetupForm = document.getElementById("farmSetupForm");
+      const saveFarmBtn = document.getElementById("saveFarmBtn");
+      const btnText = document.getElementById("btnText");
+      const btnSpinner = document.getElementById("btnSpinner");
+
+      function showAlert(msg, isError = true) {
+        alertBox.className = `alert ${isError ? 'alert-danger' : 'alert-success'} py-2 px-3 mb-3 text-center`;
+        alertBox.textContent = msg;
+        alertBox.classList.remove("d-none");
+      }
+
+      // Check current user and pre-fill existing farm if already set
+      async function loadExistingFarm() {
+        try {
+          const res = await fetch("/api/auth/user");
+          if (!res.ok) {
+            window.location.href = "login.html";
+            return;
+          }
+          const data = await res.json();
+          if (data && data.farm) {
+            const f = data.farm;
+            if (f.farm_name) document.getElementById("farmName").value = f.farm_name;
+            if (f.latitude) document.getElementById("latitude").value = f.latitude;
+            if (f.longitude) document.getElementById("longitude").value = f.longitude;
+            if (f.place_name) document.getElementById("placeName").value = f.place_name;
+            if (f.crop) document.getElementById("crop").value = f.crop;
+            if (f.crop_variety) document.getElementById("cropVariety").value = f.crop_variety;
+            if (f.growth_stage) document.getElementById("growthStage").value = f.growth_stage;
+            if (f.farm_area) document.getElementById("farmArea").value = f.farm_area;
+            if (f.irrigation_method) document.getElementById("irrigationMethod").value = f.irrigation_method;
+            if (f.soil_type) document.getElementById("soilType").value = f.soil_type;
+          }
+        } catch (e) {
+          console.warn("Could not fetch user profile:", e);
+        }
+      }
+      loadExistingFarm();
+
+      // Location search auto-complete
+      const searchInput = document.getElementById("searchLocation");
+      const btnSearch = document.getElementById("btnSearchLoc");
+      const resultsBox = document.getElementById("searchResults");
+
+      async function performSearch() {
+        const query = searchInput.value.trim();
+        if (query.length < 2) return;
+
+        try {
+          const res = await fetch(`/api/location/search?query=${encodeURIComponent(query)}`);
+          const data = await res.json();
+          if (data && data.results && data.results.length > 0) {
+            resultsBox.innerHTML = "";
+            data.results.forEach((item) => {
+              const div = document.createElement("div");
+              div.className = "search-item";
+              div.textContent = item.display_name;
+              div.addEventListener("click", () => {
+                document.getElementById("latitude").value = item.latitude;
+                document.getElementById("longitude").value = item.longitude;
+                document.getElementById("placeName").value = item.display_name;
+                resultsBox.classList.add("d-none");
+              });
+              resultsBox.appendChild(div);
+            });
+            resultsBox.classList.remove("d-none");
+          } else {
+            resultsBox.innerHTML = '<div class="search-item text-muted">No matching places found</div>';
+            resultsBox.classList.remove("d-none");
+          }
+        } catch (err) {
+          console.warn("Search error:", err);
+        }
+      }
+
+      btnSearch.addEventListener("click", performSearch);
+      searchInput.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          performSearch();
+        }
+      });
+
+      document.addEventListener("click", (e) => {
+        if (!searchInput.contains(e.target) && !resultsBox.contains(e.target)) {
+          resultsBox.classList.add("d-none");
+        }
+      });
+
+      // Submit Farm Configuration
+      farmSetupForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        alertBox.classList.add("d-none");
+
+        const farm_name = document.getElementById("farmName").value.trim();
+        const latitude = parseFloat(document.getElementById("latitude").value);
+        const longitude = parseFloat(document.getElementById("longitude").value);
+        const place_name = document.getElementById("placeName").value.trim();
+        const crop = document.getElementById("crop").value;
+        const crop_variety = document.getElementById("cropVariety").value.trim();
+        const growth_stage = document.getElementById("growthStage").value;
+        const farm_area = parseFloat(document.getElementById("farmArea").value) || 1.0;
+        const irrigation_method = document.getElementById("irrigationMethod").value;
+        const soil_type = document.getElementById("soilType").value;
+
+        if (!farm_name) {
+          showAlert("Please enter a farm name.");
+          return;
+        }
+
+        if (isNaN(latitude) || isNaN(longitude)) {
+          showAlert("Please provide valid latitude and longitude coordinates.");
+          return;
+        }
+
+        saveFarmBtn.disabled = true;
+        btnText.classList.add("d-none");
+        btnSpinner.classList.remove("d-none");
+
+        try {
+          const res = await fetch("/api/farm-setup", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              farm_name,
+              latitude,
+              longitude,
+              place_name,
+              crop,
+              crop_variety,
+              growth_stage,
+              farm_area,
+              irrigation_method,
+              soil_type,
+            }),
+          });
+
+          const data = await res.json();
+
+          if (res.ok && data.success) {
+            showAlert("Farm saved successfully! Initializing AgriTwin Intelligence...", false);
+            // Clear cached farm context so new farm loads fresh
+            localStorage.removeItem("agritwin_farm_context");
+            setTimeout(() => {
+              window.location.href = "dashboard.html";
+            }, 600);
+          } else {
+            showAlert(data.error || "Failed to save farm profile. Please try again.");
+          }
+        } catch (err) {
+          showAlert("Network error while saving farm profile.");
+        } finally {
+          saveFarmBtn.disabled = false;
+          btnText.classList.remove("d-none");
+          btnSpinner.classList.add("d-none");
+        }
+      });
+    </script>
+  </body>
+</html>

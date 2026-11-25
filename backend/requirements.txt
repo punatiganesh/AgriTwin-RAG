@@ -1,0 +1,15 @@
+Flask==3.0.3
+requests==2.32.3
+python-dotenv==1.0.1
+groq
+torchvision
+PyMuPDF
+sentence-transformers
+chromadb
+numpy
+torch
+torchvision
+scikit-learn
+groq
+tifffile>=2024.0.0
+Pillow>=10.0.0

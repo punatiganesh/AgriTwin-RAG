@@ -1,0 +1,42 @@
+# Environment variables and secrets
+.env
+.env.*
+
+# Virtual environments
+.venv/
+venv/
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# ChromaDB generated database
+rag/chroma_db/
+rag/chroma_db_test/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE settings
+.vscode/
+.idea/
+
+# ZIP/archive files
+*.zip
+*.kaggle-partial
+
+# Large raw training image datasets (downloadable / reproducible)
+data/leafnet75*/
+data/sharmin*/
+data/raihan*/
+data/dede*/
+data/philip*/
+data/temp_*/
+data/vbooks*/
+data/rice_dataset*/
+
+# Backup and temporary reorg folders
+.backup_reorg/
+scratch/
+

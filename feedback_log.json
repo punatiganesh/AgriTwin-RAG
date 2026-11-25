@@ -1,0 +1,178 @@
+[
+  {
+    "timestamp": "2026-09-17T18:49:56Z",
+    "decision": "Accept",
+    "feedback": "Implemented 30mm shallow irrigation at sunrise",
+    "recommendation": "Irrigation Scheduling",
+    "farm_id": "FARM-001",
+    "crop": "Rice",
+    "growth_stage": "Tillering",
+    "soil_moisture": 28.0,
+    "temperature": 32.0
+  },
+  {
+    "timestamp": "2026-09-17T18:59:05Z",
+    "decision": "Accept",
+    "feedback": "Implemented 30mm shallow irrigation at sunrise",
+    "recommendation": "Irrigation Scheduling",
+    "farm_id": "FARM-001",
+    "crop": "Rice",
+    "growth_stage": "Tillering",
+    "soil_moisture": 28.0,
+    "temperature": 32.0
+  },
+  {
+    "timestamp": "2026-09-17T19:00:02Z",
+    "decision": "Accept",
+    "feedback": "Implemented 30mm shallow irrigation at sunrise",
+    "recommendation": "Irrigation Scheduling",
+    "farm_id": "FARM-001",
+    "crop": "Rice",
+    "growth_stage": "Tillering",
+    "soil_moisture": 28.0,
+    "temperature": 32.0
+  },
+  {
+    "timestamp": "2026-09-17T19:05:28Z",
+    "decision": "Accept",
+    "feedback": "Implemented 30mm shallow irrigation at sunrise",
+    "recommendation": "Irrigation Scheduling",
+    "farm_id": "FARM-001",
+    "crop": "Rice",
+    "growth_stage": "Tillering",
+    "soil_moisture": 28.0,
+    "temperature": 32.0
+  },
+  {
+    "timestamp": "2026-09-17T19:05:33Z",
+    "decision": "Accept",
+    "feedback": "Implemented 30mm shallow irrigation at sunrise",
+    "recommendation": "Irrigation Scheduling",
+    "farm_id": "FARM-001",
+    "crop": "Rice",
+    "growth_stage": "Tillering",
+    "soil_moisture": 28.0,
+    "temperature": 32.0
+  },
+  {
+    "timestamp": "2026-09-17T19:14:20Z",
+    "decision": "Accept",
+    "feedback": "Implemented 30mm shallow irrigation at sunrise",
+    "recommendation": "Irrigation Scheduling",
+    "farm_id": "FARM-001",
+    "crop": "Rice",
+    "growth_stage": "Tillering",
+    "soil_moisture": 28.0,
+    "temperature": 32.0
+  },
+  {
+    "timestamp": "2026-09-17T19:20:24Z",
+    "decision": "Accept",
+    "feedback": "Implemented 30mm shallow irrigation at sunrise",
+    "recommendation": "Irrigation Scheduling",
+    "farm_id": "FARM-001",
+    "crop": "Rice",
+    "growth_stage": "Tillering",
+    "soil_moisture": 28.0,
+    "temperature": 32.0
+  },
+  {
+    "timestamp": "2026-09-17T19:23:26Z",
+    "decision": "Accept",
+    "feedback": "Implemented 30mm shallow irrigation at sunrise",
+    "recommendation": "Irrigation Scheduling",
+    "farm_id": "FARM-001",
+    "crop": "Rice",
+    "growth_stage": "Tillering",
+    "soil_moisture": 28.0,
+    "temperature": 32.0
+  },
+  {
+    "timestamp": "2026-09-17T19:28:39Z",
+    "decision": "Accept",
+    "feedback": "Irrigated on schedule",
+    "recommendation": "General Farm Advisory",
+    "farm_id": "FARM-001",
+    "crop": "Rice",
+    "growth_stage": "Vegetative / Tillering",
+    "soil_moisture": 28.0,
+    "temperature": 32.0
+  },
+  {
+    "timestamp": "2026-09-18T09:51:31Z",
+    "decision": "Accept",
+    "feedback": "Implemented 30mm shallow irrigation at sunrise",
+    "recommendation": "Irrigation Scheduling",
+    "farm_id": "FARM-001",
+    "crop": "Rice",
+    "growth_stage": "Tillering",
+    "soil_moisture": 28.0,
+    "temperature": 32.0
+  },
+  {
+    "timestamp": "2026-09-18T11:15:14Z",
+    "decision": "Accept",
+    "feedback": "Implemented 30mm shallow irrigation at sunrise",
+    "recommendation": "Irrigation Scheduling",
+    "farm_id": "FARM-001",
+    "crop": "Rice",
+    "growth_stage": "Tillering",
+    "soil_moisture": null,
+    "temperature": null
+  },
+  {
+    "timestamp": "2026-09-18T11:22:05Z",
+    "decision": "Accept",
+    "feedback": "",
+    "recommendation": "Foliar Nutrient Care",
+    "farm_id": "FARM-001",
+    "crop": "Rice",
+    "growth_stage": "Flowering",
+    "soil_moisture": 27.9,
+    "temperature": 27
+  },
+  {
+    "timestamp": "2026-09-18T11:22:13Z",
+    "decision": "Accept",
+    "feedback": "hii",
+    "recommendation": "Pest & Disease Monitoring",
+    "farm_id": "FARM-001",
+    "crop": "Rice",
+    "growth_stage": "Flowering",
+    "soil_moisture": 27.9,
+    "temperature": 27
+  },
+  {
+    "timestamp": "2026-09-19T06:17:51Z",
+    "decision": "Accept",
+    "feedback": "Implemented 30mm shallow irrigation at sunrise",
+    "recommendation": "Irrigation Scheduling",
+    "farm_id": "FARM-001",
+    "crop": null,
+    "growth_stage": null,
+    "soil_moisture": null,
+    "temperature": null
+  },
+  {
+    "timestamp": "2026-11-14T12:39:39Z",
+    "decision": "Accept",
+    "feedback": "Suresh approved wheat nitrogen recommendation.",
+    "recommendation": "Wheat Nitrogen Top Dressing",
+    "farm_id": "FARM-026",
+    "crop": "Wheat",
+    "growth_stage": "Tillering Stage",
+    "soil_moisture": null,
+    "temperature": 28.5
+  },
+  {
+    "timestamp": "2026-11-14T12:47:12Z",
+    "decision": "Accept",
+    "feedback": "Suresh approved wheat nitrogen recommendation.",
+    "recommendation": "Wheat Nitrogen Top Dressing",
+    "farm_id": "FARM-031",
+    "crop": "Wheat",
+    "growth_stage": "Tillering Stage",
+    "soil_moisture": null,
+    "temperature": 28.5
+  }
+]

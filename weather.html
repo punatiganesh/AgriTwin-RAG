@@ -1,0 +1,975 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AgriTwin-RAG — Weather Intelligence</title>
+    <!-- Font Awesome Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- Bootstrap 5 Grid & Utilities -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Master AgriTech Design System -->
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="app-layout">
+      <!-- ==================== LEFT SIDEBAR ==================== -->
+      <aside class="app-sidebar" id="appSidebar">
+        <!-- Brand Header -->
+        <div class="sidebar-brand">
+          <a href="dashboard.html" class="brand-logo-wrap">
+            <div class="brand-icon">
+              <i class="fas fa-leaf"></i>
+            </div>
+            <div class="brand-text">
+              <div class="brand-title">
+                AgriTwin <span class="badge-rag">RAG</span>
+              </div>
+              <div class="brand-subtitle">Precision Digital Twin</div>
+            </div>
+          </a>
+          <button
+            class="sidebar-collapse-btn d-none d-lg-flex"
+            id="sidebarCollapseBtn"
+            title="Toggle Sidebar"
+          >
+            <i class="fas fa-chevron-left"></i>
+          </button>
+        </div>
+
+        <!-- Navigation Sections -->
+        <div class="sidebar-nav-container">
+          <div class="nav-section-label">OVERVIEW</div>
+          <ul class="sidebar-menu">
+            <li>
+              <a href="dashboard.html" class="nav-item">
+                <i class="fas fa-th-large nav-icon"></i>
+                <span class="nav-label">Dashboard</span>
+              </a>
+            </li>
+          </ul>
+
+          <div class="nav-section-label">FARM</div>
+          <ul class="sidebar-menu">
+            <li>
+              <a href="digital-twin.html" class="nav-item">
+                <i class="fas fa-cube nav-icon"></i>
+                <span class="nav-label">Digital Twin</span>
+              </a>
+            </li>
+            <li>
+              <a href="weather.html" class="nav-item active">
+                <i class="fas fa-cloud-sun nav-icon"></i>
+                <span class="nav-label">Weather</span>
+              </a>
+            </li>
+            <li>
+              <a href="soil.html" class="nav-item">
+                <i class="fas fa-seedling nav-icon"></i>
+                <span class="nav-label">Soil Intelligence</span>
+              </a>
+            </li>
+            <li>
+              <a href="satellite.html" class="nav-item">
+                <i class="fas fa-satellite nav-icon"></i>
+                <span class="nav-label">Satellite & NDVI</span>
+              </a>
+            </li>
+            <li>
+              <a href="location.html" class="nav-item">
+                <i class="fas fa-map-marker-alt nav-icon"></i>
+                <span class="nav-label">Farm Location</span>
+              </a>
+            </li>
+          </ul>
+
+          <div class="nav-section-label">AI</div>
+          <ul class="sidebar-menu">
+            <li>
+              <a href="crop-disease.html" class="nav-item">
+                <i class="fas fa-virus nav-icon"></i>
+                <span class="nav-label">Crop Disease</span>
+              </a>
+            </li>
+            <li>
+              <a href="prediction.html" class="nav-item">
+                <i class="fas fa-shield-alt nav-icon"></i>
+                <span class="nav-label">Farm Risk</span>
+              </a>
+            </li>
+            <li>
+              <a href="assistant.html" class="nav-item">
+                <i class="fas fa-robot nav-icon"></i>
+                <span class="nav-label">RAG Assistant</span>
+              </a>
+            </li>
+            <li>
+              <a href="recommendations.html" class="nav-item">
+                <i class="fas fa-clipboard-list nav-icon"></i>
+                <span class="nav-label">Recommendations</span>
+              </a>
+            </li>
+          </ul>
+
+          <div class="nav-section-label">REPORTS</div>
+          <ul class="sidebar-menu">
+            <li>
+              <a href="reports.html" class="nav-item">
+                <i class="fas fa-file-alt nav-icon"></i>
+                <span class="nav-label">Farm Report</span>
+              </a>
+            </li>
+          </ul>
+
+          <div class="nav-section-label">RESEARCH / TECHNICAL</div>
+          <ul class="sidebar-menu">
+            <li>
+              <a href="evaluation.html" class="nav-item">
+                <i class="fas fa-chart-line nav-icon"></i>
+                <span class="nav-label">Model Evaluation</span>
+              </a>
+            </li>
+            <li>
+              <a href="xai.html" class="nav-item">
+                <i class="fas fa-lightbulb nav-icon"></i>
+                <span class="nav-label">Explainable AI (XAI)</span>
+              </a>
+            </li>
+            <li>
+              <a href="settings.html" class="nav-item">
+                <i class="fas fa-cog nav-icon"></i>
+                <span class="nav-label">Settings & Provenance</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Sidebar User Footer -->
+        <div class="sidebar-footer">
+          <div class="user-profile-widget">
+            <div class="user-avatar-circle" id="userAvatar">F</div>
+            <div class="user-info">
+              <div class="user-name" id="userName">Farmer Profile</div>
+              <div class="user-meta" id="userMeta">AgriTwin User</div>
+            </div>
+            <a
+              href="settings.html"
+              class="user-action-btn"
+              title="Settings & Provenance"
+            >
+              <i class="fas fa-cog"></i>
+            </a>
+            <button
+              class="user-action-btn btn-logout"
+              id="logoutBtn"
+              title="Sign Out / Logout"
+              style="
+                background: none;
+                border: none;
+                color: #ef4444;
+                cursor: pointer;
+                padding: 6px;
+                margin-left: 4px;
+              "
+            >
+              <i class="fas fa-sign-out-alt"></i>
+            </button>
+          </div>
+        </div>
+      </aside>
+
+      <!-- ==================== MAIN CONTENT ==================== -->
+      <div class="app-main-wrapper">
+        <header class="app-topbar">
+          <div class="topbar-left">
+            <button
+              class="topbar-toggle-btn"
+              id="mobileMenuBtn"
+              aria-label="Toggle Sidebar"
+            >
+              <i class="fas fa-bars"></i>
+            </button>
+            <div class="page-title-wrap">
+              <h1 class="page-title">Weather Intelligence</h1>
+              <nav class="breadcrumb-trail">
+                <span>Farm Intelligence</span>
+                <i class="fas fa-chevron-right breadcrumb-sep"></i>
+                <span class="breadcrumb-active">Weather</span>
+              </nav>
+            </div>
+          </div>
+
+          <div class="topbar-right">
+            <a href="location.html" class="location-pill" id="farmLocation">
+              <i class="fas fa-map-marker-alt text-success"></i>
+              <span id="topbarLocationText">Set Farm Location</span>
+            </a>
+            <button class="topbar-icon-btn" title="Notifications">
+              <i class="far fa-bell"></i>
+              <span class="notification-dot"></span>
+            </button>
+            <div class="topbar-user-dropdown-wrap" id="userMenuWrapper">
+              <button
+                class="topbar-user-btn"
+                id="userMenuBtn"
+                type="button"
+                aria-expanded="false"
+                aria-label="Farmer profile menu"
+              >
+                <div class="user-avatar-sm" id="topbarAvatar">F</div>
+                <div class="user-details d-none d-md-block text-start">
+                  <div class="user-fullname" id="topbarName">Farmer</div>
+                  <div class="user-role" id="topbarRole">AgriTwin Live</div>
+                </div>
+                <i class="fas fa-chevron-down dropdown-caret"></i>
+              </button>
+              <div class="user-dropdown-menu" id="userDropdownMenu">
+                <div class="dropdown-user-header">
+                  <div class="user-avatar-sm" id="dropdownAvatar">F</div>
+                  <div class="dropdown-user-info">
+                    <div class="dropdown-name" id="dropdownName">Farmer</div>
+                    <div class="dropdown-sub" id="dropdownSub">
+                      Authenticated Farmer
+                    </div>
+                  </div>
+                </div>
+                <div class="dropdown-divider"></div>
+                <a href="settings.html" class="dropdown-item">
+                  <i class="fas fa-user-cog"></i>
+                  <span>My Account & Settings</span>
+                </a>
+                <a href="location.html" class="dropdown-item">
+                  <i class="fas fa-map-marker-alt"></i>
+                  <span>Farm Coordinates</span>
+                </a>
+                <div class="dropdown-divider"></div>
+                <button
+                  type="button"
+                  class="dropdown-item text-danger btn-logout"
+                  id="topbarLogoutBtn"
+                >
+                  <i class="fas fa-sign-out-alt"></i>
+                  <span>Sign Out / Logout</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <main class="app-content">
+          <!-- Farm Location Not Configured Banner (Hidden by default) -->
+          <div
+            id="weatherNoLocationBanner"
+            class="alert alert-warning border-0 shadow-sm mb-4 d-none"
+          >
+            <div
+              class="d-flex align-items-center justify-content-between flex-wrap gap-2"
+            >
+              <div>
+                <i class="fas fa-map-marker-alt fs-5 me-2"></i>
+                <strong>Farm location is not configured.</strong>
+                <div class="small mt-1">
+                  Please select or detect your farm location to link live
+                  OpenWeather meteorological telemetry.
+                </div>
+              </div>
+              <a
+                href="location.html"
+                class="btn btn-sm btn-dark px-3 fw-bold flex-shrink-0"
+              >
+                <i class="fas fa-location-crosshairs me-1"></i> Set Farm
+                Location
+              </a>
+            </div>
+          </div>
+
+          <!-- Weather Error State Banner (Hidden by default) -->
+          <div
+            id="weatherErrorContainer"
+            class="weather-error-banner mb-4 d-none"
+          >
+            <div class="d-flex flex-column align-items-center gap-2">
+              <i class="fas fa-exclamation-triangle fs-3 text-danger"></i>
+              <h6 class="fw-bold mb-0">
+                Weather data is temporarily unavailable.
+              </h6>
+              <p class="small text-muted mb-2" id="weatherErrorMessage">
+                Please verify your farm location coordinates or network
+                connection.
+              </p>
+              <div class="d-flex gap-2 flex-wrap justify-content-center">
+                <button
+                  class="btn btn-sm btn-outline-danger px-4 rounded-pill fw-semibold"
+                  id="retryWeatherBtn"
+                >
+                  <i class="fas fa-sync-alt me-1"></i> Retry
+                </button>
+                <a
+                  href="location.html"
+                  class="btn btn-sm btn-outline-secondary px-4 rounded-pill fw-semibold"
+                >
+                  <i class="fas fa-map-marker-alt me-1"></i> Set Farm Location
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- ====================================================
+               SECTION 1: CURRENT WEATHER
+               ==================================================== -->
+          <section class="weather-main-card" id="currentWeatherSection">
+            <!-- Header Meta -->
+            <div class="weather-header-meta">
+              <div>
+                <span
+                  class="text-uppercase text-muted fw-bold small"
+                  style="font-size: 0.72rem; letter-spacing: 0.06em"
+                  >CURRENT WEATHER FOR FARM</span
+                >
+                <h2 class="weather-location-title" id="weatherLocation">
+                  <i class="fas fa-map-marker-alt text-success"></i> Farm
+                  Location
+                </h2>
+                <div
+                  class="d-flex align-items-center gap-2 mt-1 flex-wrap"
+                  id="weatherCoordsWrap"
+                >
+                  <span
+                    class="badge bg-light text-dark border font-monospace"
+                    id="weatherCoordsBadge"
+                  >
+                    <i class="fas fa-crosshairs text-success me-1"></i>
+                    <span id="weatherCoordsText">Coordinates: —</span>
+                  </span>
+                  <span
+                    class="badge bg-success-subtle text-success border"
+                    id="weatherSourceBadge"
+                    >GPS</span
+                  >
+                  <span class="badge bg-light text-muted border small"
+                    ><i class="fas fa-satellite-dish text-success me-1"></i>
+                    Source: OpenWeather</span
+                  >
+                </div>
+              </div>
+              <div class="weather-update-pill">
+                <span class="pulse-dot-green me-1"></span>
+                <span
+                  >Last updated:
+                  <strong id="weatherLastUpdated">Real-time</strong></span
+                >
+              </div>
+            </div>
+
+            <!-- Primary Temperature & Condition Display -->
+            <div class="weather-primary-display">
+              <div>
+                <div class="weather-temp-group">
+                  <span class="weather-big-temp" id="weatherTemp">--</span>
+                  <span class="weather-temp-unit">°C</span>
+                </div>
+                <div class="weather-condition-title" id="weatherCondition">
+                  Loading...
+                </div>
+                <div class="weather-feels-sub">
+                  Feels like <span id="weatherFeels">--°C</span>
+                </div>
+              </div>
+
+              <!-- Dynamic Professional Weather Icon -->
+              <div
+                class="weather-hero-icon"
+                id="weatherHeroIcon"
+                title="Current Sky Condition"
+              >
+                <i class="fas fa-cloud-sun"></i>
+              </div>
+            </div>
+
+            <!-- Horizontal Metrics Strip (4 Clean Sub-Metrics) -->
+            <div class="weather-metrics-strip">
+              <!-- Humidity -->
+              <div class="metric-strip-item">
+                <div class="metric-strip-icon icon-wrap-sky">
+                  <i class="fas fa-tint"></i>
+                </div>
+                <div class="metric-strip-meta">
+                  <span class="metric-strip-label">Humidity</span>
+                  <span class="metric-strip-val" id="weatherHumidity">--%</span>
+                </div>
+              </div>
+
+              <!-- Wind -->
+              <div class="metric-strip-item">
+                <div class="metric-strip-icon icon-wrap-teal">
+                  <i class="fas fa-wind"></i>
+                </div>
+                <div class="metric-strip-meta">
+                  <span class="metric-strip-label">Wind</span>
+                  <span class="metric-strip-val" id="weatherWind">-- km/h</span>
+                </div>
+              </div>
+
+              <!-- Rain (Last 1 Hour) -->
+              <div class="metric-strip-item">
+                <div class="metric-strip-icon icon-wrap-sky">
+                  <i class="fas fa-cloud-rain"></i>
+                </div>
+                <div class="metric-strip-meta">
+                  <span class="metric-strip-label">Rain (Last 1h)</span>
+                  <span class="metric-strip-val" id="weatherRain">0.0 mm</span>
+                </div>
+              </div>
+
+              <!-- Pressure / Atmospheric Indicator -->
+              <div class="metric-strip-item">
+                <div class="metric-strip-icon icon-wrap-orange">
+                  <i class="fas fa-gauge-high"></i>
+                </div>
+                <div class="metric-strip-meta">
+                  <span class="metric-strip-label">Pressure</span>
+                  <span class="metric-strip-val" id="weatherPressure"
+                    >-- hPa</span
+                  >
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ====================================================
+               SECTION 2: 7-DAY FORECAST
+               ==================================================== -->
+          <section class="app-panel mb-4">
+            <div class="panel-header-row mb-3">
+              <div class="panel-title">
+                <i class="fas fa-calendar-alt text-success"></i> 7-Day Forecast
+              </div>
+              <span class="badge bg-light text-muted border small"
+                >Agrometeorological Outlook</span
+              >
+            </div>
+
+            <!-- Horizontal Scan Track -->
+            <div class="forecast-track-container" id="forecastTrack">
+              <!-- Today -->
+              <div class="forecast-day-item today-active">
+                <span class="forecast-day-name">TODAY</span>
+                <i class="fas fa-cloud-sun text-warning forecast-icon"></i>
+                <div class="forecast-temp-range">
+                  33° <span class="forecast-temp-min">/ 24°</span>
+                </div>
+                <span class="forecast-rain-pill">0% Rain</span>
+              </div>
+
+              <!-- Mon -->
+              <div class="forecast-day-item">
+                <span class="forecast-day-name">MON</span>
+                <i class="fas fa-sun text-warning forecast-icon"></i>
+                <div class="forecast-temp-range">
+                  34° <span class="forecast-temp-min">/ 25°</span>
+                </div>
+                <span class="forecast-rain-pill">5% Rain</span>
+              </div>
+
+              <!-- Tue -->
+              <div class="forecast-day-item">
+                <span class="forecast-day-name">TUE</span>
+                <i class="fas fa-cloud-sun text-warning forecast-icon"></i>
+                <div class="forecast-temp-range">
+                  32° <span class="forecast-temp-min">/ 24°</span>
+                </div>
+                <span class="forecast-rain-pill">15% Rain</span>
+              </div>
+
+              <!-- Wed -->
+              <div class="forecast-day-item">
+                <span class="forecast-day-name">WED</span>
+                <i class="fas fa-cloud-rain text-primary forecast-icon"></i>
+                <div class="forecast-temp-range">
+                  30° <span class="forecast-temp-min">/ 23°</span>
+                </div>
+                <span class="forecast-rain-pill">45% Rain</span>
+              </div>
+
+              <!-- Thu -->
+              <div class="forecast-day-item">
+                <span class="forecast-day-name">THU</span>
+                <i
+                  class="fas fa-cloud-showers-heavy text-primary forecast-icon"
+                ></i>
+                <div class="forecast-temp-range">
+                  29° <span class="forecast-temp-min">/ 22°</span>
+                </div>
+                <span class="forecast-rain-pill">60% Rain</span>
+              </div>
+
+              <!-- Fri -->
+              <div class="forecast-day-item">
+                <span class="forecast-day-name">FRI</span>
+                <i class="fas fa-cloud-sun text-warning forecast-icon"></i>
+                <div class="forecast-temp-range">
+                  31° <span class="forecast-temp-min">/ 23°</span>
+                </div>
+                <span class="forecast-rain-pill">20% Rain</span>
+              </div>
+
+              <!-- Sat -->
+              <div class="forecast-day-item">
+                <span class="forecast-day-name">SAT</span>
+                <i class="fas fa-sun text-warning forecast-icon"></i>
+                <div class="forecast-temp-range">
+                  33° <span class="forecast-temp-min">/ 24°</span>
+                </div>
+                <span class="forecast-rain-pill">10% Rain</span>
+              </div>
+            </div>
+          </section>
+
+          <!-- ====================================================
+               SECTION 3: AGRICULTURAL IMPACT
+               ==================================================== -->
+          <section class="app-panel mb-4">
+            <div class="panel-header-row mb-3">
+              <div class="panel-title">
+                <i class="fas fa-seedling text-success"></i> Weather Impact on
+                Your Farm
+              </div>
+              <span class="badge bg-success-subtle text-success border small"
+                >Crop-Weather Telemetry</span
+              >
+            </div>
+
+            <!-- 3 Core Agricultural Impacts Grid -->
+            <div class="agri-impact-grid">
+              <!-- 1. Heat Stress -->
+              <div class="agri-impact-card">
+                <div class="agri-impact-header">
+                  <div class="agri-impact-title">
+                    <i class="fas fa-sun text-warning"></i> Heat Stress
+                  </div>
+                  <span
+                    class="agri-status-badge badge-status-high"
+                    id="agriHeatStatus"
+                    >High</span
+                  >
+                </div>
+                <p class="agri-impact-desc" id="agriHeatDesc">
+                  Current temperature may increase crop water demand.
+                </p>
+              </div>
+
+              <!-- 2. Evaporation -->
+              <div class="agri-impact-card">
+                <div class="agri-impact-header">
+                  <div class="agri-impact-title">
+                    <i class="fas fa-tint text-sky"></i> Evaporation
+                  </div>
+                  <span
+                    class="agri-status-badge badge-status-elevated"
+                    id="agriEvapStatus"
+                    >Elevated</span
+                  >
+                </div>
+                <p class="agri-impact-desc" id="agriEvapDesc">
+                  High temperature and low humidity may increase soil moisture
+                  loss.
+                </p>
+              </div>
+
+              <!-- 3. Irrigation Demand -->
+              <div class="agri-impact-card">
+                <div class="agri-impact-header">
+                  <div class="agri-impact-title">
+                    <i class="fas fa-faucet-drip text-success"></i> Irrigation
+                    Demand
+                  </div>
+                  <span
+                    class="agri-status-badge badge-status-high"
+                    id="agriIrrigStatus"
+                    >High</span
+                  >
+                </div>
+                <p class="agri-impact-desc" id="agriIrrigDesc">
+                  Consider monitoring soil moisture and irrigation needs.
+                </p>
+              </div>
+            </div>
+
+            <!-- Optional Subtle Farm Context Line -->
+            <div
+              class="mt-3 pt-3 border-top d-flex justify-content-between align-items-center flex-wrap gap-2 text-muted small"
+            >
+              <span>
+                <i class="fas fa-info-circle text-success me-1"></i>
+                Analyzing weather for: <strong>Rice Paddy</strong> •
+                <strong>Flowering Stage</strong> • <strong>FARM-001</strong>
+              </span>
+              <a
+                href="assistant.html"
+                class="text-success fw-semibold text-decoration-none"
+              >
+                Ask AI Assistant <i class="fas fa-arrow-right ms-1"></i>
+              </a>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/farmState.js"></script>
+    <script src="js/api.js"></script>
+    <script>
+      // =========================================================================
+      // Dynamic Real Weather Fetching & Agro-Impact Calculation
+      // Uses real latitude/longitude from localStorage or default farm location
+      // =========================================================================
+
+      function getWeatherIconHtml(condition, description = "") {
+        const cond = (condition || "").toLowerCase();
+        const desc = (description || "").toLowerCase();
+
+        if (cond.includes("thunder") || desc.includes("thunder")) {
+          return '<i class="fas fa-bolt text-warning"></i>';
+        } else if (
+          cond.includes("rain") ||
+          desc.includes("rain") ||
+          cond.includes("drizzle")
+        ) {
+          return '<i class="fas fa-cloud-rain text-primary"></i>';
+        } else if (cond.includes("snow") || desc.includes("snow")) {
+          return '<i class="fas fa-snowflake text-info"></i>';
+        } else if (cond.includes("clear") || desc.includes("sun")) {
+          return '<i class="fas fa-sun text-warning"></i>';
+        } else if (
+          cond.includes("cloud") ||
+          desc.includes("cloud") ||
+          desc.includes("overcast")
+        ) {
+          return '<i class="fas fa-cloud-sun text-warning"></i>';
+        } else if (
+          cond.includes("mist") ||
+          cond.includes("fog") ||
+          cond.includes("haze")
+        ) {
+          return '<i class="fas fa-smog text-secondary"></i>';
+        }
+        return '<i class="fas fa-cloud-sun text-warning"></i>';
+      }
+
+      function updateAgriculturalImpact(temp, humidity) {
+        const heatStatus = document.getElementById("agriHeatStatus");
+        const heatDesc = document.getElementById("agriHeatDesc");
+        const evapStatus = document.getElementById("agriEvapStatus");
+        const evapDesc = document.getElementById("agriEvapDesc");
+        const irrigStatus = document.getElementById("agriIrrigStatus");
+        const irrigDesc = document.getElementById("agriIrrigDesc");
+
+        // 1. Heat Stress calculation
+        if (temp >= 33) {
+          heatStatus.className = "agri-status-badge badge-status-high";
+          heatStatus.textContent = "High";
+          heatDesc.textContent =
+            "Current high temperature accelerates evapotranspiration and increases crop water demand.";
+        } else if (temp >= 28) {
+          heatStatus.className = "agri-status-badge badge-status-elevated";
+          heatStatus.textContent = "Moderate";
+          heatDesc.textContent =
+            "Moderate daytime temperature; canopy conditions within normal vegetative bounds.";
+        } else {
+          heatStatus.className = "agri-status-badge badge-status-normal";
+          heatStatus.textContent = "Low";
+          heatDesc.textContent =
+            "Ambient temperatures are favorable for flowering and photosynthetic efficiency.";
+        }
+
+        // 2. Evaporation calculation
+        if (temp >= 30 && humidity <= 40) {
+          evapStatus.className = "agri-status-badge badge-status-elevated";
+          evapStatus.textContent = "Elevated";
+          evapDesc.textContent =
+            "High temperature and low humidity increase soil moisture evaporation.";
+        } else if (humidity <= 50) {
+          evapStatus.className = "agri-status-badge badge-status-elevated";
+          evapStatus.textContent = "Moderate";
+          evapDesc.textContent =
+            "Standard daytime evaporation rate across topsoil layer.";
+        } else {
+          evapStatus.className = "agri-status-badge badge-status-normal";
+          evapStatus.textContent = "Low";
+          evapDesc.textContent =
+            "High atmospheric humidity preserves topsoil moisture.";
+        }
+
+        // 3. Irrigation Demand calculation
+        if (temp >= 31 || humidity <= 38) {
+          irrigStatus.className = "agri-status-badge badge-status-high";
+          irrigStatus.textContent = "High";
+          irrigDesc.textContent =
+            "Consider monitoring soil moisture and scheduling irrigation.";
+        } else if (temp >= 26) {
+          irrigStatus.className = "agri-status-badge badge-status-elevated";
+          irrigStatus.textContent = "Moderate";
+          irrigDesc.textContent =
+            "Maintain regular irrigation schedule based on soil moisture sensors.";
+        } else {
+          irrigStatus.className = "agri-status-badge badge-status-normal";
+          irrigStatus.textContent = "Low";
+          irrigDesc.textContent =
+            "No urgent irrigation needed under current climate conditions.";
+        }
+      }
+
+      async function loadRealWeatherData() {
+        const noLocBanner = document.getElementById("weatherNoLocationBanner");
+        const errorContainer = document.getElementById("weatherErrorContainer");
+        const errorMsg = document.getElementById("weatherErrorMessage");
+
+        const locationEl = document.getElementById("weatherLocation");
+        if (locationEl) locationEl.textContent = "Loading farm context...";
+        const farmResult = await loadFarmContext();
+        if (!farmResult.success) {
+          if (noLocBanner) noLocBanner.classList.remove("d-none");
+          const bannerText = noLocBanner?.querySelector("strong");
+          if (bannerText)
+            bannerText.textContent = "Farm context is unavailable.";
+          const bannerDetail = noLocBanner?.querySelector(".small");
+          if (bannerDetail) bannerDetail.textContent = farmResult.error;
+          if (locationEl) locationEl.textContent = "Farm context unavailable";
+          return;
+        }
+
+        const location = farmResult.data.location;
+        const savedLat = location.latitude;
+        const savedLon = location.longitude;
+        if (noLocBanner) noLocBanner.classList.add("d-none");
+
+        try {
+          // Call live weather endpoint with exact saved coordinates
+          const data = await getLiveWeather();
+
+          if (!data || data.success === false) {
+            if (errorContainer) {
+              errorContainer.classList.remove("d-none");
+              if (data && data.error) {
+                errorMsg.textContent = data.error;
+              }
+            }
+            return;
+          }
+
+          if (errorContainer) errorContainer.classList.add("d-none");
+
+          const w = data.weather || {};
+          const loc = data.location || {};
+
+          // Check for saved farm location state
+          let verifiedFarmName = "";
+          let verifiedDisplayName = "";
+          let locationSource = "GPS";
+          try {
+            const rawLoc = localStorage.getItem("farmLocation");
+            if (rawLoc) {
+              const parsed = JSON.parse(rawLoc);
+              if (parsed) {
+                if (parsed.name) verifiedFarmName = parsed.name;
+                if (parsed.display_name)
+                  verifiedDisplayName = parsed.display_name;
+                if (parsed.source === "gps") locationSource = "Device GPS";
+                else if (parsed.source === "search")
+                  locationSource = "Geocoded Search";
+                else if (parsed.source)
+                  locationSource = parsed.source.toUpperCase();
+              }
+            }
+          } catch (e) {}
+
+          if (!verifiedFarmName) {
+            verifiedFarmName = localStorage.getItem("farmLocationName") || "";
+          }
+
+          // Populate Section 1: Current Weather & Verified Location
+          const locName = verifiedFarmName || loc.name || "Farm Location";
+          const locCountry = loc.country ? `, ${loc.country}` : "";
+          const locationEl = document.getElementById("weatherLocation");
+          if (locationEl) {
+            locationEl.innerHTML = `<i class="fas fa-map-marker-alt text-success"></i> ${locName}${locCountry}`;
+            if (verifiedDisplayName && verifiedDisplayName !== locName) {
+              locationEl.title = verifiedDisplayName;
+            }
+          }
+
+          // Populate Visible Coordinates Badge
+          const coordsText = document.getElementById("weatherCoordsText");
+          if (coordsText) {
+            coordsText.textContent = `Lat: ${parseFloat(savedLat).toFixed(6)}°, Lon: ${parseFloat(savedLon).toFixed(6)}°`;
+          }
+          const sourceBadge = document.getElementById("weatherSourceBadge");
+          if (sourceBadge) {
+            sourceBadge.className =
+              locationSource === "Device GPS"
+                ? "badge bg-success-subtle text-success border"
+                : "badge bg-primary-subtle text-primary border";
+            sourceBadge.textContent = locationSource;
+          }
+
+          const topbarLoc = document.getElementById("topbarLocationText");
+          if (topbarLoc) topbarLoc.textContent = locName;
+
+          // Process metrics safely without fake mock fallbacks
+          const tempVal =
+            typeof w.temperature === "number" ? w.temperature : null;
+          const feelsVal =
+            typeof w.feels_like === "number" ? w.feels_like : tempVal;
+          const humidityVal =
+            typeof w.humidity === "number" ? w.humidity : null;
+          const windSpeedVal =
+            typeof w.wind_speed === "number" ? w.wind_speed : null;
+          const rainVal = typeof w.rainfall === "number" ? w.rainfall : 0.0;
+          const pressureVal =
+            typeof w.pressure === "number" ? w.pressure : null;
+          const conditionRaw = w.description || w.condition || "N/A";
+
+          const tempEl = document.getElementById("weatherTemp");
+          if (tempEl)
+            tempEl.textContent = tempVal !== null ? tempVal.toFixed(1) : "--";
+
+          const feelsEl = document.getElementById("weatherFeels");
+          if (feelsEl)
+            feelsEl.textContent =
+              feelsVal !== null ? `${feelsVal.toFixed(1)}°C` : "--°C";
+
+          const condEl = document.getElementById("weatherCondition");
+          if (condEl) {
+            condEl.textContent =
+              conditionRaw !== "N/A"
+                ? conditionRaw.charAt(0).toUpperCase() + conditionRaw.slice(1)
+                : "N/A";
+          }
+
+          const iconContainer = document.getElementById("weatherHeroIcon");
+          if (iconContainer) {
+            iconContainer.innerHTML = getWeatherIconHtml(
+              w.condition,
+              w.description,
+            );
+          }
+
+          const humEl = document.getElementById("weatherHumidity");
+          if (humEl)
+            humEl.textContent =
+              humidityVal !== null ? `${humidityVal}%` : "--%";
+
+          const windEl = document.getElementById("weatherWind");
+          if (windEl) {
+            windEl.textContent =
+              windSpeedVal !== null
+                ? `${(windSpeedVal * 3.6).toFixed(1)} km/h`
+                : "0.0 km/h";
+          }
+
+          const rainEl = document.getElementById("weatherRain");
+          if (rainEl) rainEl.textContent = `${rainVal.toFixed(1)} mm`;
+
+          const pressEl = document.getElementById("weatherPressure");
+          if (pressEl)
+            pressEl.textContent =
+              pressureVal !== null ? `${pressureVal} hPa` : "-- hPa";
+
+          // Format last updated timestamp from dt if available, or current local time
+          let timeStr = "";
+          if (w.dt && typeof w.dt === "number") {
+            const dtDate = new Date(w.dt * 1000);
+            timeStr = dtDate.toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+            });
+          } else {
+            timeStr = new Date().toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+            });
+          }
+          const lastUpdatedEl = document.getElementById("weatherLastUpdated");
+          if (lastUpdatedEl) lastUpdatedEl.textContent = `Today ${timeStr}`;
+
+          // Section 3: Update Agricultural Impact dynamically if temperature & humidity exist
+          if (tempVal !== null && humidityVal !== null) {
+            updateAgriculturalImpact(tempVal, humidityVal);
+          }
+        } catch (err) {
+          console.error("Error loading live weather:", err);
+          if (errorContainer) {
+            errorContainer.classList.remove("d-none");
+            errorMsg.textContent =
+              "Unable to connect to meteorological telemetry service.";
+          }
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        // Load real weather immediately
+        loadRealWeatherData();
+
+        // Reactively update weather when farm coordinates change
+        window.addEventListener("agritwin:locationChanged", () => {
+          loadRealWeatherData();
+        });
+        window.addEventListener("farmLocationChanged", () => {
+          loadRealWeatherData();
+        });
+
+        document
+          .querySelectorAll(
+            '#weatherNoLocationBanner a[href="location.html"], #weatherErrorContainer a[href="location.html"]',
+          )
+          .forEach((button) => {
+            button.addEventListener("click", async (event) => {
+              event.preventDefault();
+              const farm = await loadFarmContext(true);
+              if (!farm.success) {
+                const container = document.getElementById(
+                  "weatherErrorContainer",
+                );
+                const message = document.getElementById("weatherErrorMessage");
+                if (container) container.classList.remove("d-none");
+                if (message) message.textContent = farm.error;
+                return;
+              }
+              button.textContent = `Farm location set: ${farm.data.location.locality || farm.data.location.place_name || "Configured farm"}`;
+              await loadRealWeatherData();
+            });
+          });
+
+        // Retry button
+        const retryBtn = document.getElementById("retryWeatherBtn");
+        if (retryBtn) {
+          retryBtn.addEventListener("click", () => {
+            retryBtn.innerHTML =
+              '<i class="fas fa-spinner fa-spin me-1"></i> Retrying...';
+            loadRealWeatherData().finally(() => {
+              retryBtn.innerHTML = '<i class="fas fa-sync-alt me-1"></i> Retry';
+            });
+          });
+        }
+
+        // Mobile drawer toggle
+        const mobileMenuBtn = document.getElementById("mobileMenuBtn");
+        const appSidebar = document.getElementById("appSidebar");
+        if (mobileMenuBtn && appSidebar) {
+          mobileMenuBtn.addEventListener("click", () => {
+            appSidebar.classList.toggle("sidebar-open");
+          });
+        }
+      });
+    </script>
+  </body>
+</html>

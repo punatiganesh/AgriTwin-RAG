@@ -1,0 +1,651 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AgriTwin-RAG — Farm Location & Geospatial Coordinator</title>
+    <!-- Font Awesome Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- Bootstrap 5 Grid & Utilities -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Master AgriTech Design System -->
+    <link rel="stylesheet" href="css/style.css" />
+    <!-- Leaflet CSS for OpenStreetMap Interactive Mapping -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    />
+  </head>
+  <body>
+    <div class="app-layout">
+      <!-- ==================== LEFT SIDEBAR ==================== -->
+      <aside class="app-sidebar" id="appSidebar">
+        <!-- Brand Header -->
+        <div class="sidebar-brand">
+          <a href="dashboard.html" class="brand-logo-wrap">
+            <div class="brand-icon">
+              <i class="fas fa-leaf"></i>
+            </div>
+            <div class="brand-text">
+              <div class="brand-title">
+                AgriTwin <span class="badge-rag">RAG</span>
+              </div>
+              <div class="brand-subtitle">Precision Digital Twin</div>
+            </div>
+          </a>
+          <button
+            class="sidebar-collapse-btn d-none d-lg-flex"
+            id="sidebarCollapseBtn"
+            title="Toggle Sidebar"
+          >
+            <i class="fas fa-chevron-left"></i>
+          </button>
+        </div>
+
+        <!-- Navigation Sections -->
+        <div class="sidebar-nav-container">
+          <div class="nav-section-label">OVERVIEW</div>
+          <ul class="sidebar-menu">
+            <li>
+              <a href="dashboard.html" class="nav-item">
+                <i class="fas fa-th-large nav-icon"></i>
+                <span class="nav-label">Dashboard</span>
+              </a>
+            </li>
+          </ul>
+
+          <div class="nav-section-label">FARM</div>
+          <ul class="sidebar-menu">
+            <li>
+              <a href="digital-twin.html" class="nav-item">
+                <i class="fas fa-cube nav-icon"></i>
+                <span class="nav-label">Digital Twin</span>
+              </a>
+            </li>
+            <li>
+              <a href="weather.html" class="nav-item">
+                <i class="fas fa-cloud-sun nav-icon"></i>
+                <span class="nav-label">Weather</span>
+              </a>
+            </li>
+            <li>
+              <a href="soil.html" class="nav-item">
+                <i class="fas fa-seedling nav-icon"></i>
+                <span class="nav-label">Soil Intelligence</span>
+              </a>
+            </li>
+            <li>
+              <a href="satellite.html" class="nav-item">
+                <i class="fas fa-satellite nav-icon"></i>
+                <span class="nav-label">Satellite & NDVI</span>
+              </a>
+            </li>
+            <li>
+              <a href="location.html" class="nav-item active">
+                <i class="fas fa-map-marker-alt nav-icon"></i>
+                <span class="nav-label">Farm Location</span>
+              </a>
+            </li>
+          </ul>
+
+          <div class="nav-section-label">AI</div>
+          <ul class="sidebar-menu">
+            <li>
+              <a href="crop-disease.html" class="nav-item">
+                <i class="fas fa-virus nav-icon"></i>
+                <span class="nav-label">Crop Disease</span>
+              </a>
+            </li>
+            <li>
+              <a href="prediction.html" class="nav-item">
+                <i class="fas fa-shield-alt nav-icon"></i>
+                <span class="nav-label">Farm Risk</span>
+              </a>
+            </li>
+            <li>
+              <a href="assistant.html" class="nav-item">
+                <i class="fas fa-robot nav-icon"></i>
+                <span class="nav-label">RAG Assistant</span>
+              </a>
+            </li>
+            <li>
+              <a href="recommendations.html" class="nav-item">
+                <i class="fas fa-clipboard-list nav-icon"></i>
+                <span class="nav-label">Recommendations</span>
+              </a>
+            </li>
+          </ul>
+
+          <div class="nav-section-label">REPORTS</div>
+          <ul class="sidebar-menu">
+            <li>
+              <a href="reports.html" class="nav-item">
+                <i class="fas fa-file-alt nav-icon"></i>
+                <span class="nav-label">Farm Report</span>
+              </a>
+            </li>
+          </ul>
+
+          <div class="nav-section-label">RESEARCH / TECHNICAL</div>
+          <ul class="sidebar-menu">
+            <li>
+              <a href="evaluation.html" class="nav-item">
+                <i class="fas fa-chart-line nav-icon"></i>
+                <span class="nav-label">Model Evaluation</span>
+              </a>
+            </li>
+            <li>
+              <a href="xai.html" class="nav-item">
+                <i class="fas fa-lightbulb nav-icon"></i>
+                <span class="nav-label">Explainable AI (XAI)</span>
+              </a>
+            </li>
+            <li>
+              <a href="settings.html" class="nav-item">
+                <i class="fas fa-cog nav-icon"></i>
+                <span class="nav-label">Settings & Provenance</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Sidebar User Footer -->
+        <div class="sidebar-footer">
+          <div class="user-profile-widget">
+            <div class="user-avatar-circle" id="userAvatar">F</div>
+            <div class="user-info">
+              <div class="user-name" id="userName">Farmer Profile</div>
+              <div class="user-meta" id="userMeta">AgriTwin User</div>
+            </div>
+            <a
+              href="settings.html"
+              class="user-action-btn"
+              title="Settings & Provenance"
+            >
+              <i class="fas fa-cog"></i>
+            </a>
+            <button
+              class="user-action-btn btn-logout"
+              id="logoutBtn"
+              title="Sign Out / Logout"
+              style="
+                background: none;
+                border: none;
+                color: #ef4444;
+                cursor: pointer;
+                padding: 6px;
+                margin-left: 4px;
+              "
+            >
+              <i class="fas fa-sign-out-alt"></i>
+            </button>
+          </div>
+        </div>
+      </aside>
+
+      <!-- ==================== MAIN CONTENT ==================== -->
+      <div class="app-main-wrapper">
+        <header class="app-topbar">
+          <div class="topbar-left">
+            <button
+              class="topbar-toggle-btn"
+              id="mobileMenuBtn"
+              aria-label="Toggle Sidebar"
+            >
+              <i class="fas fa-bars"></i>
+            </button>
+            <div class="page-title-wrap">
+              <h1 class="page-title">Farm Location & Boundary</h1>
+              <nav class="breadcrumb-trail">
+                <span>Farm Intelligence</span>
+                <i class="fas fa-chevron-right breadcrumb-sep"></i>
+                <span class="breadcrumb-active">Farm Location</span>
+              </nav>
+            </div>
+          </div>
+
+          <div class="topbar-right">
+            <a href="location.html" class="location-pill" id="farmLocation">
+              <i class="fas fa-map-marker-alt text-success"></i>
+              <span id="topbarLocationText">Set Farm Location</span>
+            </a>
+            <button class="topbar-icon-btn" title="Notifications">
+              <i class="far fa-bell"></i>
+              <span class="notification-dot"></span>
+            </button>
+            <div class="topbar-user-dropdown-wrap" id="userMenuWrapper">
+              <button
+                class="topbar-user-btn"
+                id="userMenuBtn"
+                type="button"
+                aria-expanded="false"
+                aria-label="Farmer profile menu"
+              >
+                <div class="user-avatar-sm" id="topbarAvatar">F</div>
+                <div class="user-details d-none d-md-block text-start">
+                  <div class="user-fullname" id="topbarName">Farmer</div>
+                  <div class="user-role" id="topbarRole">AgriTwin Live</div>
+                </div>
+                <i class="fas fa-chevron-down dropdown-caret"></i>
+              </button>
+              <div class="user-dropdown-menu" id="userDropdownMenu">
+                <div class="dropdown-user-header">
+                  <div class="user-avatar-sm" id="dropdownAvatar">F</div>
+                  <div class="dropdown-user-info">
+                    <div class="dropdown-name" id="dropdownName">Farmer</div>
+                    <div class="dropdown-sub" id="dropdownSub">
+                      Authenticated Farmer
+                    </div>
+                  </div>
+                </div>
+                <div class="dropdown-divider"></div>
+                <a href="settings.html" class="dropdown-item">
+                  <i class="fas fa-user-cog"></i>
+                  <span>My Account & Settings</span>
+                </a>
+                <a href="location.html" class="dropdown-item">
+                  <i class="fas fa-map-marker-alt"></i>
+                  <span>Farm Coordinates</span>
+                </a>
+                <div class="dropdown-divider"></div>
+                <button
+                  type="button"
+                  class="dropdown-item text-danger btn-logout"
+                  id="topbarLogoutBtn"
+                >
+                  <i class="fas fa-sign-out-alt"></i>
+                  <span>Sign Out / Logout</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <main class="app-content">
+          <div
+            class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2"
+          >
+            <div>
+              <h2 class="fw-bold text-dark mb-1">
+                FARM LOCATION & GEOSPATIAL COORDINATION
+              </h2>
+              <p class="text-muted mb-0">
+                Ground real-time weather telemetry, soil profiles, and satellite
+                NDVI models to your exact farm coordinates.
+              </p>
+            </div>
+            <a href="weather.html" class="btn btn-outline-success btn-sm">
+              <i class="fas fa-cloud-sun me-1"></i> Open Weather Intelligence
+            </a>
+          </div>
+
+          <!-- Confirmation Banner (Appears after user confirms) -->
+          <div
+            id="confirmationAlert"
+            class="alert alert-success border-0 shadow-sm mb-4 d-none"
+          ></div>
+
+          <!-- Top Section: Options & Selected Farm Location Card -->
+          <div class="row g-4 mb-4">
+            <!-- Left Column: Location Selection Options -->
+            <div class="col-lg-7">
+              <!-- Option 1: Browser GPS Location -->
+              <div class="app-panel mb-4">
+                <div class="panel-header-row mb-3">
+                  <div class="panel-title">
+                    <i class="fas fa-location-crosshairs text-success"></i>
+                    Option 1: Use Current Device GPS
+                  </div>
+                  <span class="badge bg-success-subtle text-success border"
+                    >High Accuracy Geolocation</span
+                  >
+                </div>
+
+                <p class="text-muted small mb-3">
+                  Detect your current latitude and longitude using your device
+                  GPS / browser geolocation. The coordinates will be
+                  reverse-geocoded to identify your local village/district.
+                </p>
+
+                <div class="d-flex flex-wrap gap-2 align-items-center">
+                  <button
+                    type="button"
+                    class="btn btn-success fw-bold px-3 py-2"
+                    id="currentLocationBtn"
+                  >
+                    <i class="fas fa-location-crosshairs me-1"></i> Use My
+                    Current Location
+                  </button>
+                </div>
+
+                <!-- GPS Status & Accuracy Feedback -->
+                <div
+                  id="gpsStatus"
+                  class="alert alert-light border mt-3 d-none small"
+                ></div>
+              </div>
+
+              <!-- Option 2: Farm / Village Search -->
+              <div class="app-panel">
+                <div class="panel-header-row mb-3">
+                  <div class="panel-title">
+                    <i class="fas fa-search-location text-primary"></i> Option
+                    2: Search Farm / Village
+                  </div>
+                  <span class="badge bg-primary-subtle text-primary border"
+                    >Geocoding Search</span
+                  >
+                </div>
+
+                <p class="text-muted small mb-3">
+                  Search for your village, town, mandal, or district. Select the
+                  matching result from the list to view exact coordinates on the
+                  map.
+                </p>
+
+                <div class="input-group mb-3">
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="locationSearchInput"
+                    placeholder="Enter village, town, or district (e.g. Madurai, Tamil Nadu)..."
+                    aria-label="Search farm location"
+                  />
+                  <button
+                    class="btn btn-primary fw-semibold px-4"
+                    type="button"
+                    id="searchLocationBtn"
+                  >
+                    <i class="fas fa-search me-1"></i> Search
+                  </button>
+                </div>
+
+                <!-- Search Status Feedback -->
+                <div
+                  id="searchStatus"
+                  class="alert alert-light border d-none small mb-3"
+                ></div>
+
+                <!-- Search Results List -->
+                <div id="searchResultsContainer" class="d-none">
+                  <h6 class="fw-bold text-dark small mb-2">
+                    <i class="fas fa-list-ul me-1"></i> Matching Locations:
+                  </h6>
+                  <div
+                    id="searchResultsList"
+                    class="border rounded-3 bg-white shadow-sm overflow-hidden"
+                    style="max-height: 240px; overflow-y: auto"
+                  ></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Column: Verification & Summary Card -->
+            <div class="col-lg-5">
+              <div
+                class="app-panel h-100 d-flex flex-column justify-content-between"
+                id="verifiedLocationCard"
+              >
+                <div>
+                  <div class="panel-header-row mb-3">
+                    <div class="panel-title">
+                      <i class="fas fa-clipboard-check text-success"></i>
+                      Selected Farm Location
+                    </div>
+                    <span id="verifiedSource" class="badge bg-secondary"
+                      >Stored Farm</span
+                    >
+                  </div>
+
+                  <div class="p-3 bg-light rounded-3 border mb-3">
+                    <div
+                      class="text-uppercase text-muted fw-bold small mb-1"
+                      style="font-size: 0.72rem; letter-spacing: 0.05em"
+                    >
+                      FARM / VILLAGE NAME
+                    </div>
+                    <h4 class="fw-bold text-dark mb-1" id="verifiedName">
+                      No Farm Location Selected
+                    </h4>
+                    <p
+                      class="text-muted small mb-2 text-break"
+                      id="verifiedDisplay"
+                    >
+                      Please detect your current GPS location, search above, or
+                      pinpoint on the map.
+                    </p>
+
+                    <div class="row g-2 pt-2 border-top">
+                      <div class="col-6">
+                        <span class="text-muted small d-block">Latitude</span>
+                        <strong
+                          class="font-monospace text-dark fs-6"
+                          id="verifiedLat"
+                          >—</strong
+                        >
+                      </div>
+                      <div class="col-6">
+                        <span class="text-muted small d-block">Longitude</span>
+                        <strong
+                          class="font-monospace text-dark fs-6"
+                          id="verifiedLon"
+                          >—</strong
+                        >
+                      </div>
+                    </div>
+
+                    <div
+                      class="mt-2 pt-2 border-top small text-muted d-none"
+                      id="accuracyRow"
+                    >
+                      <i class="fas fa-bullseye text-success me-1"></i> Reported
+                      Accuracy: <strong id="verifiedAccuracy">—</strong>
+                    </div>
+                  </div>
+
+                  <div
+                    class="satellite-preview-card p-3 mb-3 text-center d-flex flex-column justify-content-center"
+                    style="min-height: 120px; border-radius: 8px"
+                  >
+                    <i
+                      class="fas fa-map-marked text-success mb-1"
+                      style="font-size: 1.6rem; opacity: 0.85"
+                    ></i>
+                    <h6 class="fw-bold text-white mb-1">
+                      Geospatial Grounding Active
+                    </h6>
+                    <p class="text-light small mb-0">
+                      Weather, SoilGrids, and Sentinel-2 NDVI bind to these
+                      verified coordinates.
+                    </p>
+                  </div>
+                </div>
+
+                <div>
+                  <button
+                    type="button"
+                    class="btn btn-warning fw-bold w-100 py-2 mb-2"
+                    id="confirmLocationBtn"
+                    disabled
+                  >
+                    <i class="fas fa-check me-1"></i> Confirm & Save This
+                    Location
+                  </button>
+                  <div class="row g-2">
+                    <div class="col-6">
+                      <a
+                        href="weather.html"
+                        class="btn btn-outline-primary btn-sm w-100"
+                      >
+                        <i class="fas fa-cloud-sun me-1"></i> Weather
+                      </a>
+                    </div>
+                    <div class="col-6">
+                      <a
+                        href="satellite.html"
+                        class="btn btn-outline-success btn-sm w-100"
+                      >
+                        <i class="fas fa-satellite me-1"></i> Satellite NDVI
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Section: Interactive Google Map & Draggable Marker -->
+          <section class="app-panel">
+            <div class="panel-header-row mb-2">
+              <div>
+                <div class="panel-title">
+                  <i class="fas fa-map-marked-alt text-success"></i> Farm
+                  Location Map
+                </div>
+                <div class="text-muted small">
+                  View and confirm the selected farm location. Drag the marker
+                  to adjust precise field boundaries.
+                </div>
+              </div>
+              <div class="d-flex align-items-center gap-2">
+                <span
+                  class="badge bg-light text-dark border"
+                  id="mapStatusBadge"
+                >
+                  <i class="fas fa-circle text-warning me-1"></i> Standby
+                </span>
+              </div>
+            </div>
+
+            <!-- Map Status Alert -->
+            <div
+              id="mapConfigAlert"
+              class="alert alert-warning border d-none mb-3"
+            >
+              <div class="d-flex align-items-center">
+                <i class="fas fa-exclamation-triangle me-2 fs-5 text-warning"></i>
+                <div>
+                  <strong>Map Notice:</strong>
+                  <span id="mapConfigMsg"
+                    >Map tiles could not be loaded. Please check your internet connection.</span
+                  >
+                </div>
+              </div>
+            </div>
+
+            <!-- Map Controls & Farm Boundary Toolbar -->
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3 p-2 bg-light rounded-3 border">
+              <!-- Map Perspective Views -->
+              <div class="d-flex align-items-center flex-wrap gap-1">
+                <span class="small fw-bold text-secondary me-1"><i class="fas fa-layer-group text-primary me-1"></i> View:</span>
+                <div class="btn-group btn-group-sm" role="group">
+                  <button type="button" class="btn btn-outline-secondary active" id="layerOsmBtn" title="OpenStreetMap standard view">
+                    <i class="fas fa-map me-1"></i> Standard
+                  </button>
+                  <button type="button" class="btn btn-outline-secondary" id="layerSatelliteBtn" title="High-resolution Satellite Aerial View">
+                    <i class="fas fa-satellite me-1"></i> Satellite
+                  </button>
+                  <button type="button" class="btn btn-outline-secondary" id="layerTerrainBtn" title="3D Topographic Terrain & Relief">
+                    <i class="fas fa-mountain me-1"></i> 3D Terrain
+                  </button>
+                </div>
+              </div>
+
+              <!-- Farm Boundary Drawing Tools -->
+              <div class="d-flex align-items-center flex-wrap gap-2">
+                <span class="badge bg-white text-dark border px-2 py-1 small" id="boundaryInfoPill">
+                  <i class="fas fa-draw-polygon text-success me-1"></i> Boundary: <strong id="boundaryAcreageText">Not Drawn</strong>
+                </span>
+                <button type="button" class="btn btn-sm btn-outline-success" id="drawBoundaryBtn">
+                  <i class="fas fa-pen-nib me-1"></i> Draw Boundary
+                </button>
+                <button type="button" class="btn btn-sm btn-success d-none" id="saveBoundaryBtn">
+                  <i class="fas fa-save me-1"></i> Save Boundary
+                </button>
+                <button type="button" class="btn btn-sm btn-outline-danger d-none" id="clearBoundaryBtn">
+                  <i class="fas fa-trash-alt me-1"></i> Clear
+                </button>
+              </div>
+            </div>
+
+            <!-- Interactive Map Viewport (Leaflet + OpenStreetMap) -->
+            <div
+              class="position-relative border rounded-3 overflow-hidden shadow-sm mb-3"
+            >
+              <div
+                id="farmMap"
+                style="
+                  height: 440px;
+                  width: 100%;
+                  background: #e9ecef;
+                  position: relative;
+                  z-index: 1;
+                "
+              >
+              </div>
+            </div>
+
+            <!-- Coordinate Readout & Agricultural Disclaimer Banner -->
+            <div
+              class="p-3 bg-light rounded-3 border d-flex flex-wrap justify-content-between align-items-center gap-2"
+            >
+              <div class="d-flex flex-wrap align-items-center gap-3">
+                <div class="small">
+                  <span class="text-muted">Latitude:</span>
+                  <strong
+                    class="font-monospace text-dark ms-1"
+                    id="mapLatReadout"
+                    >—</strong
+                  >
+                </div>
+                <div class="small">
+                  <span class="text-muted">Longitude:</span>
+                  <strong
+                    class="font-monospace text-dark ms-1"
+                    id="mapLonReadout"
+                    >—</strong
+                  >
+                </div>
+                <div class="small">
+                  <span class="text-muted">Action:</span>
+                  <span
+                    class="badge bg-primary-subtle text-primary ms-1"
+                    id="mapActionHint"
+                    >Drag marker or click map to adjust farm position</span
+                  >
+                </div>
+              </div>
+
+              <div class="small text-muted">
+                <i class="fas fa-info-circle text-primary me-1"></i> Interactive
+                OpenStreetMap basemap. Drag marker to reposition field boundaries.
+                Remote sensing NDVI is derived from Sentinel-2 Level-2A.
+              </div>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Leaflet JS for OpenStreetMap -->
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""
+    ></script>
+    <script src="js/auth.js"></script>
+    <script src="js/farmState.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/location.js"></script>
+  </body>
+</html>

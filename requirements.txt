@@ -1,0 +1,13 @@
+Flask==3.0.3
+requests==2.32.3
+python-dotenv==1.0.1
+PyMuPDF
+sentence-transformers
+chromadb
+numpy
+torch
+transformers
+huggingface-hub
+groq
+openai
+tifffile>=2024.0.0

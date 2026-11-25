@@ -1,0 +1,143 @@
+<USER_REQUEST>
+PROJECT: AgriTwin-RAG
+TASK: Fix end-to-end current-location synchronization, replace mock data,
+implement a 3D farm map, and connect real farm data to RAG, Farm Risk,
+Model Evaluation, Explainable AI, and Farm Reports.
+
+I have an existing, partially implemented AgriTwin-RAG capstone project.
+
+I do NOT want a new project.
+
+I want to FIX and UPGRADE my existing application.
+
+========================================================
+1. MY MAIN PROBLEM
+========================================================
+
+My application currently displays my old farm location, Srivilliputhur,
+even when I take my laptop to another location.
+
+When I click "Use My Current Location", I want the application to:
+
+1. Request the browser's current geolocation.
+2. Obtain the new latitude and longitude.
+3. Reverse-geocode the coordinates to obtain a place name.
+4. Replace the previous active farm location.
+5. Update every module using the new coordinates.
+6. Fetch new weather information.
+7. Refresh available soil information.
+8. Refresh satellite imagery and NDVI when new data is available.
+9. Recalculate Farm Risk using valid current data.
+10. Update the Digital Twin.
+11. Update the context used by the RAG Assistant.
+12. Update Explainable AI with actual recommendation evidence.
+13. Update Model Evaluation using actual experiments.
+14. Generate Farm Reports from the actual current farm state.
+15. Update the map marker and farm boundary.
+16. Remove old location-dependent values from active application state.
+
+The old location must NOT continue appearing as the active location after
+a successful location change.
+
+Do not hard-code Srivilliputhur or any other location.
+
+========================================================
+2. FIRST AUDIT THE EXISTING PROJECT
+========================================================
+
+Before modifying code, inspect the complete project.
+
+Inspect, if present:
+
+- app.py
+- weather.py
+- js/api.js
+- js/app.js
+- js/mockData.js
+- location.html
+- 
+<truncated 25969 bytes>
+===============================================
+
+Work in the following order:
+
+PHASE 1:
+Audit current location and mock-data architecture.
+
+PHASE 2:
+Fix "Use My Current Location" and central Farm State.
+
+PHASE 3:
+Fix stale data, caching, and request race conditions.
+
+PHASE 4:
+Connect weather to the new location.
+
+PHASE 5:
+Connect available soil data.
+
+PHASE 6:
+Connect real satellite/NDVI data.
+
+PHASE 7:
+Update Digital Twin and shared dashboard.
+
+PHASE 8:
+Fix Farm Risk.
+
+PHASE 9:
+Connect current Farm State to RAG Assistant.
+
+PHASE 10:
+Remove mock XAI and Recommendations.
+
+PHASE 11:
+Implement real Model Evaluation.
+
+PHASE 12:
+Implement real Farm Reports.
+
+PHASE 13:
+Upgrade the map with a genuine 3D view where supported.
+
+PHASE 14:
+Run all regression and integration tests.
+
+After each phase, report the files changed and test results.
+
+Do not modify every module in one destructive operation.
+
+========================================================
+23. FINAL REPORT
+========================================================
+
+At the end, provide:
+
+1. Root cause of the old-location problem.
+2. Files inspected.
+3. Files changed.
+4. Files created.
+5. How the new location is stored.
+6. How the new location refreshes every module.
+7. How stale data is prevented.
+8. Weather integration status.
+9. Soil integration status.
+10. Satellite/NDVI integration status.
+11. Map/3D implementation status.
+12. Farm Risk implementation status.
+13. RAG integration status.
+14. XAI implementation status.
+15. Model Evaluation implementation status.
+16. Report implementation status.
+17. Test results with PASS/FAIL.
+18. Remaining limitations.
+19. Exact commands to run the application.
+
+Never claim a feature is implemented unless it has actually been tested.
+
+Start with PHASE 1 only. Audit the project first and report the findings
+before making code changes.
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-10-18T08:27:00+05:30.
+</ADDITIONAL_METADATA>

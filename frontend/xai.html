@@ -1,0 +1,546 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AgriTwin-RAG — Explainable AI (XAI) & Agronomic Decision Factors</title>
+    <!-- Font Awesome Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- Bootstrap 5 Grid & Utilities -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Master AgriTech Design System -->
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="app-layout">
+            <!-- ==================== LEFT SIDEBAR ==================== -->
+      <aside class="app-sidebar" id="appSidebar">
+        <!-- Brand Header -->
+        <div class="sidebar-brand">
+          <a href="dashboard.html" class="brand-logo-wrap">
+            <div class="brand-icon">
+              <i class="fas fa-leaf"></i>
+            </div>
+            <div class="brand-text">
+              <div class="brand-title">
+                AgriTwin <span class="badge-rag">RAG</span>
+              </div>
+              <div class="brand-subtitle">Precision Digital Twin</div>
+            </div>
+          </a>
+          <button
+            class="sidebar-collapse-btn d-none d-lg-flex"
+            id="sidebarCollapseBtn"
+            title="Toggle Sidebar"
+          >
+            <i class="fas fa-chevron-left"></i>
+          </button>
+        </div>
+
+        <!-- Navigation Sections -->
+        <div class="sidebar-nav-container">
+          <div class="nav-section-label">OVERVIEW</div>
+          <ul class="sidebar-menu">
+            <li>
+              <a href="dashboard.html" class="nav-item">
+                <i class="fas fa-th-large nav-icon"></i>
+                <span class="nav-label">Dashboard</span>
+              </a>
+            </li>
+          </ul>
+
+          <div class="nav-section-label">FARM</div>
+          <ul class="sidebar-menu">
+            <li>
+              <a href="digital-twin.html" class="nav-item">
+                <i class="fas fa-cube nav-icon"></i>
+                <span class="nav-label">Digital Twin</span>
+              </a>
+            </li>
+            <li>
+              <a href="weather.html" class="nav-item">
+                <i class="fas fa-cloud-sun nav-icon"></i>
+                <span class="nav-label">Weather</span>
+              </a>
+            </li>
+            <li>
+              <a href="soil.html" class="nav-item">
+                <i class="fas fa-seedling nav-icon"></i>
+                <span class="nav-label">Soil Intelligence</span>
+              </a>
+            </li>
+            <li>
+              <a href="satellite.html" class="nav-item">
+                <i class="fas fa-satellite nav-icon"></i>
+                <span class="nav-label">Satellite & NDVI</span>
+              </a>
+            </li>
+            <li>
+              <a href="location.html" class="nav-item">
+                <i class="fas fa-map-marker-alt nav-icon"></i>
+                <span class="nav-label">Farm Location</span>
+              </a>
+            </li>
+          </ul>
+
+          <div class="nav-section-label">AI</div>
+          <ul class="sidebar-menu">
+            <li>
+              <a href="crop-disease.html" class="nav-item">
+                <i class="fas fa-virus nav-icon"></i>
+                <span class="nav-label">Crop Disease</span>
+              </a>
+            </li>
+            <li>
+              <a href="prediction.html" class="nav-item">
+                <i class="fas fa-shield-alt nav-icon"></i>
+                <span class="nav-label">Farm Risk</span>
+              </a>
+            </li>
+            <li>
+              <a href="assistant.html" class="nav-item">
+                <i class="fas fa-robot nav-icon"></i>
+                <span class="nav-label">RAG Assistant</span>
+              </a>
+            </li>
+            <li>
+              <a href="recommendations.html" class="nav-item">
+                <i class="fas fa-clipboard-list nav-icon"></i>
+                <span class="nav-label">Recommendations</span>
+              </a>
+            </li>
+          </ul>
+
+          <div class="nav-section-label">REPORTS</div>
+          <ul class="sidebar-menu">
+            <li>
+              <a href="reports.html" class="nav-item">
+                <i class="fas fa-file-alt nav-icon"></i>
+                <span class="nav-label">Farm Report</span>
+              </a>
+            </li>
+          </ul>
+
+          <div class="nav-section-label">RESEARCH / TECHNICAL</div>
+          <ul class="sidebar-menu">
+            <li>
+              <a href="evaluation.html" class="nav-item">
+                <i class="fas fa-chart-line nav-icon"></i>
+                <span class="nav-label">Model Evaluation</span>
+              </a>
+            </li>
+            <li>
+              <a href="xai.html" class="nav-item active">
+                <i class="fas fa-lightbulb nav-icon"></i>
+                <span class="nav-label">Explainable AI (XAI)</span>
+              </a>
+            </li>
+            <li>
+              <a href="settings.html" class="nav-item">
+                <i class="fas fa-cog nav-icon"></i>
+                <span class="nav-label">Settings & Provenance</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Sidebar User Footer -->
+        <div class="sidebar-footer">
+          <div class="user-profile-widget">
+            <div class="user-avatar-circle" id="userAvatar">F</div>
+            <div class="user-info">
+              <div class="user-name" id="userName">Farmer Profile</div>
+              <div class="user-meta" id="userMeta">AgriTwin User</div>
+            </div>
+            <a
+              href="settings.html"
+              class="user-action-btn"
+              title="Settings & Provenance"
+            >
+              <i class="fas fa-cog"></i>
+            </a>
+            <button class="user-action-btn btn-logout" id="logoutBtn" title="Sign Out / Logout" style="background:none;border:none;color:#ef4444;cursor:pointer;padding:6px;margin-left:4px;">
+              <i class="fas fa-sign-out-alt"></i>
+            </button>
+          </div>
+        </div>
+      </aside>
+
+      <!-- ==================== MAIN CONTENT ==================== -->
+      <div class="app-main-wrapper">
+        <header class="app-topbar">
+          <div class="topbar-left">
+            <button
+              class="topbar-toggle-btn"
+              id="mobileMenuBtn"
+              aria-label="Toggle Sidebar"
+            >
+              <i class="fas fa-bars"></i>
+            </button>
+            <div class="page-title-wrap">
+              <h1 class="page-title">Explainable AI (XAI)</h1>
+              <nav class="breadcrumb-trail">
+                <span>AI & Insights</span>
+                <i class="fas fa-chevron-right breadcrumb-sep"></i>
+                <span class="breadcrumb-active">Explainable AI</span>
+              </nav>
+            </div>
+          </div>
+
+          <div class="topbar-right">
+            <a href="location.html" class="location-pill" id="farmLocation">
+              <i class="fas fa-map-marker-alt text-success"></i>
+              <span id="topbarLocationText">Set Farm Location</span>
+            </a>
+            <button class="topbar-icon-btn" title="Notifications">
+              <i class="far fa-bell"></i>
+              <span class="notification-dot"></span>
+            </button>
+            <div class="topbar-user-dropdown-wrap" id="userMenuWrapper">
+              <button
+                class="topbar-user-btn"
+                id="userMenuBtn"
+                type="button"
+                aria-expanded="false"
+                aria-label="Farmer profile menu"
+              >
+                <div class="user-avatar-sm" id="topbarAvatar">F</div>
+                <div class="user-details d-none d-md-block text-start">
+                  <div class="user-fullname" id="topbarName">Farmer</div>
+                  <div class="user-role" id="topbarRole">AgriTwin Live</div>
+                </div>
+                <i class="fas fa-chevron-down dropdown-caret"></i>
+              </button>
+              <div class="user-dropdown-menu" id="userDropdownMenu">
+                <div class="dropdown-user-header">
+                  <div class="user-avatar-sm" id="dropdownAvatar">F</div>
+                  <div class="dropdown-user-info">
+                    <div class="dropdown-name" id="dropdownName">Farmer</div>
+                    <div class="dropdown-sub" id="dropdownSub">Authenticated Farmer</div>
+                  </div>
+                </div>
+                <div class="dropdown-divider"></div>
+                <a href="settings.html" class="dropdown-item">
+                  <i class="fas fa-user-cog"></i>
+                  <span>My Account & Settings</span>
+                </a>
+                <a href="location.html" class="dropdown-item">
+                  <i class="fas fa-map-marker-alt"></i>
+                  <span>Farm Coordinates</span>
+                </a>
+                <div class="dropdown-divider"></div>
+                <button type="button" class="dropdown-item text-danger btn-logout" id="topbarLogoutBtn">
+                  <i class="fas fa-sign-out-alt"></i>
+                  <span>Sign Out / Logout</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <main class="app-content">
+          <!-- Page Header -->
+          <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+            <div>
+              <h2 class="fw-bold text-dark mb-1">EXPLAINABLE AI (XAI) & FACTOR PROVENANCE</h2>
+              <p class="text-muted mb-0">Transparent scientific attribution explaining why AI risk predictions and advisories are produced, including remote sensing, weather factors, and Grad-CAM visual attention.</p>
+            </div>
+            <span class="badge bg-success-subtle text-success px-3 py-2 border"><i class="fas fa-check-circle me-1"></i> Explainable Agro-Intelligence</span>
+          </div>
+
+          <!-- 4 Core AI Risk Overview -->
+          <div class="metrics-row-5 mb-4" style="grid-template-columns: repeat(4, 1fr);">
+            <div class="metric-card">
+              <div class="metric-card-top">
+                <span class="metric-name">Irrigation Risk</span>
+                <div class="metric-icon-wrap icon-wrap-rose"><i class="fas fa-tint-slash"></i></div>
+              </div>
+              <div class="metric-value-row">
+                <span class="metric-big-num" id="xaiIrrigRisk">--</span>
+              </div>
+              <div class="metric-status-sub" id="xaiIrrigSub">Soil moisture & VPD</div>
+            </div>
+
+            <div class="metric-card">
+              <div class="metric-card-top">
+                <span class="metric-name">Crop Stress Risk</span>
+                <div class="metric-icon-wrap icon-wrap-orange"><i class="fas fa-seedling"></i></div>
+              </div>
+              <div class="metric-value-row">
+                <span class="metric-big-num" id="xaiStressRisk">--</span>
+              </div>
+              <div class="metric-status-sub" id="xaiStressSub">Sentinel-2 NDVI signal</div>
+            </div>
+
+            <div class="metric-card">
+              <div class="metric-card-top">
+                <span class="metric-name">Disease Risk</span>
+                <div class="metric-icon-wrap icon-wrap-teal"><i class="fas fa-virus"></i></div>
+              </div>
+              <div class="metric-value-row">
+                <span class="metric-big-num" id="xaiDiseaseRisk">--</span>
+              </div>
+              <div class="metric-status-sub" id="xaiDiseaseSub">Microclimate humidity pressure</div>
+            </div>
+
+            <div class="metric-card">
+              <div class="metric-card-top">
+                <span class="metric-name">Overall Farm Risk</span>
+                <div class="metric-icon-wrap icon-wrap-emerald"><i class="fas fa-shield-alt"></i></div>
+              </div>
+              <div class="metric-value-row">
+                <span class="metric-big-num" id="xaiOverallRisk">--</span>
+              </div>
+              <div class="metric-status-sub" id="xaiOverallSub">Composite risk assessment</div>
+            </div>
+          </div>
+
+          <!-- Why Did AI Make This Prediction? Section -->
+          <section class="app-panel mb-4">
+            <div class="panel-header-row">
+              <div class="panel-title">
+                <i class="fas fa-question-circle text-success"></i> Why Did the AI Make This Prediction?
+              </div>
+              <span class="badge bg-light text-dark border" id="xaiTimestamp">Updated: Latest Telemetry</span>
+            </div>
+
+            <div class="row g-4 align-items-stretch">
+              <!-- Left: Contributing Factors -->
+              <div class="col-lg-6">
+                <div class="p-3 bg-light rounded-3 border h-100">
+                  <h6 class="fw-bold text-dark mb-3">
+                    <i class="fas fa-sliders-h text-success me-1"></i> Actual Contributing Telemetry Factors
+                  </h6>
+                  <div id="xaiFactorsList">
+                    <div class="p-3 bg-white rounded border mb-2">
+                      <div class="d-flex justify-content-between align-items-center mb-1">
+                        <strong class="text-dark">• Current Temperature:</strong>
+                        <span class="badge bg-light text-dark border" id="xaiTempVal">--°C</span>
+                      </div>
+                      <div class="text-muted small">OpenWeather live observation for active farm coordinates.</div>
+                    </div>
+                    <div class="p-3 bg-white rounded border mb-2">
+                      <div class="d-flex justify-content-between align-items-center mb-1">
+                        <strong class="text-dark">• Relative Humidity:</strong>
+                        <span class="badge bg-light text-dark border" id="xaiHumVal">--%</span>
+                      </div>
+                      <div class="text-muted small">Atmospheric relative humidity affecting spore germination.</div>
+                    </div>
+                    <div class="p-3 bg-white rounded border mb-2">
+                      <div class="d-flex justify-content-between align-items-center mb-1">
+                        <strong class="text-dark">• Soil Moisture:</strong>
+                        <span class="badge bg-light text-dark border" id="xaiMoistVal">--%</span>
+                      </div>
+                      <div class="text-muted small">ISRIC SoilGrids 2.0 volumetric root-zone water content.</div>
+                    </div>
+                    <div class="p-3 bg-white rounded border mb-2">
+                      <div class="d-flex justify-content-between align-items-center mb-1">
+                        <strong class="text-dark">• Sentinel-2 NDVI:</strong>
+                        <span class="badge bg-light text-dark border" id="xaiNdviVal">--</span>
+                      </div>
+                      <div class="text-muted small">Canopy spectral vigor (NDVI indicates vegetative biomass, not pathogen diagnosis).</div>
+                    </div>
+                    <div class="p-3 bg-white rounded border">
+                      <div class="d-flex justify-content-between align-items-center mb-1">
+                        <strong class="text-dark">• Crop & Growth Stage:</strong>
+                        <span class="badge bg-success-subtle text-success border" id="xaiCropVal">Rice • Flowering</span>
+                      </div>
+                      <div class="text-muted small">Phenological stage dictates physiological moisture sensitivity.</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Right: Natural Language Agronomic Explanation & Provenance -->
+              <div class="col-lg-6">
+                <div class="p-4 rounded-3 text-white h-100 d-flex flex-column justify-content-between" style="background: linear-gradient(135deg, #0d2e1f 0%, #154e35 100%);">
+                  <div>
+                    <span class="badge bg-success text-white px-2 py-1 small mb-2"><i class="fas fa-book-reader me-1"></i> ICAR Agronomic Synthesis</span>
+                    <h5 class="fw-bold mb-3">Evidence-Based Interpretation</h5>
+                    <p class="text-light small mb-3" id="xaiExplanationText">
+                      Evaluating active telemetry against ICAR physiological packages of practices...
+                    </p>
+                    <hr class="border-secondary opacity-50 my-3">
+                    <h6 class="fw-bold text-light small mb-2"><i class="fas fa-database me-1"></i> Data Provenance & Methodology:</h6>
+                    <div class="small text-light opacity-75">
+                      <div><strong>Weather:</strong> OpenWeather (Real-time telemetry)</div>
+                      <div><strong>Soil:</strong> ISRIC SoilGrids 2.0 (Spatial 250m profile)</div>
+                      <div><strong>Satellite:</strong> Sentinel-2 Level-2A (ESA / Copernicus)</div>
+                      <div><strong>Knowledge:</strong> ICAR Authoritative Documents</div>
+                      <div><strong>AI Engine:</strong> Biophysical & Phenological Evidence-Based Assessment</div>
+                    </div>
+                  </div>
+
+                  <div class="d-flex gap-2 mt-3">
+                    <a href="assistant.html" class="btn btn-sm btn-success fw-bold"><i class="fas fa-robot me-1"></i> Consult AI Assistant</a>
+                    <a href="recommendations.html" class="btn btn-sm btn-outline-light"><i class="fas fa-clipboard-list me-1"></i> View Recommendations</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Disease Model Attention: Grad-CAM Section -->
+          <section class="app-panel">
+            <div class="panel-header-row">
+              <div class="panel-title">
+                <i class="fas fa-microscope text-primary"></i> Neural Network Attention Mapping (Grad-CAM)
+              </div>
+              <span class="badge bg-light text-dark border">MobileNetV2 Layer Attention</span>
+            </div>
+
+            <div class="row g-4 align-items-center">
+              <div class="col-md-6">
+                <p class="text-secondary small mb-3">
+                  For rice leaf disease image classification, <strong>Grad-CAM (Gradient-weighted Class Activation Mapping)</strong> visualizes the exact spatial regions of the leaf that influenced the neural network's final classification layer.
+                </p>
+                <div class="p-3 bg-light rounded-3 border small">
+                  <strong><i class="fas fa-info-circle text-primary me-1"></i> Why Grad-CAM Matters:</strong>
+                  <div class="text-muted mt-1">
+                    It verifies that the model makes predictions by focusing on pathological lesions, necrotic margins, and discoloration patches on the leaf itself rather than background soil, sunlight glare, or image artifacts.
+                  </div>
+                </div>
+                <div class="mt-3">
+                  <a href="crop-disease.html" class="btn btn-sm btn-outline-success"><i class="fas fa-camera me-1"></i> Upload Leaf Image & Test Grad-CAM</a>
+                </div>
+              </div>
+              <div class="col-md-6 text-center">
+                <div class="p-3 bg-light rounded border d-inline-block w-100" style="max-width: 360px;">
+                  <div class="fw-bold small text-dark mb-2"><i class="fas fa-eye text-success me-1"></i> Grad-CAM Visual Attention Overlay</div>
+                  <div id="gradcamDemoContainer" class="rounded overflow-hidden border bg-dark" style="height: 220px; display: flex; align-items: center; justify-content: center;">
+                    <span class="text-muted small p-3">Upload an image in the <a href="crop-disease.html" class="text-success fw-semibold">Crop Disease</a> module to inspect dynamic Grad-CAM heatmaps.</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/farmState.js"></script>
+    <script src="js/api.js"></script>
+    <script>
+      function getRiskBadgeClass(riskLevel) {
+        if (!riskLevel) return "text-muted";
+        const r = String(riskLevel).toUpperCase();
+        if (r === "HIGH") return "text-danger";
+        if (r === "MEDIUM" || r === "MODERATE") return "text-warning";
+        if (r === "LOW") return "text-success";
+        return "text-muted";
+      }
+
+      async function updateXaiPage() {
+        const state = typeof FarmState !== "undefined" ? FarmState.get() : null;
+        if (!state) return;
+
+        // Topbar
+        const locName = state.location.place_name || (state.location.latitude ? `Farm (${state.location.latitude.toFixed(4)}, ${state.location.longitude.toFixed(4)})` : "Set Farm Location");
+        const topbarLoc = document.getElementById("topbarLocationText");
+        if (topbarLoc) topbarLoc.textContent = locName;
+
+        const moisture = state.soil.moisture;
+        const temp = state.weather.temperature;
+        const hum = state.weather.humidity;
+        const ndvi = state.satellite.ndvi;
+        const crop = state.crop.name || "Rice";
+        const stage = state.crop.growth_stage || "Flowering";
+
+        const tempEl = document.getElementById("xaiTempVal");
+        if (tempEl) tempEl.textContent = temp !== null ? `${temp.toFixed(1)}°C` : "Unavailable";
+
+        const humEl = document.getElementById("xaiHumVal");
+        if (humEl) humEl.textContent = hum !== null ? `${hum.toFixed(0)}%` : "Unavailable";
+
+        const moistEl = document.getElementById("xaiMoistVal");
+        if (moistEl) moistEl.textContent = moisture !== null ? `${moisture.toFixed(1)}%` : "Unavailable";
+
+        const ndviEl = document.getElementById("xaiNdviVal");
+        if (ndviEl) ndviEl.textContent = ndvi !== null ? `${ndvi.toFixed(2)} (NDVI)` : "Unavailable";
+
+        const cropEl = document.getElementById("xaiCropVal");
+        if (cropEl) cropEl.textContent = `${crop} • ${stage}`;
+
+        try {
+          const res = await API.getPrediction(state);
+          if (res && res.success) {
+            const risks = res.risks || {};
+            
+            const irrigEl = document.getElementById("xaiIrrigRisk");
+            if (irrigEl) {
+              irrigEl.textContent = risks.irrigation_risk || "UNAVAILABLE";
+              irrigEl.className = `metric-big-num ${getRiskBadgeClass(risks.irrigation_risk)}`;
+            }
+
+            const stressEl = document.getElementById("xaiStressRisk");
+            if (stressEl) {
+              stressEl.textContent = risks.crop_stress_risk || "UNAVAILABLE";
+              stressEl.className = `metric-big-num ${getRiskBadgeClass(risks.crop_stress_risk)}`;
+            }
+
+            const disEl = document.getElementById("xaiDiseaseRisk");
+            if (disEl) {
+              disEl.textContent = risks.disease_risk || "UNAVAILABLE";
+              disEl.className = `metric-big-num ${getRiskBadgeClass(risks.disease_risk)}`;
+            }
+
+            const overEl = document.getElementById("xaiOverallRisk");
+            if (overEl) {
+              overEl.textContent = risks.overall_farm_risk || "UNAVAILABLE";
+              overEl.className = `metric-big-num ${getRiskBadgeClass(risks.overall_farm_risk)}`;
+            }
+
+            const tsEl = document.getElementById("xaiTimestamp");
+            if (tsEl) {
+              tsEl.textContent = `Updated: ${res.timestamp ? new Date(res.timestamp).toLocaleTimeString() : new Date().toLocaleTimeString()}`;
+            }
+
+            const expText = document.getElementById("xaiExplanationText");
+            if (expText && res.factors) {
+              if (res.factors.length > 0) {
+                const summary = res.factors.map(f => `<strong>${f.name}</strong> (${f.value}): ${f.rule}`).join("<br><br>");
+                expText.innerHTML = summary;
+              } else {
+                expText.textContent = "All measured physical telemetry and atmospheric factors satisfy standard ICAR growth guidelines.";
+              }
+            }
+          }
+        } catch (err) {
+          console.error("XAI UI error:", err);
+        }
+
+        // Check if disease observation with Grad-CAM exists in state
+        if (state.disease_observation && state.disease_observation.gradcam && state.disease_observation.gradcam.image_data) {
+          const container = document.getElementById("gradcamDemoContainer");
+          if (container) {
+            container.innerHTML = `<img src="${state.disease_observation.gradcam.image_data}" alt="Grad-CAM" style="width:100%; height:100%; object-fit:contain;">`;
+          }
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        if (typeof FarmState !== "undefined") {
+          FarmState.subscribe(updateXaiPage);
+          updateXaiPage();
+        }
+
+        const mobileMenuBtn = document.getElementById("mobileMenuBtn");
+        const appSidebar = document.getElementById("appSidebar");
+        if (mobileMenuBtn && appSidebar) {
+          mobileMenuBtn.addEventListener("click", () => {
+            appSidebar.classList.toggle("sidebar-open");
+          });
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,912 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AgriTwin-RAG — Soil Intelligence & Rhizosphere Profile</title>
+    <!-- Font Awesome Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- Bootstrap 5 Grid & Utilities -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Master AgriTech Design System -->
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="app-layout">
+      <!-- ==================== LEFT SIDEBAR ==================== -->
+      <aside class="app-sidebar" id="appSidebar">
+        <!-- Brand Header -->
+        <div class="sidebar-brand">
+          <a href="dashboard.html" class="brand-logo-wrap">
+            <div class="brand-icon">
+              <i class="fas fa-leaf"></i>
+            </div>
+            <div class="brand-text">
+              <div class="brand-title">
+                AgriTwin <span class="badge-rag">RAG</span>
+              </div>
+              <div class="brand-subtitle">Precision Digital Twin</div>
+            </div>
+          </a>
+          <button
+            class="sidebar-collapse-btn d-none d-lg-flex"
+            id="sidebarCollapseBtn"
+            title="Toggle Sidebar"
+          >
+            <i class="fas fa-chevron-left"></i>
+          </button>
+        </div>
+
+        <!-- Navigation Sections -->
+        <div class="sidebar-nav-container">
+          <div class="nav-section-label">OVERVIEW</div>
+          <ul class="sidebar-menu">
+            <li>
+              <a href="dashboard.html" class="nav-item">
+                <i class="fas fa-th-large nav-icon"></i>
+                <span class="nav-label">Dashboard</span>
+              </a>
+            </li>
+          </ul>
+
+          <div class="nav-section-label">FARM</div>
+          <ul class="sidebar-menu">
+            <li>
+              <a href="digital-twin.html" class="nav-item">
+                <i class="fas fa-cube nav-icon"></i>
+                <span class="nav-label">Digital Twin</span>
+              </a>
+            </li>
+            <li>
+              <a href="weather.html" class="nav-item">
+                <i class="fas fa-cloud-sun nav-icon"></i>
+                <span class="nav-label">Weather</span>
+              </a>
+            </li>
+            <li>
+              <a href="soil.html" class="nav-item active">
+                <i class="fas fa-seedling nav-icon"></i>
+                <span class="nav-label">Soil Intelligence</span>
+              </a>
+            </li>
+            <li>
+              <a href="satellite.html" class="nav-item">
+                <i class="fas fa-satellite nav-icon"></i>
+                <span class="nav-label">Satellite & NDVI</span>
+              </a>
+            </li>
+            <li>
+              <a href="location.html" class="nav-item">
+                <i class="fas fa-map-marker-alt nav-icon"></i>
+                <span class="nav-label">Farm Location</span>
+              </a>
+            </li>
+          </ul>
+
+          <div class="nav-section-label">AI</div>
+          <ul class="sidebar-menu">
+            <li>
+              <a href="crop-disease.html" class="nav-item">
+                <i class="fas fa-virus nav-icon"></i>
+                <span class="nav-label">Crop Disease</span>
+              </a>
+            </li>
+            <li>
+              <a href="prediction.html" class="nav-item">
+                <i class="fas fa-shield-alt nav-icon"></i>
+                <span class="nav-label">Farm Risk</span>
+              </a>
+            </li>
+            <li>
+              <a href="assistant.html" class="nav-item">
+                <i class="fas fa-robot nav-icon"></i>
+                <span class="nav-label">RAG Assistant</span>
+              </a>
+            </li>
+            <li>
+              <a href="recommendations.html" class="nav-item">
+                <i class="fas fa-clipboard-list nav-icon"></i>
+                <span class="nav-label">Recommendations</span>
+              </a>
+            </li>
+          </ul>
+
+          <div class="nav-section-label">REPORTS</div>
+          <ul class="sidebar-menu">
+            <li>
+              <a href="reports.html" class="nav-item">
+                <i class="fas fa-file-alt nav-icon"></i>
+                <span class="nav-label">Farm Report</span>
+              </a>
+            </li>
+          </ul>
+
+          <div class="nav-section-label">RESEARCH / TECHNICAL</div>
+          <ul class="sidebar-menu">
+            <li>
+              <a href="evaluation.html" class="nav-item">
+                <i class="fas fa-chart-line nav-icon"></i>
+                <span class="nav-label">Model Evaluation</span>
+              </a>
+            </li>
+            <li>
+              <a href="xai.html" class="nav-item">
+                <i class="fas fa-lightbulb nav-icon"></i>
+                <span class="nav-label">Explainable AI (XAI)</span>
+              </a>
+            </li>
+            <li>
+              <a href="settings.html" class="nav-item">
+                <i class="fas fa-cog nav-icon"></i>
+                <span class="nav-label">Settings & Provenance</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Sidebar User Footer -->
+        <div class="sidebar-footer">
+          <div class="user-profile-widget">
+            <div class="user-avatar-circle" id="userAvatar">F</div>
+            <div class="user-info">
+              <div class="user-name" id="userName">Farmer Profile</div>
+              <div class="user-meta" id="userMeta">AgriTwin User</div>
+            </div>
+            <a
+              href="settings.html"
+              class="user-action-btn"
+              title="Settings & Provenance"
+            >
+              <i class="fas fa-cog"></i>
+            </a>
+            <button
+              class="user-action-btn btn-logout"
+              id="logoutBtn"
+              title="Sign Out / Logout"
+              style="
+                background: none;
+                border: none;
+                color: #ef4444;
+                cursor: pointer;
+                padding: 6px;
+                margin-left: 4px;
+              "
+            >
+              <i class="fas fa-sign-out-alt"></i>
+            </button>
+          </div>
+        </div>
+      </aside>
+
+      <!-- ==================== MAIN CONTENT ==================== -->
+      <div class="app-main-wrapper">
+        <header class="app-topbar">
+          <div class="topbar-left">
+            <button
+              class="topbar-toggle-btn"
+              id="mobileMenuBtn"
+              aria-label="Toggle Sidebar"
+            >
+              <i class="fas fa-bars"></i>
+            </button>
+            <div class="page-title-wrap">
+              <h1 class="page-title">Soil Intelligence</h1>
+              <nav class="breadcrumb-trail">
+                <span>Farm Intelligence</span>
+                <i class="fas fa-chevron-right breadcrumb-sep"></i>
+                <span class="breadcrumb-active">Soil</span>
+              </nav>
+            </div>
+          </div>
+
+          <div class="topbar-right">
+            <a href="location.html" class="location-pill" id="farmLocation">
+              <i class="fas fa-map-marker-alt text-success"></i>
+              <span id="topbarLocationText">Set Farm Location</span>
+            </a>
+            <button class="topbar-icon-btn" title="Notifications">
+              <i class="far fa-bell"></i>
+              <span class="notification-dot"></span>
+            </button>
+            <div class="topbar-user-dropdown-wrap" id="userMenuWrapper">
+              <button
+                class="topbar-user-btn"
+                id="userMenuBtn"
+                type="button"
+                aria-expanded="false"
+                aria-label="Farmer profile menu"
+              >
+                <div class="user-avatar-sm" id="topbarAvatar">F</div>
+                <div class="user-details d-none d-md-block text-start">
+                  <div class="user-fullname" id="topbarName">Farmer</div>
+                  <div class="user-role" id="topbarRole">AgriTwin Live</div>
+                </div>
+                <i class="fas fa-chevron-down dropdown-caret"></i>
+              </button>
+              <div class="user-dropdown-menu" id="userDropdownMenu">
+                <div class="dropdown-user-header">
+                  <div class="user-avatar-sm" id="dropdownAvatar">F</div>
+                  <div class="dropdown-user-info">
+                    <div class="dropdown-name" id="dropdownName">Farmer</div>
+                    <div class="dropdown-sub" id="dropdownSub">
+                      Authenticated Farmer
+                    </div>
+                  </div>
+                </div>
+                <div class="dropdown-divider"></div>
+                <a href="settings.html" class="dropdown-item">
+                  <i class="fas fa-user-cog"></i>
+                  <span>My Account & Settings</span>
+                </a>
+                <a href="location.html" class="dropdown-item">
+                  <i class="fas fa-map-marker-alt"></i>
+                  <span>Farm Coordinates</span>
+                </a>
+                <div class="dropdown-divider"></div>
+                <button
+                  type="button"
+                  class="dropdown-item text-danger btn-logout"
+                  id="topbarLogoutBtn"
+                >
+                  <i class="fas fa-sign-out-alt"></i>
+                  <span>Sign Out / Logout</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <main class="app-content">
+          <!-- Farm Location Not Configured Banner (Hidden by default) -->
+          <div
+            id="soilNoLocationBanner"
+            class="alert alert-warning border-0 shadow-sm mb-4 d-none"
+          >
+            <div
+              class="d-flex align-items-center justify-content-between flex-wrap gap-2"
+            >
+              <div>
+                <i class="fas fa-map-marker-alt fs-5 me-2"></i>
+                <strong>Farm location is not configured.</strong>
+                <div class="small mt-1">
+                  Please select or detect your farm location to link live ISRIC
+                  SoilGrids pedological data.
+                </div>
+              </div>
+              <a
+                href="location.html"
+                class="btn btn-sm btn-dark px-3 fw-bold flex-shrink-0"
+              >
+                <i class="fas fa-location-crosshairs me-1"></i> Set Farm
+                Location
+              </a>
+            </div>
+          </div>
+
+          <!-- Soil Error State Banner (Hidden by default) -->
+          <div id="soilErrorContainer" class="weather-error-banner mb-4 d-none">
+            <div class="d-flex flex-column align-items-center gap-2">
+              <i class="fas fa-exclamation-triangle fs-3 text-danger"></i>
+              <h6 class="fw-bold mb-0">
+                Soil data is temporarily unavailable.
+              </h6>
+              <p class="small text-muted mb-2" id="soilErrorMessage">
+                Unable to retrieve modelled soil data from ISRIC SoilGrids.
+              </p>
+              <div class="d-flex gap-2 flex-wrap justify-content-center">
+                <button
+                  class="btn btn-sm btn-outline-danger px-4 rounded-pill fw-semibold"
+                  id="retrySoilBtn"
+                >
+                  <i class="fas fa-sync-alt me-1"></i> Retry
+                </button>
+                <a
+                  href="location.html"
+                  class="btn btn-sm btn-outline-secondary px-4 rounded-pill fw-semibold"
+                >
+                  <i class="fas fa-map-marker-alt me-1"></i> Set Farm Location
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Soil Overview Header Meta -->
+          <div
+            class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2"
+          >
+            <div>
+              <h2 class="fw-bold text-dark mb-1">
+                SOIL INTELLIGENCE & RHIZOSPHERE PROFILE
+              </h2>
+              <div class="d-flex align-items-center gap-2 mt-1 flex-wrap">
+                <span
+                  class="badge bg-light text-dark border font-monospace"
+                  id="soilCoordsBadge"
+                >
+                  <i class="fas fa-crosshairs text-success me-1"></i>
+                  <span id="soilCoordsText">Coordinates: —</span>
+                </span>
+                <span class="badge bg-success-subtle text-success border"
+                  ><i class="fas fa-database me-1"></i> Source: ISRIC SoilGrids
+                  2.0</span
+                >
+                <span class="badge bg-light text-muted border small"
+                  ><i class="fas fa-layer-group text-primary me-1"></i> Depth:
+                  0–5 cm (Topsoil)</span
+                >
+                <span class="badge bg-light text-muted border small"
+                  ><i class="fas fa-globe text-secondary me-1"></i> Spatial Res:
+                  ~250 m</span
+                >
+              </div>
+            </div>
+            <span
+              class="badge bg-success-subtle text-success px-3 py-2 border"
+              id="soilStatusBadge"
+            >
+              <i class="fas fa-check-circle me-1"></i> Gridded Soil Profile
+              Linked
+            </span>
+          </div>
+
+          <!-- 4 Core Soil KPI Cards -->
+          <div
+            class="metrics-row-5 mb-4"
+            style="grid-template-columns: repeat(4, 1fr)"
+          >
+            <!-- Water Content -->
+            <div class="metric-card">
+              <div class="metric-card-top">
+                <span class="metric-name">Soil Water Content</span>
+                <div class="metric-icon-wrap icon-wrap-teal">
+                  <i class="fas fa-tint"></i>
+                </div>
+              </div>
+              <div class="metric-value-row">
+                <span class="metric-big-num text-primary" id="soilMoisture"
+                  >--</span
+                >
+                <span class="metric-unit">%</span>
+              </div>
+              <div class="metric-status-sub" id="soilWaterDesc">
+                Field Capacity (33 kPa Suction)
+              </div>
+            </div>
+
+            <!-- Soil pH Balance -->
+            <div class="metric-card">
+              <div class="metric-card-top">
+                <span class="metric-name">Soil pH (0–5 cm)</span>
+                <div class="metric-icon-wrap icon-wrap-emerald">
+                  <i class="fas fa-vial"></i>
+                </div>
+              </div>
+              <div class="metric-value-row">
+                <span class="metric-big-num" id="soilPh">--</span>
+                <span class="metric-unit">pH</span>
+              </div>
+              <div
+                class="metric-status-sub text-success fw-semibold"
+                id="soilPhStatus"
+              >
+                Loading...
+              </div>
+            </div>
+
+            <!-- Organic Carbon -->
+            <div class="metric-card">
+              <div class="metric-card-top">
+                <span class="metric-name">Organic Carbon</span>
+                <div class="metric-icon-wrap icon-wrap-orange">
+                  <i class="fas fa-atom"></i>
+                </div>
+              </div>
+              <div class="metric-value-row">
+                <span class="metric-big-num" id="soilSoc">--</span>
+                <span class="metric-unit">g/kg</span>
+              </div>
+              <div class="metric-status-sub" id="soilSocStatus">Loading...</div>
+            </div>
+
+            <!-- CEC -->
+            <div class="metric-card">
+              <div class="metric-card-top">
+                <span class="metric-name">Cation Exch. Capacity</span>
+                <div class="metric-icon-wrap icon-wrap-teal">
+                  <i class="fas fa-magnet"></i>
+                </div>
+              </div>
+              <div class="metric-value-row">
+                <span class="metric-big-num text-success" id="soilCec">--</span>
+                <span class="metric-unit">cmol(+)/kg</span>
+              </div>
+              <div
+                class="metric-status-sub text-success fw-semibold"
+                id="soilCecStatus"
+              >
+                Nutrient Buffer
+              </div>
+            </div>
+          </div>
+
+          <!-- Soil Profile & Nutrients Grid -->
+          <div class="row g-4 mb-4">
+            <!-- Left: Granulometry & Soil Texture Triangle Breakdown -->
+            <div class="col-lg-6">
+              <div class="app-panel h-100">
+                <div class="panel-header-row">
+                  <div class="panel-title">
+                    <i class="fas fa-shapes text-success"></i> Granulometry &
+                    USDA Texture Class
+                  </div>
+                  <span
+                    class="badge bg-success-subtle text-success border fw-bold"
+                    id="soilTextureBadge"
+                    >Loading...</span
+                  >
+                </div>
+
+                <div class="d-flex flex-column gap-3 mb-4">
+                  <!-- Sand -->
+                  <div>
+                    <div
+                      class="d-flex justify-content-between small fw-bold mb-1"
+                    >
+                      <span>Sand Fraction (> 50 µm)</span>
+                      <span id="soilSandText">--%</span>
+                    </div>
+                    <div class="progress" style="height: 8px">
+                      <div
+                        class="progress-bar bg-warning"
+                        id="soilSandBar"
+                        style="width: 0%"
+                      ></div>
+                    </div>
+                  </div>
+
+                  <!-- Silt -->
+                  <div>
+                    <div
+                      class="d-flex justify-content-between small fw-bold mb-1"
+                    >
+                      <span>Silt Fraction (2–50 µm)</span>
+                      <span id="soilSiltText">--%</span>
+                    </div>
+                    <div class="progress" style="height: 8px">
+                      <div
+                        class="progress-bar bg-info"
+                        id="soilSiltBar"
+                        style="width: 0%"
+                      ></div>
+                    </div>
+                  </div>
+
+                  <!-- Clay -->
+                  <div>
+                    <div
+                      class="d-flex justify-content-between small fw-bold mb-1"
+                    >
+                      <span>Clay Fraction (< 2 µm)</span>
+                      <span id="soilClayText">--%</span>
+                    </div>
+                    <div class="progress" style="height: 8px">
+                      <div
+                        class="progress-bar bg-danger"
+                        id="soilClayBar"
+                        style="width: 0%"
+                      ></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="p-3 bg-light rounded-3 border">
+                  <div class="fw-bold text-dark small mb-1">
+                    <i class="fas fa-info-circle text-primary me-1"></i>
+                    Pedological Structure Interpretation
+                  </div>
+                  <p
+                    class="text-muted small mb-0"
+                    id="soilTextureInterpretation"
+                  >
+                    Analyzing soil physical texture and water retention
+                    characteristics from SoilGrids layers...
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right: Macronutrient Reserve & Physical Density -->
+            <div class="col-lg-6">
+              <div class="app-panel h-100">
+                <div class="panel-header-row">
+                  <div class="panel-title">
+                    <i class="fas fa-flask text-primary"></i> Macronutrient
+                    Reserve & Density
+                  </div>
+                  <span class="badge bg-light text-dark border"
+                    >0–5 cm Depth</span
+                  >
+                </div>
+
+                <div class="d-flex flex-column gap-3 mb-4">
+                  <!-- Total Nitrogen -->
+                  <div>
+                    <div
+                      class="d-flex justify-content-between small fw-bold mb-1"
+                    >
+                      <span>Total Nitrogen (N) Reserve</span>
+                      <span class="text-success" id="soilNitrogenText"
+                        >-- g/kg</span
+                      >
+                    </div>
+                    <div class="progress" style="height: 8px">
+                      <div
+                        class="progress-bar bg-success"
+                        id="soilNitrogenBar"
+                        style="width: 0%"
+                      ></div>
+                    </div>
+                    <div
+                      class="small text-muted mt-1"
+                      style="font-size: 0.75rem"
+                    >
+                      Total chemical nitrogen reserve in topsoil fine earth
+                      fraction.
+                    </div>
+                  </div>
+
+                  <!-- Bulk Density -->
+                  <div>
+                    <div
+                      class="d-flex justify-content-between small fw-bold mb-1"
+                    >
+                      <span>Bulk Density (Fine Earth)</span>
+                      <span class="text-secondary" id="soilBulkDensityText"
+                        >-- kg/dm³</span
+                      >
+                    </div>
+                    <div class="progress" style="height: 8px">
+                      <div
+                        class="progress-bar bg-secondary"
+                        id="soilBulkDensityBar"
+                        style="width: 0%"
+                      ></div>
+                    </div>
+                    <div
+                      class="small text-muted mt-1"
+                      style="font-size: 0.75rem"
+                    >
+                      Standard root-zone compaction threshold: 1.40–1.60 kg/dm³.
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Agronomic Disclaimer Box -->
+                <div class="p-3 bg-light rounded-3 border">
+                  <div class="fw-bold text-dark small mb-1">
+                    <i class="fas fa-seedling text-success me-1"></i> Agronomic
+                    Stoichiometry & NPK Transparency
+                  </div>
+                  <p class="text-muted small mb-2" style="font-size: 0.8rem">
+                    ISRIC SoilGrids provides spatial modelled predictions of
+                    <strong>Total Nitrogen</strong>. Synthetic
+                    immediately-available phosphorus (P) and potassium (K)
+                    fertilizer stoichiometry are not modelled by SoilGrids and
+                    require dedicated field soil testing.
+                  </p>
+                  <a
+                    href="assistant.html"
+                    class="btn btn-sm btn-outline-success"
+                    >Ask RAG Assistant</a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Soil Image Scanner Dropzone (Honest Feature) -->
+          <section class="app-panel">
+            <div class="panel-header-row">
+              <div class="panel-title">
+                <i class="fas fa-camera text-primary"></i> Field Soil Sample
+                Computer Vision Scanner
+              </div>
+              <span class="badge bg-secondary-subtle text-secondary"
+                >Vision Pipeline Integration Phase</span
+              >
+            </div>
+
+            <div
+              class="p-4 rounded-3 text-center border border-dashed bg-light"
+            >
+              <i
+                class="fas fa-cloud-upload-alt text-muted mb-2"
+                style="font-size: 2.5rem"
+              ></i>
+              <h6 class="fw-bold text-dark mb-1">
+                Drop soil sample photo or click to browse
+              </h6>
+              <p class="text-muted small mb-3">
+                Upload field soil camera photos for texture, moisture shade, and
+                salinity classification.
+              </p>
+              <button
+                class="btn btn-outline-secondary btn-sm"
+                onclick="
+                  alert(
+                    'Soil computer vision classifier will be active once vision model pipeline is linked.',
+                  )
+                "
+              >
+                <i class="fas fa-upload me-1"></i> Browse Photo Sample
+              </button>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/farmState.js"></script>
+    <script src="js/api.js?v=soil2"></script>
+    <script>
+      async function loadRealSoilData() {
+        const noLocBanner = document.getElementById("soilNoLocationBanner");
+        const errorContainer = document.getElementById("soilErrorContainer");
+        const errorMsg = document.getElementById("soilErrorMessage");
+
+        const coordsText = document.getElementById("soilCoordsText");
+        if (coordsText) coordsText.textContent = "Loading farm context...";
+        const farmResult = await loadFarmContext();
+        if (!farmResult.success) {
+          if (noLocBanner) noLocBanner.classList.remove("d-none");
+          const bannerText = noLocBanner?.querySelector("strong");
+          if (bannerText)
+            bannerText.textContent = "Farm context is unavailable.";
+          const bannerDetail = noLocBanner?.querySelector(".small");
+          if (bannerDetail) bannerDetail.textContent = farmResult.error;
+          if (coordsText) coordsText.textContent = "Farm context unavailable";
+          return;
+        }
+
+        const location = farmResult.data.location;
+        const savedLat = location.latitude;
+        const savedLon = location.longitude;
+        if (noLocBanner) noLocBanner.classList.add("d-none");
+
+        // Display active coordinates
+        if (coordsText) {
+          coordsText.textContent = `Lat: ${parseFloat(savedLat).toFixed(6)}°, Lon: ${parseFloat(savedLon).toFixed(6)}°`;
+        }
+
+        // Display Farm Location name if saved
+        try {
+          const rawLoc = localStorage.getItem("farmLocation");
+          let farmName = "";
+          if (rawLoc) {
+            const parsed = JSON.parse(rawLoc);
+            if (parsed && parsed.name) farmName = parsed.name;
+          }
+          if (!farmName)
+            farmName = localStorage.getItem("farmLocationName") || "";
+          const topbarLoc = document.getElementById("topbarLocationText");
+          if (topbarLoc && farmName) topbarLoc.textContent = farmName;
+        } catch (e) {}
+
+        try {
+          const data = await getLiveSoilData();
+
+          if (!data || data.success === false) {
+            if (errorContainer) {
+              errorContainer.classList.remove("d-none");
+              if (data && data.error) errorMsg.textContent = data.error;
+            }
+            return;
+          }
+
+          if (errorContainer) errorContainer.classList.add("d-none");
+
+          const s = data.soil || {};
+
+          // 1. Water Content
+          const waterVal =
+            typeof s.water_content === "number" ? s.water_content : null;
+          const waterEl = document.getElementById("soilMoisture");
+          if (waterEl)
+            waterEl.textContent =
+              waterVal !== null ? waterVal.toFixed(1) : "--";
+
+          // 2. Soil pH
+          const phVal = typeof s.ph === "number" ? s.ph : null;
+          const phEl = document.getElementById("soilPh");
+          const phStatusEl = document.getElementById("soilPhStatus");
+          if (phEl) phEl.textContent = phVal !== null ? phVal.toFixed(2) : "--";
+          if (phStatusEl && phVal !== null) {
+            if (phVal < 6.0) {
+              phStatusEl.textContent = "Acidic (Lime Supplementation May Help)";
+              phStatusEl.className =
+                "metric-status-sub text-warning fw-semibold";
+            } else if (phVal <= 7.5) {
+              phStatusEl.textContent = "Optimal Neutral Range (6.0 – 7.5)";
+              phStatusEl.className =
+                "metric-status-sub text-success fw-semibold";
+            } else {
+              phStatusEl.textContent = "Alkaline / Calcareous Soil";
+              phStatusEl.className = "metric-status-sub text-info fw-semibold";
+            }
+          }
+
+          // 3. Organic Carbon
+          const socVal =
+            typeof s.organic_carbon === "number" ? s.organic_carbon : null;
+          const socEl = document.getElementById("soilSoc");
+          const socStatusEl = document.getElementById("soilSocStatus");
+          if (socEl)
+            socEl.textContent = socVal !== null ? socVal.toFixed(2) : "--";
+          if (socStatusEl && socVal !== null) {
+            if (socVal >= 20.0) {
+              socStatusEl.textContent = "High Organic Matter (> 20 g/kg)";
+              socStatusEl.className =
+                "metric-status-sub text-success fw-semibold";
+            } else if (socVal >= 10.0) {
+              socStatusEl.textContent =
+                "Moderate Organic Carbon (10 – 20 g/kg)";
+              socStatusEl.className =
+                "metric-status-sub text-primary fw-semibold";
+            } else {
+              socStatusEl.textContent =
+                "Low Carbon (Organic Amendment Beneficial)";
+              socStatusEl.className =
+                "metric-status-sub text-warning fw-semibold";
+            }
+          }
+
+          // 4. CEC
+          const cecVal = typeof s.cec === "number" ? s.cec : null;
+          const cecEl = document.getElementById("soilCec");
+          const cecStatusEl = document.getElementById("soilCecStatus");
+          if (cecEl)
+            cecEl.textContent = cecVal !== null ? cecVal.toFixed(1) : "--";
+          if (cecStatusEl && cecVal !== null) {
+            if (cecVal >= 20.0) {
+              cecStatusEl.textContent = "High Nutrient Retention Capacity";
+            } else if (cecVal >= 10.0) {
+              cecStatusEl.textContent = "Moderate Nutrient Retention";
+            } else {
+              cecStatusEl.textContent = "Low Nutrient Buffering Capacity";
+            }
+          }
+
+          // 5. Texture Breakdown
+          const sandVal = typeof s.sand === "number" ? s.sand : 0;
+          const siltVal = typeof s.silt === "number" ? s.silt : 0;
+          const clayVal = typeof s.clay === "number" ? s.clay : 0;
+          const textureClass = data.texture_class || "Clay Loam";
+
+          const textureBadge = document.getElementById("soilTextureBadge");
+          if (textureBadge) textureBadge.textContent = textureClass;
+
+          const sandText = document.getElementById("soilSandText");
+          const sandBar = document.getElementById("soilSandBar");
+          if (sandText) sandText.textContent = `${sandVal.toFixed(1)}%`;
+          if (sandBar)
+            sandBar.style.width = `${Math.min(100, Math.max(0, sandVal))}%`;
+
+          const siltText = document.getElementById("soilSiltText");
+          const siltBar = document.getElementById("soilSiltBar");
+          if (siltText) siltText.textContent = `${siltVal.toFixed(1)}%`;
+          if (siltBar)
+            siltBar.style.width = `${Math.min(100, Math.max(0, siltVal))}%`;
+
+          const clayText = document.getElementById("soilClayText");
+          const clayBar = document.getElementById("soilClayBar");
+          if (clayText) clayText.textContent = `${clayVal.toFixed(1)}%`;
+          if (clayBar)
+            clayBar.style.width = `${Math.min(100, Math.max(0, clayVal))}%`;
+
+          const textureInterp = document.getElementById(
+            "soilTextureInterpretation",
+          );
+          if (textureInterp) {
+            textureInterp.textContent = `USDA Texture: ${textureClass} (Sand: ${sandVal.toFixed(1)}%, Silt: ${siltVal.toFixed(1)}%, Clay: ${clayVal.toFixed(1)}%). Excellent nutrient retention and balanced drainage profile for crop root establishment.`;
+          }
+
+          // 6. Total Nitrogen & Bulk Density
+          const nitrogenVal =
+            typeof s.total_nitrogen === "number" ? s.total_nitrogen : null;
+          const nText = document.getElementById("soilNitrogenText");
+          const nBar = document.getElementById("soilNitrogenBar");
+          if (nText) {
+            nText.textContent =
+              nitrogenVal !== null
+                ? `${nitrogenVal.toFixed(2)} g/kg (${(nitrogenVal * 1000).toFixed(0)} mg/kg)`
+                : "--";
+          }
+          if (nBar && nitrogenVal !== null) {
+            nBar.style.width = `${Math.min(100, (nitrogenVal / 4.0) * 100)}%`;
+          }
+
+          const bdodVal =
+            typeof s.bulk_density === "number" ? s.bulk_density : null;
+          const bdodText = document.getElementById("soilBulkDensityText");
+          const bdodBar = document.getElementById("soilBulkDensityBar");
+          if (bdodText) {
+            bdodText.textContent =
+              bdodVal !== null
+                ? `${bdodVal.toFixed(2)} kg/dm³ (${(bdodVal * 1000).toFixed(0)} kg/m³)`
+                : "--";
+          }
+          if (bdodBar && bdodVal !== null) {
+            bdodBar.style.width = `${Math.min(100, (bdodVal / 2.0) * 100)}%`;
+          }
+        } catch (err) {
+          console.error("Error loading soil data:", err);
+          if (errorContainer) {
+            errorContainer.classList.remove("d-none");
+            errorMsg.textContent =
+              "Unable to connect to soil intelligence telemetry service.";
+          }
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        loadRealSoilData();
+
+        // Reactively update soil data when farm coordinates change
+        window.addEventListener("agritwin:locationChanged", () => {
+          loadRealSoilData();
+        });
+        window.addEventListener("farmLocationChanged", () => {
+          loadRealSoilData();
+        });
+
+        document
+          .querySelectorAll(
+            '#soilNoLocationBanner a[href="location.html"], #soilErrorContainer a[href="location.html"]',
+          )
+          .forEach((button) => {
+            button.addEventListener("click", async (event) => {
+              event.preventDefault();
+              const farm = await loadFarmContext(true);
+              if (!farm.success) {
+                const container = document.getElementById("soilErrorContainer");
+                const message = document.getElementById("soilErrorMessage");
+                if (container) container.classList.remove("d-none");
+                if (message) message.textContent = farm.error;
+                return;
+              }
+              button.textContent = `Farm location set: ${farm.data.location.locality || farm.data.location.place_name || "Configured farm"}`;
+              await loadRealSoilData();
+            });
+          });
+
+        const retryBtn = document.getElementById("retrySoilBtn");
+        if (retryBtn) {
+          retryBtn.addEventListener("click", () => {
+            retryBtn.innerHTML =
+              '<i class="fas fa-spinner fa-spin me-1"></i> Retrying...';
+            loadRealSoilData().finally(() => {
+              retryBtn.innerHTML = '<i class="fas fa-sync-alt me-1"></i> Retry';
+            });
+          });
+        }
+
+        const mobileMenuBtn = document.getElementById("mobileMenuBtn");
+        const appSidebar = document.getElementById("appSidebar");
+        if (mobileMenuBtn && appSidebar) {
+          mobileMenuBtn.addEventListener("click", () => {
+            appSidebar.classList.toggle("sidebar-open");
+          });
+        }
+      });
+    </script>
+    <script src="js/auth.js"></script>
+  </body>
+</html>

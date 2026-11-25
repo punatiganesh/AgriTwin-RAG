@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AgriTwin-RAG — Explainable AI (XAI) & Agronomic Decision Factors</title>
+    <!-- Font Awesome Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- Bootstrap 5 Grid & Utilities -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Master AgriTech Design System -->
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="app-layout">
+      <!-- ==================== LEFT SIDEBAR ==================== -->
+      <aside class="app-sidebar" id="appSidebar">
+        <div class="sidebar-brand">
+          <a href="dashboard.html" class="brand-logo-wrap">
+            <div class="brand-icon">
+              <i class="fas fa-leaf"></i>
+            </div>
+            <div class="brand-text">
+              <div class="brand-title">
+                AgriTwin <span class="badge-rag">RAG</span>
+              </div>
+              <div class="brand-subtitle">Precision Digital Twin</div>
+            </div>
+          </a>
+          <button
+            class="sidebar-collapse-btn d-none d-lg-flex"
+            id="sidebarCollapseBtn"
+            title="Toggle Sidebar"
+          >
+            <i class="fas fa-chevron-left"></i>
+          </button>
+        </div>
+
+        <div class="sidebar-nav-container">
+          <div class="nav-section-label">OVERVIEW</div>
+          <ul class="sidebar-menu">
+            <li>
+              <a href="dashboard.html" class="nav-item">
+                <i class="fas fa-th-large nav-icon"></i>
+                <span class="nav-label">Dashboard</span>
+              </a>
+            </li>
+          </ul>
+
+          <div class="nav-section-label">FARM INTELLIGENCE</div>
+          <ul class="sidebar-menu">
+            <li>
+              <a href="digital-twin.html" class="nav-item">
+                <i class="fas fa-cube nav-icon"></i>
+                <span class="nav-label">Digital Twin</span>
+              </a>
+            </li>
+            <li>
+              <a href="weather.html" class="nav-item">
+                <i class="fas fa-cloud-sun nav-icon"></i>
+                <span class="nav-label">Weather</span>
+              </a>
+            </li>
+            <li>
+              <a href="soil.html" class="nav-item">
+                <i class="fas fa-seedling nav-icon"></i>
+                <span class="nav-label">Soil Intelligence</span>
+              </a>
+            </li>
+            <li>
+              <a href="satellite.html" class="nav-item">
+                <i class="fas fa-satellite nav-icon"></i>
+                <span class="nav-label">Satellite & NDVI</span>
+              </a>
+            </li>
+            <li>
+              <a href="location.html" class="nav-item">
+                <i class="fas fa-map-marker-alt nav-icon"></i>
+                <span class="nav-label">Farm Location</span>
+              </a>
+            </li>
+          </ul>
+
+          <div class="nav-section-label">AI & INSIGHTS</div>
+          <ul class="sidebar-menu">
+            <li>
+              <a href="prediction.html" class="nav-item">
+                <i class="fas fa-brain nav-icon"></i>
+                <span class="nav-label">AI Prediction</span>
+              </a>
+            </li>
+            <li>
+              <a href="xai.html" class="nav-item active">
+                <i class="fas fa-lightbulb nav-icon"></i>
+                <span class="nav-label">Explainable AI</span>
+              </a>
+            </li>
+            <li>
+              <a href="assistant.html" class="nav-item">
+                <i class="fas fa-robot nav-icon"></i>
+                <span class="nav-label">RAG Assistant</span>
+              </a>
+            </li>
+            <li>
+              <a href="recommendations.html" class="nav-item">
+                <i class="fas fa-clipboard-list nav-icon"></i>
+                <span class="nav-label">Recommendations</span>
+              </a>
+            </li>
+            <li>
+              <a href="reports.html" class="nav-item">
+                <i class="fas fa-file-alt nav-icon"></i>
+                <span class="nav-label">Reports</span>
+              </a>
+            </li>
+            <li>
+              <a href="evaluation.html" class="nav-item">
+                <i class="fas fa-vial nav-icon"></i>
+                <span class="nav-label">Research Evaluation</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="sidebar-footer">
+          <div class="user-profile-widget">
+            <div class="user-avatar-circle">R</div>
+            <div class="user-info">
+              <div class="user-name">Rajesh Kumar</div>
+              <div class="user-meta">FARM-001 • Rice Paddy</div>
+            </div>
+            <a
+              href="settings.html"
+              class="user-action-btn"
+              title="Settings & Sign Out"
+            >
+              <i class="fas fa-sign-out-alt"></i>
+            </a>
+          </div>
+        </div>
+      </aside>
+
+      <!-- ==================== MAIN CONTENT ==================== -->
+      <div class="app-main-wrapper">
+        <header class="app-topbar">
+          <div class="topbar-left">
+            <button
+              class="topbar-toggle-btn"
+              id="mobileMenuBtn"
+              aria-label="Toggle Sidebar"
+            >
+              <i class="fas fa-bars"></i>
+            </button>
+            <div class="page-title-wrap">
+              <h1 class="page-title">Explainable AI (XAI)</h1>
+              <nav class="breadcrumb-trail">
+                <span>AI & Insights</span>
+                <i class="fas fa-chevron-right breadcrumb-sep"></i>
+                <span class="breadcrumb-active">Explainable AI</span>
+              </nav>
+            </div>
+          </div>
+
+          <div class="topbar-right">
+            <a href="location.html" class="location-pill" id="farmLocation">
+              <i class="fas fa-map-marker-alt text-success"></i>
+              <span id="topbarLocationText">Set Farm Location</span>
+            </a>
+            <button class="topbar-icon-btn" title="Notifications">
+              <i class="far fa-bell"></i>
+              <span class="notification-dot"></span>
+            </button>
+            <a
+              href="settings.html"
+              class="topbar-user-dropdown"
+              id="userProfile"
+            >
+              <div class="user-avatar-sm">R</div>
+              <div class="user-details d-none d-md-block">
+                <div class="user-fullname">Rajesh Kumar</div>
+                <div class="user-role">Lead Agriculturist</div>
+              </div>
+            </a>
+          </div>
+        </header>
+
+        <main class="app-content">
+          <!-- Page Header -->
+          <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+            <div>
+              <h2 class="fw-bold text-dark mb-1">EXPLAINABLE AI (XAI) & AGRONOMIC DECISION BREAKDOWN</h2>
+              <p class="text-muted mb-0">Transparent breakdown of biophysical factors, physiological crop stage thresholds, and ICAR evidence grounding the system's advisories.</p>
+            </div>
+            <span class="badge bg-success-subtle text-success px-3 py-2 border"><i class="fas fa-check-circle me-1"></i> Deterministic Agronomic Reasoning</span>
+          </div>
+
+          <!-- Why AI Recommends Section -->
+          <section class="app-panel mb-4">
+            <div class="panel-header-row">
+              <div class="panel-title">
+                <i class="fas fa-question-circle text-success"></i> Why Does the System Prioritize Irrigation?
+              </div>
+              <span class="badge bg-danger-subtle text-danger px-3 py-1" id="xaiStressBadge">Risk Score: 78%</span>
+            </div>
+
+            <div class="row g-4 align-items-stretch">
+              <!-- Left: Biophysical Factors Considered -->
+              <div class="col-lg-6">
+                <div class="p-3 bg-light rounded-3 border h-100">
+                  <h6 class="fw-bold text-dark mb-3">
+                    <i class="fas fa-list-ol text-success me-1"></i> Biophysical Factors Considered
+                  </h6>
+
+                  <div class="p-3 bg-white rounded border mb-2">
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                      <strong class="text-dark">1. Soil Moisture Deficit</strong>
+                      <span class="badge bg-danger-subtle text-danger" id="xaiMoistBadge">+30% Stress Weight</span>
+                    </div>
+                    <div class="text-muted small" id="xaiMoistDesc">
+                      Current moisture (28.0%) is below the minimum 40.0% threshold required for Rice during anthesis/flowering.
+                    </div>
+                  </div>
+
+                  <div class="p-3 bg-white rounded border mb-2">
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                      <strong class="text-dark">2. Ambient Temperature & VPD</strong>
+                      <span class="badge bg-warning-subtle text-warning" id="xaiTempBadge">+20% Stress Weight</span>
+                    </div>
+                    <div class="text-muted small" id="xaiTempDesc">
+                      Ambient heat (32.8°C) accelerates transpirational vapor pressure deficit, depleting rhizosphere reserves.
+                    </div>
+                  </div>
+
+                  <div class="p-3 bg-white rounded border mb-2">
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                      <strong class="text-dark">3. Rainfall Deficit</strong>
+                      <span class="badge bg-warning-subtle text-warning" id="xaiRainBadge">+15% Stress Weight</span>
+                    </div>
+                    <div class="text-muted small" id="xaiRainDesc">
+                      Zero precipitation in recent telemetry window provides no natural moisture replenishment.
+                    </div>
+                  </div>
+
+                  <div class="p-3 bg-white rounded border">
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                      <strong class="text-dark">4. Canopy Spectral Vigor (NDVI)</strong>
+                      <span class="badge bg-success-subtle text-success" id="xaiNdviBadge">Moderate Signal (0.42)</span>
+                    </div>
+                    <div class="text-muted small" id="xaiNdviDesc">
+                      Multispectral infrared signal confirms active vegetative canopy capable of strong recovery upon irrigation.
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Right: Natural Language Agronomic Decision Synthesis -->
+              <div class="col-lg-6">
+                <div class="p-4 rounded-3 text-white h-100 d-flex flex-column justify-content-between" style="background: linear-gradient(135deg, #0d2e1f 0%, #154e35 100%);">
+                  <div>
+                    <span class="badge bg-success text-white px-2 py-1 small mb-2"><i class="fas fa-book-reader me-1"></i> ICAR Agronomic Synthesis</span>
+                    <h5 class="fw-bold mb-3">Decision Explanation</h5>
+                    <p class="text-light small mb-3" id="xaiExplanationText">
+                      "The advisory is primarily driven by <strong>low rhizosphere moisture (28.0%)</strong> combined with <strong>elevated ambient temperature (32.8°C)</strong> during the critical <strong>Flowering (Anthesis)</strong> stage of Rice. According to ICAR Crop Management protocols, water deficit during pollination can cause spikelet desiccation and irreversible yield reduction. Providing 15–20mm irrigation restores root-zone hydration to the optimal 40–50% range."
+                    </p>
+                  </div>
+
+                  <div class="d-flex gap-2">
+                    <a href="assistant.html" class="btn btn-sm btn-success fw-bold"><i class="fas fa-robot me-1"></i> Consult AI Assistant</a>
+                    <a href="recommendations.html" class="btn btn-sm btn-outline-light"><i class="fas fa-clipboard-list me-1"></i> View Action Plan</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Physiological Threshold Comparison -->
+          <section class="app-panel">
+            <div class="panel-header-row">
+              <div class="panel-title">
+                <i class="fas fa-chart-bar text-primary"></i> Physiological Boundary Comparison
+              </div>
+              <span class="badge bg-light text-dark border">ICAR Agronomic Baseline</span>
+            </div>
+
+            <div class="row g-3">
+              <div class="col-md-4">
+                <div class="p-3 bg-light rounded-3 border">
+                  <div class="text-muted small">Flowering Stage Moisture Threshold</div>
+                  <div class="fw-bold text-dark fs-5">40.0% – 55.0%</div>
+                  <div class="text-danger small mt-1" id="xaiMoistDiff"><i class="fas fa-exclamation-triangle"></i> Current 28.0% is below critical threshold</div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="p-3 bg-light rounded-3 border">
+                  <div class="text-muted small">Optimal Ambient Temperature</div>
+                  <div class="fw-bold text-dark fs-5">24.0°C – 30.0°C</div>
+                  <div class="text-warning small mt-1" id="xaiTempDiff"><i class="fas fa-thermometer-half"></i> Current 32.8°C creates elevated evaporative demand</div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="p-3 bg-light rounded-3 border">
+                  <div class="text-muted small">Vegetation Index Health (NDVI)</div>
+                  <div class="fw-bold text-dark fs-5">0.40 – 0.65</div>
+                  <div class="text-success small mt-1" id="xaiNdviDiff"><i class="fas fa-check-circle"></i> Current 0.42 confirms viable vegetative canopy</div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/farmState.js"></script>
+    <script src="js/api.js"></script>
+    <script>
+      function renderXaiUI(state) {
+        if (!state) return;
+
+        // Topbar
+        const locName = state.location.place_name || (state.location.latitude ? `Farm (${state.location.latitude.toFixed(4)}, ${state.location.longitude.toFixed(4)})` : "Set Farm Location");
+        const topbarLoc = document.getElementById("topbarLocationText");
+        if (topbarLoc) topbarLoc.textContent = locName;
+
+        const moisture = state.soil.moisture;
+        const temp = state.weather.temperature;
+        const ndvi = state.satellite.ndvi;
+        const crop = state.crop.name || "Rice";
+        const stage = state.crop.growth_stage || "Flowering";
+        const score = state.prediction.water_stress_score || 15;
+
+        const stressBadge = document.getElementById("xaiStressBadge");
+        if (stressBadge) {
+          stressBadge.textContent = `Risk Score: ${score}%`;
+          stressBadge.className = `badge ${score >= 60 ? "bg-danger-subtle text-danger" : (score >= 35 ? "bg-warning-subtle text-warning" : "bg-success-subtle text-success")} px-3 py-1`;
+        }
+
+        const moistDesc = document.getElementById("xaiMoistDesc");
+        if (moistDesc) {
+          moistDesc.textContent = `Current moisture (${moisture !== null ? moisture.toFixed(1) : "28.0"}%) vs optimal 40.0% required for ${crop} during ${stage} stage.`;
+        }
+
+        const tempDesc = document.getElementById("xaiTempDesc");
+        if (tempDesc) {
+          tempDesc.textContent = `Ambient temperature (${temp !== null ? temp.toFixed(1) : "32.8"}°C) elevates vapor pressure deficit (VPD).`;
+        }
+
+        const ndviDesc = document.getElementById("xaiNdviDesc");
+        if (ndviDesc) {
+          ndviDesc.textContent = `Multispectral near-infrared signal (${ndvi !== null ? ndvi.toFixed(2) : "0.42"}) confirms ${state.satellite.vegetation_status || "moderate vegetative canopy"}.`;
+        }
+
+        const expText = document.getElementById("xaiExplanationText");
+        if (expText) {
+          expText.innerHTML = `"The system's recommendation is grounded in <strong>soil moisture (${moisture !== null ? moisture.toFixed(1) : "28.0"}%)</strong>, <strong>temperature (${temp !== null ? temp.toFixed(1) : "32.8"}°C)</strong>, and <strong>${crop} ${stage}</strong> physiological requirements. Based on ICAR research, water deficit during anthesis elevates spikelet sterility risk. Maintaining adequate soil hydration ensures uniform pollination and target yield."`;
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        if (typeof FarmState !== "undefined") {
+          FarmState.subscribe(renderXaiUI);
+          renderXaiUI(FarmState.get());
+        }
+
+        const mobileMenuBtn = document.getElementById("mobileMenuBtn");
+        const appSidebar = document.getElementById("appSidebar");
+        if (mobileMenuBtn && appSidebar) {
+          mobileMenuBtn.addEventListener("click", () => {
+            appSidebar.classList.toggle("sidebar-open");
+          });
+        }
+      });
+    </script>
+  </body>
+</html>

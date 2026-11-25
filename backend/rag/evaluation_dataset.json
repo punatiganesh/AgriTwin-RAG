@@ -1,0 +1,179 @@
+[
+  {
+    "id": 1,
+    "question": "What is the critical irrigation threshold for rice during the flowering (anthesis) stage?",
+    "crop": "Rice",
+    "growth_stage": "Flowering",
+    "expected_source": "ICAR Crop Management Guide, Page 12",
+    "ground_truth_evidence": "Flowering stage is the most sensitive period to water deficit in paddy. Moisture below 35-40% during anthesis leads to significant spikelet sterility and floret abortion.",
+    "farm_context": {
+      "crop": { "name": "Rice", "growth_stage": "Flowering" },
+      "soil": { "moisture": 28.0, "soil_type": "Clay Loam" },
+      "weather": { "temperature": 32.8, "rainfall": 0.0 }
+    }
+  },
+  {
+    "id": 2,
+    "question": "How to identify and manage blast disease in paddy crops?",
+    "crop": "Rice",
+    "growth_stage": "Tillering",
+    "expected_source": "ICAR Crop Management Guide, Page 28",
+    "ground_truth_evidence": "Rice blast caused by Magnaporthe oryzae produces spindle-shaped lesions with grey centres. Foliar spray of Tricyclazole 75% WP @ 0.6 g/l is recommended at initial symptom onset.",
+    "farm_context": {
+      "crop": { "name": "Rice", "growth_stage": "Tillering" },
+      "weather": { "humidity": 85, "temperature": 26.0 }
+    }
+  },
+  {
+    "id": 3,
+    "question": "What are the recommended fertilizer doses for MTU-1010 rice in clay loam soil?",
+    "crop": "Rice",
+    "growth_stage": "Basal / Sowing",
+    "expected_source": "ICAR Crop Management Guide, Page 15",
+    "ground_truth_evidence": "For medium-duration semi-dwarf rice varieties like MTU-1010, the recommended N:P2O5:K2O ratio is 100-120:50-60:40-50 kg/ha with 50% N at basal, 25% at tillering, and 25% at panicle initiation.",
+    "farm_context": {
+      "crop": { "name": "Rice", "variety": "MTU-1010", "growth_stage": "Tillering" },
+      "soil": { "soil_type": "Clay Loam", "ph": 6.8 }
+    }
+  },
+  {
+    "id": 4,
+    "question": "What management practices prevent lodging in rice during grain filling?",
+    "crop": "Rice",
+    "growth_stage": "Grain Filling",
+    "expected_source": "ICAR Crop Management Guide, Page 19",
+    "ground_truth_evidence": "Avoid excessive nitrogen top-dressing at late stages. Maintain adequate potassium levels to strengthen culms. Drain excess standing water 10-14 days before harvest.",
+    "farm_context": {
+      "crop": { "name": "Rice", "growth_stage": "Grain Filling" },
+      "weather": { "wind_speed": 18.0 }
+    }
+  },
+  {
+    "id": 5,
+    "question": "What is the water requirement for groundnut during pegging and pod development?",
+    "crop": "Groundnut",
+    "growth_stage": "Pegging",
+    "expected_source": "ICAR Crop Management Guide, Page 45",
+    "ground_truth_evidence": "Pegging and pod formation (35-70 DAS) are critical moisture-sensitive stages in groundnut. Water stress during pegging reduces pod penetration into soil and lowers shelling percentage.",
+    "farm_context": {
+      "crop": { "name": "Groundnut", "growth_stage": "Pegging" },
+      "soil": { "moisture": 22.0, "soil_type": "Sandy Loam" }
+    }
+  },
+  {
+    "id": 6,
+    "question": "How should gypsum be applied to groundnut for optimal pod filling?",
+    "crop": "Groundnut",
+    "growth_stage": "Pegging / Flowering",
+    "expected_source": "ICAR Crop Management Guide, Page 48",
+    "ground_truth_evidence": "Apply gypsum @ 400-500 kg/ha at 40-45 DAS along the crop rows followed by light hoeing. Calcium is essential for pod development and prevents pops (empty pods).",
+    "farm_context": {
+      "crop": { "name": "Groundnut", "growth_stage": "Pegging" }
+    }
+  },
+  {
+    "id": 7,
+    "question": "What are the key symptoms and control measures for Tikka leaf spot in groundnut?",
+    "crop": "Groundnut",
+    "growth_stage": "Vegetative to Pod Filling",
+    "expected_source": "ICAR Crop Management Guide, Page 52",
+    "ground_truth_evidence": "Early leaf spot produces circular brown spots with bright yellow halo. Late leaf spot produces darker circular spots without conspicuous halo. Spray Mancozeb 75% WP @ 2.5 g/l or Carbendazim @ 1 g/l.",
+    "farm_context": {
+      "crop": { "name": "Groundnut", "growth_stage": "Pod Filling" },
+      "weather": { "humidity": 78, "rainfall": 15.0 }
+    }
+  },
+  {
+    "id": 8,
+    "question": "What irrigation scheduling is recommended for wheat at the Crown Root Initiation (CRI) stage?",
+    "crop": "Wheat",
+    "growth_stage": "CRI Stage",
+    "expected_source": "ICAR Crop Management Guide, Page 72",
+    "ground_truth_evidence": "Crown Root Initiation (21-25 days after sowing) is the most crucial irrigation stage for wheat. Delaying irrigation at CRI leads to severe tillering inhibition and up to 25% yield reduction.",
+    "farm_context": {
+      "crop": { "name": "Wheat", "growth_stage": "CRI (Crown Root Initiation)" },
+      "soil": { "moisture": 20.0 }
+    }
+  },
+  {
+    "id": 9,
+    "question": "What is the recommended dose of zinc sulfate for zinc-deficient paddy soils?",
+    "crop": "Rice",
+    "growth_stage": "Transplanting / Basal",
+    "expected_source": "ICAR Crop Management Guide, Page 22",
+    "ground_truth_evidence": "Apply Zinc Sulphate heptahydrate @ 25 kg/ha as basal application in soil or spray 0.5% ZnSO4 + 0.25% lime at 30 and 45 days after transplanting if khaira disease appears.",
+    "farm_context": {
+      "crop": { "name": "Rice", "growth_stage": "Tillering" },
+      "soil": { "ph": 7.8 }
+    }
+  },
+  {
+    "id": 10,
+    "question": "How to manage brown planthopper (BPH) infestation in dense rice canopies?",
+    "crop": "Rice",
+    "growth_stage": "Tillering to Panicle Initiation",
+    "expected_source": "ICAR Crop Management Guide, Page 35",
+    "ground_truth_evidence": "Avoid excess nitrogen fertilizer. Provide alleyways of 30 cm after every 2 meters for aeration. If hopper burn threshold exceeds 1-2 hoppers/tiller, apply Triflumezopyrim 10% SC @ 0.5 ml/l directed to plant base.",
+    "farm_context": {
+      "crop": { "name": "Rice", "growth_stage": "Panicle Initiation" },
+      "satellite": { "ndvi": 0.65 }
+    }
+  },
+  {
+    "id": 11,
+    "question": "What are the soil moisture management guidelines during cotton square and boll formation?",
+    "crop": "Cotton",
+    "growth_stage": "Boll Formation",
+    "expected_source": "ICAR Crop Management Guide, Page 95",
+    "ground_truth_evidence": "Square formation (45-60 DAS) and peak boll development (75-110 DAS) require uniform soil moisture. Drought stress causes square and boll shedding. Maintain soil moisture above 50% available water capacity.",
+    "farm_context": {
+      "crop": { "name": "Cotton", "growth_stage": "Boll Formation" },
+      "soil": { "moisture": 30.0 }
+    }
+  },
+  {
+    "id": 12,
+    "question": "What is Alternate Wetting and Drying (AWD) irrigation and how does it save water in rice?",
+    "crop": "Rice",
+    "growth_stage": "Vegetative to Heading",
+    "expected_source": "ICAR Crop Management Guide, Page 16",
+    "ground_truth_evidence": "AWD involves allowing field water to drop 15 cm below soil surface before re-irrigating to 5 cm depth. AWD saves 15-30% water without reducing grain yield, except during 1 week before and after flowering when continuous shallow ponding is needed.",
+    "farm_context": {
+      "crop": { "name": "Rice", "growth_stage": "Tillering" }
+    }
+  },
+  {
+    "id": 13,
+    "question": "How to manage stem borer in rice at the dead heart and white earhead stage?",
+    "crop": "Rice",
+    "growth_stage": "Tillering / Heading",
+    "expected_source": "ICAR Crop Management Guide, Page 32",
+    "ground_truth_evidence": "Yellow stem borer (Scirpophaga incertulas) causes dead hearts during vegetative stage and white earheads at heading. Apply Cartap hydrochloride 50% SP @ 2 g/l or Chlorantraniliprole 18.5% SC @ 0.3 ml/l when ETL exceeds 5% dead hearts.",
+    "farm_context": {
+      "crop": { "name": "Rice", "growth_stage": "Heading" }
+    }
+  },
+  {
+    "id": 14,
+    "question": "What are the optimum temperature and humidity conditions for maize tasseling?",
+    "crop": "Maize",
+    "growth_stage": "Tasseling / Silking",
+    "expected_source": "ICAR Crop Management Guide, Page 110",
+    "ground_truth_evidence": "Optimum temperature during tasseling is 24-30°C. Temperature exceeding 35°C combined with relative humidity below 40% causes pollen desiccation and poor kernel set. Ensure soil is at field capacity.",
+    "farm_context": {
+      "crop": { "name": "Maize", "growth_stage": "Tasseling" },
+      "weather": { "temperature": 34.0, "humidity": 38 }
+    }
+  },
+  {
+    "id": 15,
+    "question": "What is the recommended weed management protocol in direct-seeded rice (DSR)?",
+    "crop": "Rice",
+    "growth_stage": "Early Vegetative",
+    "expected_source": "ICAR Crop Management Guide, Page 25",
+    "ground_truth_evidence": "Apply Pendimethalin 38.7% CS @ 1.5 kg a.i./ha as pre-emergence within 2 days of sowing. Follow with post-emergence spray of Bispyribac-sodium 10% SC @ 25 g a.i./ha at 15-20 DAS for grass and broadleaf weeds.",
+    "farm_context": {
+      "crop": { "name": "Rice", "growth_stage": "Seedling" }
+    }
+  }
+]

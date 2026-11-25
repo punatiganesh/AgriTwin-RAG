@@ -1,0 +1,1123 @@
+<USER_REQUEST>
+PROJECT: AgriTwin-RAG
+TASK: Fix end-to-end current-location synchronization, replace mock data,
+implement a 3D farm map, and connect real farm data to RAG, Farm Risk,
+Model Evaluation, Explainable AI, and Farm Reports.
+
+I have an existing, partially implemented AgriTwin-RAG capstone project.
+
+I do NOT want a new project.
+
+I want to FIX and UPGRADE my existing application.
+
+========================================================
+1. MY MAIN PROBLEM
+========================================================
+
+My application currently displays my old farm location, Srivilliputhur,
+even when I take my laptop to another location.
+
+When I click "Use My Current Location", I want the application to:
+
+1. Request the browser's current geolocation.
+2. Obtain the new latitude and longitude.
+3. Reverse-geocode the coordinates to obtain a place name.
+4. Replace the previous active farm location.
+5. Update every module using the new coordinates.
+6. Fetch new weather information.
+7. Refresh available soil information.
+8. Refresh satellite imagery and NDVI when new data is available.
+9. Recalculate Farm Risk using valid current data.
+10. Update the Digital Twin.
+11. Update the context used by the RAG Assistant.
+12. Update Explainable AI with actual recommendation evidence.
+13. Update Model Evaluation using actual experiments.
+14. Generate Farm Reports from the actual current farm state.
+15. Update the map marker and farm boundary.
+16. Remove old location-dependent values from active application state.
+
+The old location must NOT continue appearing as the active location after
+a successful location change.
+
+Do not hard-code Srivilliputhur or any other location.
+
+========================================================
+2. FIRST AUDIT THE EXISTING PROJECT
+========================================================
+
+Before modifying code, inspect the complete project.
+
+Inspect, if present:
+
+- app.py
+- weather.py
+- js/api.js
+- js/app.js
+- js/mockData.js
+- location.html
+- weather.html
+- soil.html
+- satellite.html
+- digital-twin.html
+- prediction.html
+- recommendations.html
+- assistant.html
+- xai.html
+- reports.html
+- model-evaluation.html
+- settings.html
+- css/style.css
+- all existing Flask routes
+- all location-related JavaScript
+- all API integrations
+- all data storage logic
+- all Farm Context and Digital Twin implementations
+
+Find every place where the application stores or reads:
+
+- latitude
+- longitude
+- place name
+- farm ID
+- weather values
+- soil values
+- NDVI
+- crop information
+- farm risk
+- AI recommendations
+- RAG context
+
+Find all hard-coded and mock data.
+
+Produce an initial audit report.
+
+Do not rebuild working components.
+
+After the audit, implement the changes incrementally.
+
+========================================================
+3. CREATE ONE AUTHORITATIVE FARM STATE
+========================================================
+
+Create or improve a centralized Farm State service.
+
+Use the project's existing architecture where possible.
+
+The active farm state should contain:
+
+{
+  "farm_id": null,
+  "location": {
+    "latitude": null,
+    "longitude": null,
+    "place_name": null,
+    "source": null,
+    "accuracy_m": null,
+    "updated_at": null
+  },
+  "crop": {
+    "name": null,
+    "variety": null,
+    "growth_stage": null,
+    "sowing_date": null
+  },
+  "weather": {
+    "temperature": null,
+    "feels_like": null,
+    "humidity": null,
+    "rainfall": null,
+    "wind_speed": null,
+    "pressure": null,
+    "weather_condition": null,
+    "observed_at": null,
+    "source": null
+  },
+  "soil": {
+    "soil_type": null,
+    "ph": null,
+    "moisture": null,
+    "nitrogen": null,
+    "phosphorus": null,
+    "potassium": null,
+    "source": null,
+    "observed_at": null
+  },
+  "satellite": {
+    "ndvi": null,
+    "vegetation_status": null,
+    "acquisition_date": null,
+    "source": null
+  }
+}
+
+Use the existing database or state-management architecture if available.
+
+Do not create multiple competing Farm State objects.
+
+All pages must read from the same authoritative state.
+
+Persist the selected location and farm profile appropriately.
+
+Browser storage may be used for preferences and temporary client state,
+but do not rely on localStorage alone as the authoritative backend
+database if the application already has persistent storage.
+
+Do not erase crop preferences when the farmer changes location unless
+the application explicitly associates those preferences with the old farm.
+
+Location-dependent measurements must be refreshed or invalidated.
+
+========================================================
+4. FIX "USE MY CURRENT LOCATION"
+========================================================
+
+Implement the actual browser geolocation flow.
+
+When the farmer clicks "Use My Current Location":
+
+A. Display a loading state.
+
+B. Call the browser Geolocation API.
+
+C. Obtain:
+   latitude
+   longitude
+   accuracy
+
+D. Reject invalid coordinates.
+
+E. Reverse-geocode the coordinates using the existing geocoding provider
+   if one is already implemented.
+
+F. If reverse geocoding fails, keep the valid coordinates and display
+   "Location name unavailable".
+
+G. Send the new location to the backend.
+
+H. Update the authoritative Farm State.
+
+I. Invalidate old location-dependent cached data.
+
+J. Trigger the location refresh workflow.
+
+K. Update all pages and shared UI components.
+
+Use navigator.geolocation.getCurrentPosition or a suitable watchPosition
+implementation where appropriate.
+
+Use high-accuracy geolocation when available.
+
+Handle these errors separately:
+
+- Permission denied
+- Position unavailable
+- Geolocation timeout
+- Unsupported browser
+- Reverse-geocoding failure
+- Backend update failure
+
+Show understandable messages to the farmer.
+
+IMPORTANT:
+
+Do not display the old coordinates as if they were the new coordinates
+when geolocation fails.
+
+Do not silently fall back to Srivilliputhur.
+
+Do not report a successful update until the new location has been
+accepted by the backend.
+
+A laptop may report an approximate location rather than precise GPS.
+Display the reported accuracy and allow the farmer to correct the
+location manually on the map.
+
+========================================================
+5. PREVENT STALE LOCATION DATA
+========================================================
+
+This is critical.
+
+Suppose the old location is:
+
+Srivilliputhur
+
+The farmer moves to:
+
+Another city or village
+
+After the new coordinates are successfully accepted:
+
+- Replace the old active coordinates.
+- Replace the active place name.
+- Remove the old location's weather from the active farm state.
+- Mark old location-dependent soil information as stale.
+- Mark old satellite imagery as historical until new imagery is fetched.
+- Mark old Farm Risk results as stale.
+- Mark old recommendations as stale if they depend on changed conditions.
+- Do not mix old and new coordinates.
+- Do not display old data as current.
+
+Associate location-dependent API results with the coordinates and
+location revision used to obtain them.
+
+Use a location version, revision number, or request identifier to prevent
+slow responses for an old location from overwriting data for a new one.
+
+If the farmer changes location while an API request is running, cancel
+the old request when possible or ignore its response.
+
+Do not clear historical reports unnecessarily. Preserve them with their
+original farm location and timestamps.
+
+========================================================
+6. CREATE A LOCATION CHANGE EVENT
+========================================================
+
+Implement a central location-change workflow.
+
+For example:
+
+updateFarmLocation(newLocation)
+        |
+        v
+Validate Coordinates
+        |
+        v
+Save Active Location
+        |
+        v
+Increment Location Revision
+        |
+        v
+Invalidate Stale Measurements
+        |
+        v
+Refresh Available Data Sources
+        |
+        +--> Weather
+        |
+        +--> Soil Data
+        |
+        +--> Satellite / NDVI
+        |
+        +--> Digital Twin
+        |
+        +--> Farm Risk
+        |
+        +--> Recommendations
+        |
+        +--> RAG Farm Context
+        |
+        +--> Dashboard
+        |
+        +--> XAI Evidence
+        |
+        +--> Reports
+
+Use a central service or event mechanism rather than duplicating this
+logic independently in every HTML page.
+
+Avoid infinite refresh loops.
+
+Avoid sending unnecessary repeated API requests.
+
+Show the update status of each module separately.
+
+========================================================
+7. WEATHER: USE REAL CURRENT LOCATION
+========================================================
+
+Reuse the existing OpenWeather integration.
+
+Do not create another weather implementation if one already exists.
+
+Fetch weather using the currently selected coordinates.
+
+Do not use a hard-coded city name.
+
+Display:
+
+- Temperature
+- Feels-like temperature
+- Humidity
+- Rainfall when supplied by the API
+- Wind speed
+- Pressure
+- Weather condition
+- Observation time
+- Data source
+
+If the API fails:
+
+- Display "Weather data unavailable".
+- Show a retry option.
+- Do not use fake weather.
+- Do not show the previous location's weather as current.
+
+Be careful with rainfall:
+
+If the API does not provide a rainfall value for the requested period,
+do not automatically interpret the missing field as confirmed zero
+rainfall.
+
+Show unavailable when appropriate.
+
+Keep API keys in the backend environment.
+
+========================================================
+8. SOIL INTELLIGENCE: REAL DATA ONLY
+========================================================
+
+Inspect the existing soil integration.
+
+Determine whether the current values come from:
+
+- A real soil-data API
+- A validated external dataset
+- A connected sensor
+- Farmer-provided measurements
+- A trained ML model
+- Mock data
+
+Connect the actual available soil source to the active farm location.
+
+If an existing soil API supports coordinates, query it using the new
+coordinates.
+
+If soil data is regional or gridded, explain the resolution and
+limitations.
+
+If the data source does not provide a requested attribute, show it as
+unavailable.
+
+Do not invent:
+
+- Soil moisture
+- pH
+- Nitrogen
+- Phosphorus
+- Potassium
+- Soil fertility
+
+A soil map classification must not be presented as a live soil test.
+
+If measurements are entered by the farmer, label them "User-provided".
+
+If a value belongs to the old location, mark it stale and do not use it
+as current soil information.
+
+========================================================
+9. SATELLITE AND NDVI: REAL IMAGERY
+========================================================
+
+Inspect the current Satellite & NDVI implementation.
+
+Determine whether it retrieves actual satellite data or uses placeholders.
+
+Where feasible, integrate a real Sentinel-2 data provider.
+
+Use the active farm coordinates or selected farm polygon to locate
+the relevant imagery.
+
+For Sentinel-2 NDVI:
+
+NDVI = (B8 - B4) / (B8 + B4)
+
+Use compatible surface-reflectance products and proper masking for
+clouds, invalid pixels, and missing data.
+
+Handle division by zero and invalid pixels.
+
+Display:
+
+- NDVI
+- Satellite source
+- Image acquisition date
+- Cloud/quality information when available
+- Farm coordinates or polygon
+- Whether the result is current, historical, or unavailable
+
+Do not claim satellite imagery updates instantaneously when the farmer
+changes location.
+
+Satellite acquisition dates and revisit availability depend on the
+provider and available imagery.
+
+If no suitable image is available for the new location:
+
+Display "No suitable satellite image available".
+
+Do not reuse the previous location's NDVI as the current location's
+measurement.
+
+Do not generate random NDVI values.
+
+If Sentinel-2 integration requires credentials, first inspect the
+existing configuration and implement the integration through a secure
+backend. Do not expose credentials in frontend JavaScript.
+
+========================================================
+10. GOOGLE MAP / FARM LOCATION: 3D EXPERIENCE
+========================================================
+
+Upgrade the existing Farm Location map.
+
+I want a map experience suitable for farmers.
+
+Requirements:
+
+1. Start centered on the active farm location.
+2. Move the marker when the location changes.
+3. Update latitude and longitude immediately.
+4. Display the resolved place name.
+5. Support zooming and panning.
+6. Allow manual marker placement.
+7. Allow the farmer to confirm or adjust the selected farm position.
+8. Allow drawing or editing a farm boundary where supported.
+9. Update the farm boundary coordinates after edits.
+10. Save the confirmed coordinates/boundary.
+11. Display a clear location accuracy indicator.
+12. Make the map usable on laptop and mobile.
+
+IMPORTANT:
+
+Inspect the existing mapping library first.
+
+If the project uses Leaflet, do not assume that adding CSS transforms
+will create a genuine 3D map.
+
+If a genuine 3D view is feasible with the existing provider, implement
+it properly.
+
+Otherwise, use a compatible 3D-capable mapping library/provider,
+such as MapLibre GL JS with suitable terrain/elevation and imagery
+sources, subject to data availability and licensing.
+
+Do not claim 3D terrain is implemented if the map only has a tilted
+2D image.
+
+Keep a reliable 2D fallback.
+
+If Google Maps is already used, inspect the current integration and
+Google Maps API requirements before modifying it.
+
+Do not switch providers without checking the existing code and
+credentials.
+
+A new location must update the map immediately after confirmation.
+
+The marker, coordinate display, and farm boundary must refer to the
+same selected location.
+
+Do not fabricate farm boundaries.
+
+A location point is not the same as an actual field boundary.
+
+========================================================
+11. DIGITAL TWIN
+========================================================
+
+Update digital-twin.html to read from the central Farm State.
+
+The Digital Twin should show:
+
+- Active farm location
+- Latitude and longitude
+- Crop
+- Growth stage
+- Weather
+- Soil measurements
+- NDVI
+- Data source
+- Last observation/update time
+- Data freshness status
+
+When the farmer changes location:
+
+1. Update the active location.
+2. Remove stale location-specific measurements from the active view.
+3. Fetch the available new measurements.
+4. Refresh the Digital Twin.
+5. Show unavailable fields explicitly.
+
+Do not populate missing fields with fake values.
+
+Preserve valid crop profile information when appropriate, but ask the
+farmer to confirm whether the same crop profile applies to the new farm.
+
+========================================================
+12. FARM RISK: REMOVE MOCK RISK DATA
+========================================================
+
+The Farm Risk page currently displays cards such as:
+
+- Irrigation Risk
+- Crop Stress Risk
+- Disease Risk
+- Overall Farm Risk
+
+The page sometimes remains at "EVALUATING".
+
+Inspect the entire Farm Risk calculation and data pipeline.
+
+Find why it remains in the evaluating state.
+
+Do not merely change the UI text.
+
+Implement a real, transparent assessment using available validated data
+and documented agricultural rules.
+
+Possible inputs, only when genuinely available:
+
+- Current weather
+- Recent rainfall
+- Soil moisture measurements
+- Crop type
+- Crop growth stage
+- Satellite NDVI
+- Relevant agricultural thresholds
+- Relevant ICAR guidance
+
+Requirements:
+
+A. Identify the actual data sources.
+
+B. Validate units, ranges, timestamps, and coordinates.
+
+C. Check that every input belongs to the active location.
+
+D. Implement explicit risk rules where appropriate.
+
+E. Return the risk level, reason, evidence, and input data used.
+
+F. Show "Insufficient data" when required inputs are missing.
+
+G. Do not use arbitrary random risk scores.
+
+H. Do not infer disease presence from humidity alone.
+
+I. Do not call a rule-based estimate a trained ML prediction.
+
+J. Do not claim ICAR validation unless the actual rule is traceable to
+   an appropriate agricultural source.
+
+K. Do not leave the page loading indefinitely.
+
+L. Handle API and calculation errors visibly.
+
+A suggested response structure:
+
+{
+  "status": "success",
+  "farm_location": {
+    "latitude": null,
+    "longitude": null
+  },
+  "assessed_at": "...",
+  "risk_results": {
+    "irrigation": {
+      "level": "insufficient_data",
+      "score": null,
+      "reasons": [],
+      "evidence": []
+    },
+    "crop_stress": {
+      "level": "insufficient_data",
+      "score": null,
+      "reasons": [],
+      "evidence": []
+    },
+    "disease": {
+      "level": "insufficient_data",
+      "score": null,
+      "reasons": [],
+      "evidence": []
+    },
+    "overall": {
+      "level": "insufficient_data",
+      "score": null,
+      "reasons": [],
+      "evidence": []
+    }
+  }
+}
+
+Adapt this structure to the existing API instead of breaking compatibility.
+
+Do not force all risk scores to be numeric if there is not enough
+evidence to calculate them.
+
+========================================================
+13. RAG ASSISTANT: USE THE ACTIVE FARM LOCATION
+========================================================
+
+Preserve the existing RAG implementation:
+
+- ICAR knowledge base
+- Embedding model
+- ChromaDB
+- Semantic retrieval
+- Groq LLM
+- Flask endpoint
+
+Do not rebuild ChromaDB.
+
+When the farmer asks a question, include the current Farm State.
+
+Example:
+
+{
+  "query": "What should I do on my farm today?",
+  "farm_context": {
+    "location": {},
+    "crop": {},
+    "weather": {},
+    "soil": {},
+    "satellite": {}
+  }
+}
+
+The RAG pipeline should:
+
+1. Validate the current farm context.
+2. Check the location revision.
+3. Retrieve relevant ICAR knowledge using the farmer's question.
+4. Combine retrieved agricultural knowledge with valid farm data.
+5. Send the combined context to Groq.
+6. Return the answer and retrieved sources.
+7. Identify which farm data fields were used.
+8. Identify missing fields relevant to the answer.
+
+Do not pass stale measurements to the LLM as current data.
+
+Do not fabricate unavailable soil or NDVI values.
+
+If the farmer changes location while the assistant is open, the next
+request must use the new Farm State.
+
+If the old context is still being loaded, do not silently use it.
+
+Show a clear loading/error message when context refresh is incomplete.
+
+Preserve normal RAG functionality when farm context is unavailable.
+
+========================================================
+14. RECOMMENDATIONS
+========================================================
+
+Update recommendations.html.
+
+Recommendations must use:
+
+- Current crop profile
+- Current growth stage
+- Valid weather
+- Available soil data
+- Available satellite data
+- Retrieved ICAR knowledge
+
+Every recommendation should contain:
+
+- Recommended action
+- Explanation
+- Evidence used
+- Source references
+- Missing information
+- Generation timestamp
+- Farm location/revision used
+
+When the farm location changes, mark location-dependent recommendations
+as stale until they are regenerated.
+
+Do not present old recommendations as newly generated.
+
+Do not generate definitive irrigation/fertilizer recommendations
+from unsupported assumptions.
+
+========================================================
+15. EXPLAINABLE AI
+========================================================
+
+Inspect xai.html and its backend implementation.
+
+Remove fabricated explanations and mock attribution.
+
+For each actual recommendation, show:
+
+- Recommendation
+- Inputs used
+- Input values and units
+- Data source
+- Retrieved ICAR passages
+- Relevant rule or threshold
+- Reason for the result
+- Uncertainty and limitations
+
+If the recommendation came from a rule-based system, explain the rule.
+
+If it came from the LLM, show the relevant retrieved sources and farm
+context used.
+
+Do not pretend that a textual explanation is a mathematically validated
+feature-importance explanation.
+
+If no actual explainability method exists for a predictive model,
+state that clearly.
+
+========================================================
+16. MODEL EVALUATION: REAL EXPERIMENTS ONLY
+========================================================
+
+Inspect the Model Evaluation module.
+
+Remove hard-coded:
+
+- Accuracy
+- Precision
+- Recall
+- F1 score
+- AUC
+- RAG faithfulness
+- Latency
+- Model comparison charts
+
+unless these values come from actual experiment results.
+
+Implement an evaluation pipeline that runs on a defined test dataset.
+
+For classification models, calculate appropriate metrics from actual
+labels and predictions.
+
+For RAG, implement suitable evaluation such as:
+
+- Retrieval Precision@K
+- Recall@K
+- MRR
+- Source attribution
+- Faithfulness with a documented evaluation procedure
+- Response latency
+
+Save experiment metadata:
+
+- Dataset identifier/version
+- Model name/version
+- Evaluation date
+- Number of samples
+- Metric values
+- Configuration
+- Evaluation status
+
+Clearly distinguish measured metrics from unavailable metrics.
+
+Do not generate fake benchmark scores.
+
+If the user has not run an experiment, display:
+
+"No evaluation results available. Run evaluation."
+
+Do not label a manually entered result as an automatically measured
+result.
+
+========================================================
+17. FARM REPORTS: REAL DATA ONLY
+========================================================
+
+Inspect reports.html and its backend.
+
+Remove mock reports and hard-coded measurement values.
+
+Generate reports from the actual Farm State and actual analysis results.
+
+Each report should contain:
+
+- Farm location
+- Latitude and longitude
+- Farm profile
+- Weather observations
+- Available soil information
+- Available satellite/NDVI data
+- Farm Risk assessment
+- AI recommendations
+- RAG source references
+- Timestamp
+- Data sources
+- Missing data warnings
+- Model/evaluation status where relevant
+
+Each measurement should include its source and observation time when
+available.
+
+If an input is missing, display "Not available".
+
+If a result is simulated, label it "Simulated".
+
+Preserve historical reports with their original coordinates and dates.
+
+Do not regenerate old reports as though they belong to the new location.
+
+========================================================
+18. DASHBOARD AND SHARED LOCATION DISPLAY
+========================================================
+
+Every page should display the same active farm location.
+
+When the location changes, update:
+
+- Sidebar/header location
+- Weather page
+- Soil Intelligence
+- Satellite & NDVI
+- Farm Location map
+- Digital Twin
+- Farm Risk
+- RAG Assistant
+- Recommendations
+- Explainable AI
+- Model Evaluation location metadata where applicable
+- Farm Reports
+
+Do not hard-code Srivilliputhur in HTML or JavaScript.
+
+Use the central Farm State.
+
+Display a location status such as:
+
+"Updating farm data..."
+
+Then show per-module status:
+
+Weather: Updated / Unavailable
+Soil: Updated / Stale / Unavailable
+Satellite: Updated / Historical / Unavailable
+Farm Risk: Updated / Insufficient data / Failed
+RAG Context: Updated / Waiting for data
+
+Do not claim every module is updated if an API fails.
+
+========================================================
+19. BACKEND API DESIGN
+========================================================
+
+Reuse the existing Flask backend and API conventions.
+
+Add or improve endpoints only when necessary.
+
+Possible responsibilities:
+
+GET /api/farm/state
+    Return the active Farm State.
+
+POST /api/farm/location
+    Validate and save the newly selected location.
+
+POST /api/farm/refresh
+    Refresh supported location-dependent data sources.
+
+GET /api/weather/current
+    Return weather for the active location.
+
+GET /api/soil/current
+    Return soil information for the active location.
+
+GET /api/satellite/ndvi
+    Return available NDVI for the active location.
+
+GET /api/farm-risk
+    Return a transparent assessment.
+
+POST /api/rag/chat
+    Use the current Farm State and retrieved knowledge.
+
+Adapt to existing endpoints. Do not create duplicate routes if equivalent
+ones already exist.
+
+Validate latitude in [-90, 90] and longitude in [-180, 180].
+
+Use proper HTTP status codes.
+
+Handle API errors without exposing secrets.
+
+Never return a successful location update if the save operation failed.
+
+========================================================
+20. TEST THE LOCATION CHANGE END TO END
+========================================================
+
+Create a test plan that does not require hard-coded production locations.
+
+TEST A — CURRENT LOCATION
+
+1. Open Farm Location.
+2. Click "Use My Current Location".
+3. Grant browser permission.
+4. Confirm new coordinates.
+5. Confirm the marker moves.
+6. Confirm the active Farm State updates.
+
+TEST B — CHANGE LOCATION
+
+1. Select another valid location using the map/manual location selector,
+   or test with a mocked geolocation response in an automated test.
+2. Confirm that the previous location is no longer the active location.
+3. Confirm that the new latitude and longitude are stored.
+4. Confirm that all location-dependent caches are invalidated.
+
+TEST C — WEATHER
+
+Confirm that the weather request uses the new coordinates.
+
+Confirm that an old response cannot overwrite the new weather.
+
+TEST D — SOIL
+
+Confirm that soil information either belongs to the new location or is
+marked unavailable/stale.
+
+TEST E — SATELLITE
+
+Confirm that NDVI uses imagery covering the new location.
+
+Confirm that an old location's NDVI is not presented as current.
+
+TEST F — FARM RISK
+
+Confirm that the assessment uses only valid data for the active location.
+
+TEST G — RAG
+
+Ask:
+
+"What should I do on my farm today?"
+
+Verify that the backend receives the new location, current farm context,
+and relevant retrieved ICAR knowledge.
+
+TEST H — MODEL EVALUATION
+
+Confirm that results are produced by real experiment runs.
+
+TEST I — XAI
+
+Confirm that explanations refer to actual inputs and retrieved sources.
+
+TEST J — REPORTS
+
+Confirm that newly generated reports contain the current location and
+correct timestamps.
+
+TEST K — FAILURE HANDLING
+
+Test geolocation denial, API failure, missing data, and backend failure.
+
+The application must not silently revert to the old location.
+
+TEST L — STALE REQUEST
+
+Simulate a slow request for location A followed by a new location B.
+
+Confirm that location A's response cannot overwrite location B's state.
+
+========================================================
+21. SECURITY AND DATA QUALITY
+========================================================
+
+- Keep API keys in backend environment variables.
+- Never expose keys in frontend JavaScript.
+- Do not log secrets.
+- Validate API responses.
+- Track source and timestamp.
+- Do not combine measurements from different locations.
+- Do not label stale data as current.
+- Do not label mock data as real.
+- Do not label unavailable data as zero.
+- Preserve historical records without using them as current measurements.
+- Avoid excessive API calls.
+- Respect provider terms and rate limits.
+
+========================================================
+22. IMPLEMENTATION ORDER
+========================================================
+
+Work in the following order:
+
+PHASE 1:
+Audit current location and mock-data architecture.
+
+PHASE 2:
+Fix "Use My Current Location" and central Farm State.
+
+PHASE 3:
+Fix stale data, caching, and request race conditions.
+
+PHASE 4:
+Connect weather to the new location.
+
+PHASE 5:
+Connect available soil data.
+
+PHASE 6:
+Connect real satellite/NDVI data.
+
+PHASE 7:
+Update Digital Twin and shared dashboard.
+
+PHASE 8:
+Fix Farm Risk.
+
+PHASE 9:
+Connect current Farm State to RAG Assistant.
+
+PHASE 10:
+Remove mock XAI and Recommendations.
+
+PHASE 11:
+Implement real Model Evaluation.
+
+PHASE 12:
+Implement real Farm Reports.
+
+PHASE 13:
+Upgrade the map with a genuine 3D view where supported.
+
+PHASE 14:
+Run all regression and integration tests.
+
+After each phase, report the files changed and test results.
+
+Do not modify every module in one destructive operation.
+
+========================================================
+23. FINAL REPORT
+========================================================
+
+At the end, provide:
+
+1. Root cause of the old-location problem.
+2. Files inspected.
+3. Files changed.
+4. Files created.
+5. How the new location is stored.
+6. How the new location refreshes every module.
+7. How stale data is prevented.
+8. Weather integration status.
+9. Soil integration status.
+10. Satellite/NDVI integration status.
+11. Map/3D implementation status.
+12. Farm Risk implementation status.
+13. RAG integration status.
+14. XAI implementation status.
+15. Model Evaluation implementation status.
+16. Report implementation status.
+17. Test results with PASS/FAIL.
+18. Remaining limitations.
+19. Exact commands to run the application.
+
+Never claim a feature is implemented unless it has actually been tested.
+
+Start with PHASE 1 only. Audit the project first and report the findings
+before making code changes.
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-10-18T08:27:00+05:30.
+</ADDITIONAL_METADATA>

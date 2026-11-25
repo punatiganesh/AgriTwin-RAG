@@ -1,0 +1,37 @@
+{
+  "classes": [
+    "Bacterial Leaf Blight",
+    "Brown Spot",
+    "Leaf Blast",
+    "Sheath Blight",
+    "Healthy"
+  ],
+  "split_counts": {
+    "train": {
+      "Bacterial Leaf Blight": 420,
+      "Brown Spot": 420,
+      "Leaf Blast": 420,
+      "Sheath Blight": 68,
+      "Healthy": 420
+    },
+    "val": {
+      "Bacterial Leaf Blight": 90,
+      "Brown Spot": 90,
+      "Leaf Blast": 90,
+      "Sheath Blight": 14,
+      "Healthy": 90
+    },
+    "test": {
+      "Bacterial Leaf Blight": 90,
+      "Brown Spot": 90,
+      "Leaf Blast": 90,
+      "Sheath Blight": 16,
+      "Healthy": 90
+    }
+  },
+  "total_train": 1748,
+  "total_val": 374,
+  "total_test": 376,
+  "duplicates_removed": 1391,
+  "corrupted_removed": 0
+}

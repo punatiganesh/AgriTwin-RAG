@@ -1,0 +1,372 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AgriTwin-RAG — Platform Settings & Telemetry Configuration</title>
+    <!-- Font Awesome Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- Bootstrap 5 Grid & Utilities -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Master AgriTech Design System -->
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="app-layout">
+            <!-- ==================== LEFT SIDEBAR ==================== -->
+      <aside class="app-sidebar" id="appSidebar">
+        <!-- Brand Header -->
+        <div class="sidebar-brand">
+          <a href="dashboard.html" class="brand-logo-wrap">
+            <div class="brand-icon">
+              <i class="fas fa-leaf"></i>
+            </div>
+            <div class="brand-text">
+              <div class="brand-title">
+                AgriTwin <span class="badge-rag">RAG</span>
+              </div>
+              <div class="brand-subtitle">Precision Digital Twin</div>
+            </div>
+          </a>
+          <button
+            class="sidebar-collapse-btn d-none d-lg-flex"
+            id="sidebarCollapseBtn"
+            title="Toggle Sidebar"
+          >
+            <i class="fas fa-chevron-left"></i>
+          </button>
+        </div>
+
+        <!-- Navigation Sections -->
+        <div class="sidebar-nav-container">
+          <div class="nav-section-label">OVERVIEW</div>
+          <ul class="sidebar-menu">
+            <li>
+              <a href="dashboard.html" class="nav-item">
+                <i class="fas fa-th-large nav-icon"></i>
+                <span class="nav-label">Dashboard</span>
+              </a>
+            </li>
+          </ul>
+
+          <div class="nav-section-label">FARM</div>
+          <ul class="sidebar-menu">
+            <li>
+              <a href="digital-twin.html" class="nav-item">
+                <i class="fas fa-cube nav-icon"></i>
+                <span class="nav-label">Digital Twin</span>
+              </a>
+            </li>
+            <li>
+              <a href="weather.html" class="nav-item">
+                <i class="fas fa-cloud-sun nav-icon"></i>
+                <span class="nav-label">Weather</span>
+              </a>
+            </li>
+            <li>
+              <a href="soil.html" class="nav-item">
+                <i class="fas fa-seedling nav-icon"></i>
+                <span class="nav-label">Soil Intelligence</span>
+              </a>
+            </li>
+            <li>
+              <a href="satellite.html" class="nav-item">
+                <i class="fas fa-satellite nav-icon"></i>
+                <span class="nav-label">Satellite & NDVI</span>
+              </a>
+            </li>
+            <li>
+              <a href="location.html" class="nav-item">
+                <i class="fas fa-map-marker-alt nav-icon"></i>
+                <span class="nav-label">Farm Location</span>
+              </a>
+            </li>
+          </ul>
+
+          <div class="nav-section-label">AI</div>
+          <ul class="sidebar-menu">
+            <li>
+              <a href="crop-disease.html" class="nav-item">
+                <i class="fas fa-virus nav-icon"></i>
+                <span class="nav-label">Crop Disease</span>
+              </a>
+            </li>
+            <li>
+              <a href="prediction.html" class="nav-item">
+                <i class="fas fa-shield-alt nav-icon"></i>
+                <span class="nav-label">Farm Risk</span>
+              </a>
+            </li>
+            <li>
+              <a href="assistant.html" class="nav-item">
+                <i class="fas fa-robot nav-icon"></i>
+                <span class="nav-label">RAG Assistant</span>
+              </a>
+            </li>
+            <li>
+              <a href="recommendations.html" class="nav-item">
+                <i class="fas fa-clipboard-list nav-icon"></i>
+                <span class="nav-label">Recommendations</span>
+              </a>
+            </li>
+          </ul>
+
+          <div class="nav-section-label">REPORTS</div>
+          <ul class="sidebar-menu">
+            <li>
+              <a href="reports.html" class="nav-item">
+                <i class="fas fa-file-alt nav-icon"></i>
+                <span class="nav-label">Farm Report</span>
+              </a>
+            </li>
+          </ul>
+
+          <div class="nav-section-label">RESEARCH / TECHNICAL</div>
+          <ul class="sidebar-menu">
+            <li>
+              <a href="evaluation.html" class="nav-item">
+                <i class="fas fa-chart-line nav-icon"></i>
+                <span class="nav-label">Model Evaluation</span>
+              </a>
+            </li>
+            <li>
+              <a href="xai.html" class="nav-item">
+                <i class="fas fa-lightbulb nav-icon"></i>
+                <span class="nav-label">Explainable AI (XAI)</span>
+              </a>
+            </li>
+            <li>
+              <a href="settings.html" class="nav-item active">
+                <i class="fas fa-cog nav-icon"></i>
+                <span class="nav-label">Settings & Provenance</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Sidebar User Footer -->
+        <div class="sidebar-footer">
+          <div class="user-profile-widget">
+            <div class="user-avatar-circle" id="userAvatar">F</div>
+            <div class="user-info">
+              <div class="user-name" id="userName">Farmer Profile</div>
+              <div class="user-meta" id="userMeta">AgriTwin User</div>
+            </div>
+            <a
+              href="settings.html"
+              class="user-action-btn"
+              title="Settings & Provenance"
+            >
+              <i class="fas fa-cog"></i>
+            </a>
+            <button class="user-action-btn btn-logout" id="logoutBtn" title="Sign Out / Logout" style="background:none;border:none;color:#ef4444;cursor:pointer;padding:6px;margin-left:4px;">
+              <i class="fas fa-sign-out-alt"></i>
+            </button>
+          </div>
+        </div>
+      </aside>
+
+      <!-- ==================== MAIN CONTENT ==================== -->
+      <div class="app-main-wrapper">
+        <header class="app-topbar">
+          <div class="topbar-left">
+            <button
+              class="topbar-toggle-btn"
+              id="mobileMenuBtn"
+              aria-label="Toggle Sidebar"
+            >
+              <i class="fas fa-bars"></i>
+            </button>
+            <div class="page-title-wrap">
+              <h1 class="page-title">Platform Settings</h1>
+              <nav class="breadcrumb-trail">
+                <span>Overview</span>
+                <i class="fas fa-chevron-right breadcrumb-sep"></i>
+                <span class="breadcrumb-active">Settings</span>
+              </nav>
+            </div>
+          </div>
+
+          <div class="topbar-right">
+            <a href="location.html" class="location-pill" id="farmLocation">
+              <i class="fas fa-map-marker-alt text-success"></i>
+              <span id="topbarLocationText">Set Farm Location</span>
+            </a>
+            <button class="topbar-icon-btn" title="Notifications">
+              <i class="far fa-bell"></i>
+              <span class="notification-dot"></span>
+            </button>
+            <div class="topbar-user-dropdown-wrap" id="userMenuWrapper">
+              <button
+                class="topbar-user-btn"
+                id="userMenuBtn"
+                type="button"
+                aria-expanded="false"
+                aria-label="Farmer profile menu"
+              >
+                <div class="user-avatar-sm" id="topbarAvatar">F</div>
+                <div class="user-details d-none d-md-block text-start">
+                  <div class="user-fullname" id="topbarName">Farmer</div>
+                  <div class="user-role" id="topbarRole">AgriTwin Live</div>
+                </div>
+                <i class="fas fa-chevron-down dropdown-caret"></i>
+              </button>
+              <div class="user-dropdown-menu" id="userDropdownMenu">
+                <div class="dropdown-user-header">
+                  <div class="user-avatar-sm" id="dropdownAvatar">F</div>
+                  <div class="dropdown-user-info">
+                    <div class="dropdown-name" id="dropdownName">Farmer</div>
+                    <div class="dropdown-sub" id="dropdownSub">Authenticated Farmer</div>
+                  </div>
+                </div>
+                <div class="dropdown-divider"></div>
+                <a href="settings.html" class="dropdown-item">
+                  <i class="fas fa-user-cog"></i>
+                  <span>My Account & Settings</span>
+                </a>
+                <a href="location.html" class="dropdown-item">
+                  <i class="fas fa-map-marker-alt"></i>
+                  <span>Farm Coordinates</span>
+                </a>
+                <div class="dropdown-divider"></div>
+                <button type="button" class="dropdown-item text-danger btn-logout" id="topbarLogoutBtn">
+                  <i class="fas fa-sign-out-alt"></i>
+                  <span>Sign Out / Logout</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <main class="app-content">
+          <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+            <div>
+              <h2 class="fw-bold text-dark mb-1">FARM PROFILE & TELEMETRY SETTINGS</h2>
+              <p class="text-muted mb-0">Manage digital twin parameters, crop varieties, and sensor alert thresholds.</p>
+            </div>
+            <button class="btn btn-success fw-bold" onclick="alert('Settings saved successfully!');">
+              <i class="fas fa-save me-1"></i> Save Changes
+            </button>
+          </div>
+
+          <div class="row g-4">
+            <div class="col-lg-6">
+              <div class="app-panel">
+                <div class="panel-header-row">
+                  <div class="panel-title">
+                    <i class="fas fa-user-circle text-success"></i> Farmer & Plot Identity
+                  </div>
+                </div>
+
+                <form id="settingsForm">
+                  <div class="mb-3">
+                    <label class="form-label fw-bold text-dark small">Farmer Name</label>
+                    <input type="text" class="form-control" id="settingFarmerName" value="Farmer">
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label fw-bold text-dark small">Crop Cultivar</label>
+                    <input type="text" class="form-control" id="settingCropName" value="Rice">
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label fw-bold text-dark small">Crop Variety</label>
+                    <input type="text" class="form-control" id="settingCropVariety" value="BPT 5204">
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label fw-bold text-dark small">Land Holding Area</label>
+                    <input type="text" class="form-control" id="settingFarmArea" value="5.0 Acres (2.02 Hectares)">
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            <div class="col-lg-6">
+              <div class="app-panel">
+                <div class="panel-header-row">
+                  <div class="panel-title">
+                    <i class="fas fa-bell text-warning"></i> Automated Telemetry Alert Thresholds
+                  </div>
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label fw-bold text-dark small">Soil Moisture Minimum Alert (%)</label>
+                  <input type="number" class="form-control" id="settingMoistAlert" value="30">
+                  <div class="text-muted small mt-1">Triggers high water stress recommendation when below 30%</div>
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label fw-bold text-dark small">Ambient Heat Warning (°C)</label>
+                  <input type="number" class="form-control" id="settingTempAlert" value="35">
+                  <div class="text-muted small mt-1">Alerts farmer when canopy temperature exceeds heat threshold</div>
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label fw-bold text-dark small">RAG LLM Engine</label>
+                  <select class="form-select" id="settingLlmEngine">
+                    <option selected>Groq LLaMA-3.3-70b-versatile (Recommended)</option>
+                    <option>DeepSeek R1 Distill</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/farmState.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const mobileMenuBtn = document.getElementById("mobileMenuBtn");
+        const appSidebar = document.getElementById("appSidebar");
+        if (mobileMenuBtn && appSidebar) {
+          mobileMenuBtn.addEventListener("click", () => {
+            appSidebar.classList.toggle("sidebar-open");
+          });
+        }
+
+        const farmerNameInput = document.getElementById("settingFarmerName");
+        const cropNameInput = document.getElementById("settingCropName");
+        const cropVarietyInput = document.getElementById("settingCropVariety");
+
+        if (window.FarmState) {
+          const state = FarmState.getState();
+          if (state.crop?.name && cropNameInput) cropNameInput.value = state.crop.name;
+          if (state.crop?.variety && cropVarietyInput) cropVarietyInput.value = state.crop.variety;
+        }
+
+        const savedName = localStorage.getItem("farmerName");
+        if (savedName && farmerNameInput) farmerNameInput.value = savedName;
+
+        const saveBtn = document.getElementById("saveSettingsBtn") || document.querySelector(".btn-success");
+        if (saveBtn) {
+          saveBtn.addEventListener("click", () => {
+            const name = farmerNameInput ? farmerNameInput.value.trim() : "Farmer";
+            const crop = cropNameInput ? cropNameInput.value.trim() : "Rice";
+            const variety = cropVarietyInput ? cropVarietyInput.value.trim() : "BPT 5204";
+
+            localStorage.setItem("farmerName", name);
+            if (window.FarmState) {
+              FarmState.updateCrop({ name: crop, variety: variety });
+            }
+
+            alert("Settings updated successfully! Synchronized with FarmState.");
+          });
+        }
+      });
+    </script>
+  </body>
+</html>
